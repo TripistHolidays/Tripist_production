@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
-import logo from "../assets/logo 3.png";
+import logo from "../assets/logoo.png";
 import { api } from "../Admin/api";
 
 const Footer = () => {
