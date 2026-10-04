@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+
+:root {
+  --trip-navy: #0f2d52;
+  --trip-gold: #d4af37;
+}
+
+.DestiCTA {
+  background: linear-gradient(135deg, var(--trip-navy) 0%, #0d4b75 50%, #1e6284 100%);
+  border-radius: 16px;
+  padding: 40px 24px !important; /* Scaled down from py-5 */
+}
+
+/* Script Subtitle */
+.desti-cta-script {
+  font-family: 'Caveat', cursive;
+  font-size: 1.65rem; /* Scaled down from 2.2rem */
+  color: #93c5fd;
+  line-height: 1.1;
+}
+
+.DestiCTA h2 {
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem) !important;
+  line-height: 1.25;
+}
+
+.DestiCTA p {
+  font-size: 0.9rem !important;
+  line-height: 1.6;
+}
+
+/* Button */
+.btn.desti-cta-orange-btn {
+  background: var(--trip-gold) !important;
+  border: 1px solid var(--trip-gold) !important;
+  color: var(--trip-navy) !important;
+  font-size: 0.88rem; /* Scaled down from 1.05rem */
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 50px;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.25);
+  transition: all 0.25s ease;
+}
+
+.btn.desti-cta-orange-btn:hover {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: var(--trip-navy) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating Image Cards */
+.desti-cta-image-wrapper {
+  position: relative;
+  min-height: 220px; /* Scaled down from 280px */
+}
+
+.desti-card {
+  width: 30%;
+  max-width: 130px;
+  transition: transform 0.3s ease;
+}
+
+.desti-card img {
+  width: 100%;
+  height: 175px; /* Scaled down from 220px */
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 12px !important;
+}
+
+.desti-card.card-1 {
+  transform: translateY(-8px);
+}
+.desti-card.card-2 {
+  transform: translateY(10px);
+}
+.desti-card.card-3 {
+  transform: translateY(-4px);
+}
+
+.desti-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  z-index: 10;
+}
+
+.desti-badge-overlay {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--trip-navy);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.desti-badge-overlay .country-flag {
+  width: 18px !important;
+  height: 14px !important;
+  object-fit: cover !important;
+  display: inline-block !important;
+  vertical-align: middle;
+  margin-right: 4px;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .DestiCTA {
+    padding: 30px 16px !important;
+  }
+
+  .desti-card img {
+    height: 140px;
+  }
+}

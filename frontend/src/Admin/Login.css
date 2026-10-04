@@ -1,0 +1,77 @@
+:root {
+  --trip-navy: #305480;
+  --trip-navy-dark: #091c33;
+  --trip-navy-light: #16406f;
+  --trip-gold: #D4AF37;
+  --trip-gold-hover: #b89628;
+  --trip-gold-glow: rgba(212, 175, 55, 0.25);
+  --trip-white: #ffffff;
+  --trip-bg: #1e293b;
+  --trip-border: #e2e8f0;
+  --trip-muted: #64748b;
+  --trip-text: #1e293b;
+  --trip-danger: #ef4444;
+}
+
+.trip-login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--trip-navy);
+  padding: 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--trip-white);
+  border: 1px solid var(--trip-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(15, 45, 82, 0.08);
+}
+
+.login-card-header {
+  padding: 2rem 2rem 1rem 2rem;
+  background-color: var(--trip-navy-light);
+  border-bottom: 1px solid var(--trip-gold);
+}
+
+.login-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-logo {
+  max-height: 48px;
+  object-fit: contain;
+}
+
+.custom-input-group {
+  border: 1px solid var(--trip-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-input-group:focus-within {
+  border-color: var(--trip-gold);
+  box-shadow: 0 0 0 3px var(--trip-gold-glow);
+}
+
+.btn-trip-gold1 {
+  background-color: var(--trip-gold);
+  border-color: var(--trip-gold);
+  color: var(--trip-navy-dark);
+  border-radius: 8px;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  font-weight: 600;
+}
+
+.btn-trip-gold1:hover {
+  background-color: var(--trip-gold-hover);
+  border-color: var(--trip-gold-hover);
+  color: var(--trip-navy-dark);
+  box-shadow: 0 4px 12px var(--trip-gold-glow);
+}

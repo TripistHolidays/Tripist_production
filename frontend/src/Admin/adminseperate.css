@@ -1,0 +1,994 @@
+/* =========================================================
+   TRIPIST ADMIN DASHBOARD - ENHANCED CSS
+   ========================================================= */
+
+   :root {
+    --trip-navy: #0f2d52;
+    --trip-navy-light: #16406f;
+    --trip-gold: #d4af37;
+    --trip-gold-hover: #b89628;
+    --trip-orange: #f26522;
+    --trip-orange-hover: #d95314;
+    --trip-white: #ffffff;
+  
+    --trip-bg: #f5f7fb;
+    --trip-border: #e4e9f0;
+    --trip-muted: #718096;
+    --trip-success: #159957;
+    --trip-danger: #dc3545;
+    --trip-warning: #e7a800;
+    --trip-info: #1687c7;
+  
+    --shadow-sm: 0 4px 14px rgba(15, 45, 82, 0.06);
+    --shadow-md: 0 10px 30px rgba(15, 45, 82, 0.10);
+    --shadow-lg: 0 20px 50px rgba(15, 45, 82, 0.16);
+  
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+  }
+  
+  
+  /* =========================================================
+     GLOBAL ADMIN
+     ========================================================= */
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: var(--trip-bg);
+  }
+  
+  .admin-page,
+  .destination-admin-page {
+    color: #27364b;
+  }
+  
+  .text-trip-navy {
+    color: var(--trip-navy) !important;
+  }
+  
+  .text-trip-gold {
+    color: var(--trip-gold) !important;
+  }
+  
+  
+  /* =========================================================
+     BUTTONS
+     ========================================================= */
+  
+  .btn-trip-gold {
+    background: var(--trip-gold);
+    border: 1px solid var(--trip-gold);
+    color: var(--trip-navy);
+    border-radius: 9px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-trip-gold:hover {
+    background: var(--trip-gold-hover);
+    border-color: var(--trip-gold-hover);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.25);
+  }
+  
+  .btn-trip-primary {
+    background: var(--trip-navy);
+    border: 1px solid var(--trip-navy);
+    color: #fff;
+    border-radius: 9px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-trip-primary:hover {
+    background: var(--trip-navy-light);
+    border-color: var(--trip-navy-light);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(15, 45, 82, 0.20);
+  }
+  
+  .btn-trip-navy-outline {
+    background: #fff;
+    border: 1px solid var(--trip-navy);
+    color: var(--trip-navy);
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  
+  .btn-trip-navy-outline:hover {
+    background: var(--trip-navy);
+    color: #fff;
+  }
+  
+  .btn-action-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--trip-border);
+    border-radius: 8px;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-action-icon:hover {
+    border-color: var(--trip-navy);
+    background: #f4f7fb;
+    transform: translateY(-1px);
+  }
+  
+  
+  /* =========================================================
+     CARDS
+     ========================================================= */
+  
+  .admin-card {
+    border-radius: var(--radius-lg);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  
+  .admin-card .card-header {
+    border-bottom: 1px solid var(--trip-border);
+  }
+  
+  .admin-card .card-footer {
+    border-top: 1px solid var(--trip-border);
+  }
+  
+  
+  /* =========================================================
+     FORM CONTROLS
+     ========================================================= */
+  
+  .form-control,
+  .form-select {
+    min-height: 42px;
+    border: 1px solid #d8dfe8;
+    border-radius: 9px;
+    color: #27364b;
+    background-color: #fff;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--trip-navy);
+    box-shadow: 0 0 0 3px rgba(15, 45, 82, 0.08);
+  }
+  
+  .form-control::placeholder {
+    color: #a0a9b6;
+  }
+  
+  .form-label {
+    color: #35445a;
+    font-size: 0.84rem;
+    margin-bottom: 7px;
+  }
+  
+  textarea.form-control {
+    resize: vertical;
+    min-height: 110px;
+  }
+  
+  
+  /* =========================================================
+     TABLE
+     ========================================================= */
+  
+  .admin-card .table {
+    color: #334155;
+  }
+  
+  .admin-card .table thead th {
+    background: #f8fafc;
+    color: var(--trip-navy);
+    border-bottom: 1px solid var(--trip-border);
+    padding: 14px 15px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  
+  .admin-card .table tbody td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #edf0f4;
+  }
+  
+  .admin-card .table tbody tr {
+    transition: background 0.15s ease;
+  }
+  
+  .admin-card .table tbody tr:hover {
+    background: #fafbfd;
+  }
+  
+  .admin-card .table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  
+  
+  /* =========================================================
+     BADGES
+     ========================================================= */
+  
+  .badge-soft-info {
+    background: rgba(22, 135, 199, 0.10);
+    color: #1175a9;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  
+  .badge-soft-warning {
+    background: rgba(212, 175, 55, 0.13);
+    color: #8c6b00;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  
+  
+  /* =========================================================
+     SEARCH
+     ========================================================= */
+  
+  .destination-admin-page .card-header input {
+    border-radius: 9px;
+  }
+  
+  
+  /* =========================================================
+     DESTINATION PAGE
+     ========================================================= */
+  
+  .destination-admin-page {
+    width: 100%;
+  }
+  
+  .destination-admin-page h2 {
+    color: var(--trip-navy);
+  }
+  
+  
+  /* =========================================================
+     DESTINATION STEP HEADER
+     ========================================================= */
+  
+  .destination-step-header {
+    position: relative;
+    flex: 0 0 auto;
+    padding: 18px 25px;
+    background: #fff;
+    border-bottom: 1px solid #e7ebf1;
+  }
+  
+  .destination-step-items {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .destination-step-line {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: #e5e9ef;
+    transform: translateY(-50%);
+  }
+  
+  .destination-step {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border: 1px solid #e4e9f0;
+    border-radius: 30px;
+    background: #fff;
+    color: #8791a1;
+    transition: all 0.25s ease;
+  }
+  
+  .destination-step-number {
+    width: 31px;
+    height: 31px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eef1f5;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  
+  .destination-step strong {
+    display: block;
+    font-size: 0.78rem;
+  }
+  
+  .destination-step small {
+    display: block;
+    font-size: 0.66rem;
+  }
+  
+  .destination-step.active {
+    border-color: var(--trip-navy);
+    background: var(--trip-navy);
+    color: #fff;
+    box-shadow: 0 7px 18px rgba(15, 45, 82, 0.18);
+  }
+  
+  .destination-step.active .destination-step-number {
+    background: var(--trip-gold);
+    color: var(--trip-navy);
+  }
+  
+  
+  /* =========================================================
+     DESTINATION SECTION HEADING
+     ========================================================= */
+  
+  .destination-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 25px;
+    padding: 15px;
+    border-left: 4px solid var(--trip-gold);
+    border-radius: 9px;
+    background: linear-gradient(
+      90deg,
+      rgba(212, 175, 55, 0.1),
+      rgba(212, 175, 55, 0.02)
+    );
+  }
+  
+  .destination-section-heading > span {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: var(--trip-navy);
+    color: #fff;
+    font-size: 1.15rem;
+  }
+  
+  .destination-section-heading h6 {
+    margin: 0 0 3px;
+    color: var(--trip-navy);
+    font-weight: 800;
+  }
+  
+  .destination-section-heading p {
+    margin: 0;
+    color: var(--trip-muted);
+    font-size: 0.78rem;
+  }
+  
+  
+  /* =========================================================
+     BEST SEASON
+     ========================================================= */
+  
+  .best-season-preview {
+    min-height: 43px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--trip-navy);
+  }
+  
+  .best-season-preview i {
+    color: var(--trip-gold);
+    font-size: 1rem;
+  }
+  
+  .season-save-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 17px;
+    border: 1px dashed rgba(21, 153, 87, 0.35);
+    border-radius: 12px;
+    background: rgba(21, 153, 87, 0.06);
+  }
+  
+  .season-save-preview small {
+    display: block;
+    margin-bottom: 3px;
+    color: #687386;
+    font-size: 0.7rem;
+  }
+  
+  .season-save-preview strong {
+    color: #147a49;
+    font-size: 0.95rem;
+  }
+  
+  .season-save-preview > i {
+    color: var(--trip-success);
+    font-size: 1.5rem;
+  }
+  
+  
+  /* =========================================================
+     MEDIA UPLOAD
+     ========================================================= */
+  
+  .media-upload-card {
+    padding: 18px;
+    border: 1px dashed #cbd4df;
+    border-radius: 14px;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  
+  .media-upload-card:hover {
+    border-color: var(--trip-gold);
+    background: #fffdf7;
+  }
+  
+  .media-upload-card input[type="file"] {
+    cursor: pointer;
+  }
+  
+  
+  /* =========================================================
+     ATTRACTIONS
+     ========================================================= */
+  
+  .attraction-admin-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid #e2e7ef;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 5px 16px rgba(15, 45, 82, 0.04);
+    transition: all 0.2s ease;
+  }
+  
+  .attraction-admin-card:hover {
+    border-color: rgba(212, 175, 55, 0.5);
+    box-shadow: 0 9px 24px rgba(15, 45, 82, 0.08);
+  }
+  
+  .attraction-number {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--trip-navy);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+  
+  
+  /* =========================================================
+     DESTINATION MODAL
+     ========================================================= */
+  
+  /*
+    IMPORTANT:
+    The modal itself is fixed.
+    The modal body is the only scrolling area.
+  */
+  
+  .destination-admin-page .modal {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    padding-right: 0 !important;
+  }
+  
+  .destination-admin-page .modal-dialog {
+    width: auto;
+    max-width: 1140px;
+    height: calc(100vh - 30px);
+    max-height: calc(100vh - 30px);
+    margin: 15px auto;
+  }
+  
+  .destination-admin-page .modal-content {
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  
+  /* =========================================================
+     MODAL HEADER
+     ========================================================= */
+  
+  .destination-admin-page .modal-header {
+    flex: 0 0 auto;
+    padding: 18px 22px;
+    border: 0;
+    background: linear-gradient(
+      135deg,
+      var(--trip-navy),
+      var(--trip-navy-light)
+    );
+    color: #fff;
+  }
+  
+  .destination-admin-page .modal-header .modal-title {
+    color: #fff;
+  }
+  
+  .destination-admin-page .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+  
+  .destination-admin-page .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+  
+  
+  /* =========================================================
+     MODAL FORM
+     ========================================================= */
+  
+  .destination-admin-page .modal form {
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  /* =========================================================
+     MODAL BODY - SCROLL FIX
+     ========================================================= */
+  
+  .destination-admin-page .modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    background: #f8fafc;
+  }
+  
+  
+  /* =========================================================
+     MODAL BODY SCROLLBAR
+     ========================================================= */
+  
+  .destination-admin-page .modal-body::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  .destination-admin-page .modal-body::-webkit-scrollbar-track {
+    background: #edf1f5;
+  }
+  
+  .destination-admin-page .modal-body::-webkit-scrollbar-thumb {
+    background: #b6c0cc;
+    border-radius: 10px;
+  }
+  
+  .destination-admin-page .modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--trip-navy);
+  }
+  
+  
+  /* Firefox */
+  
+  .destination-admin-page .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: #b6c0cc #edf1f5;
+  }
+  
+  
+  /* =========================================================
+     MODAL FOOTER
+     ========================================================= */
+  
+  .destination-admin-page .modal-footer {
+    flex: 0 0 auto;
+    min-height: 70px;
+    background: #fff;
+    border-top: 1px solid var(--trip-border);
+  }
+  
+  
+  /* =========================================================
+     MODAL BACKDROP
+     ========================================================= */
+  
+  .destination-admin-page .modal.show {
+    background-color: rgba(5, 20, 40, 0.65);
+    backdrop-filter: blur(4px);
+  }
+  
+  
+  /* =========================================================
+     SPINNER
+     ========================================================= */
+  
+  .destination-admin-page .spinner-border {
+    color: var(--trip-navy);
+  }
+  
+  
+  /* =========================================================
+     ALERT
+     ========================================================= */
+  
+  .destination-admin-page .alert {
+    border: 0;
+    border-radius: 10px;
+    font-size: 0.85rem;
+  }
+  
+  
+  /* =========================================================
+     TOAST - TOP RIGHT
+     ========================================================= */
+  
+  .app-toast {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    bottom: auto !important;
+  
+    z-index: 99999 !important;
+  
+    min-width: 320px;
+    max-width: 420px;
+  
+    padding: 14px 18px;
+  
+    border: 0 !important;
+    border-radius: 12px;
+  
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+  
+    animation: toastSlideIn 0.3s ease forwards;
+  }
+  
+  @keyframes toastSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(35px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  
+  /* =========================================================
+     TOAST VARIANTS
+     ========================================================= */
+  
+  .app-toast.alert-success {
+    border-left: 4px solid var(--trip-success) !important;
+  }
+  
+  .app-toast.alert-danger {
+    border-left: 4px solid var(--trip-danger) !important;
+  }
+  
+  .app-toast.alert-warning {
+    border-left: 4px solid var(--trip-warning) !important;
+  }
+  
+  .app-toast.alert-info {
+    border-left: 4px solid var(--trip-info) !important;
+  }
+  
+  
+  /* =========================================================
+     PAGINATION
+     ========================================================= */
+  
+  .pagination .page-link {
+    color: var(--trip-navy);
+    border-color: var(--trip-border);
+    border-radius: 7px !important;
+    margin: 0 2px;
+  }
+  
+  .pagination .page-link:hover {
+    background: #f0f4f8;
+    color: var(--trip-navy);
+  }
+  
+  .pagination .active .page-link {
+    background: var(--trip-navy);
+    border-color: var(--trip-navy);
+    color: #fff;
+  }
+  
+  
+  /* =========================================================
+     EMPTY STATE
+     ========================================================= */
+  
+  .destination-admin-page .card-body > .text-center {
+    min-height: 260px;
+  }
+  
+  
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  
+  @media (max-width: 992px) {
+    .destination-admin-page .modal-dialog {
+      max-width: calc(100% - 30px);
+    }
+  
+    .destination-step-header {
+      padding: 15px;
+    }
+  
+    .destination-step-line {
+      left: 12%;
+      right: 12%;
+    }
+  }
+  
+  
+  @media (max-width: 768px) {
+  
+    /* Step navigation */
+  
+    .destination-step-items {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .destination-step-line {
+      display: none;
+    }
+  
+    .destination-step {
+      width: 100%;
+      border-radius: 10px;
+    }
+  
+    .destination-step small {
+      display: inline;
+      margin-left: 5px;
+    }
+  
+    .destination-step small::before {
+      content: "• ";
+    }
+  
+  
+    /* Modal */
+  
+    .destination-admin-page .modal-dialog {
+      width: 100%;
+      max-width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      margin: 0;
+    }
+  
+    .destination-admin-page .modal-content {
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+    }
+  
+    .destination-admin-page .modal-body {
+      padding: 16px !important;
+    }
+  
+  
+    /* Attraction */
+  
+    .attraction-admin-card {
+      flex-wrap: wrap;
+    }
+  
+    .attraction-admin-card .flex-grow-1 {
+      width: calc(100% - 52px);
+    }
+  
+  
+    /* Toast */
+  
+    .app-toast {
+      top: 12px !important;
+      right: 12px !important;
+      left: 12px !important;
+  
+      min-width: auto;
+      max-width: none;
+    }
+  
+  
+    /* Table */
+  
+    .destination-admin-page .table {
+      min-width: 850px;
+    }
+  }
+  
+  
+  @media (max-width: 576px) {
+  
+    .destination-section-heading {
+      padding: 12px;
+    }
+  
+    .destination-section-heading > span {
+      width: 36px;
+      height: 36px;
+    }
+  
+    .destination-section-heading h6 {
+      font-size: 0.9rem;
+    }
+  
+    .destination-section-heading p {
+      font-size: 0.7rem;
+    }
+  
+    .destination-admin-page .modal-body {
+      padding: 14px !important;
+    }
+  
+    .destination-admin-page .modal-footer {
+      padding: 12px !important;
+    }
+  
+    .destination-admin-page .modal-footer .btn {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+  
+    .best-season-preview {
+      font-size: 0.85rem;
+    }
+  
+    .season-save-preview {
+      padding: 12px;
+    }
+  
+    .attraction-admin-card {
+      padding: 12px;
+    }
+  }
+  
+  
+  /* =========================================================
+     EXTRA SAFETY FOR MODAL SCROLLING
+     ========================================================= */
+  
+  /*
+    If Bootstrap or another Admin.css rule adds overflow:hidden,
+    these rules keep the destination modal usable.
+  */
+  
+  .destination-admin-page .modal-dialog-scrollable {
+    height: calc(100vh - 30px) !important;
+    max-height: calc(100vh - 30px) !important;
+  }
+  
+  .destination-admin-page .modal-dialog-scrollable .modal-content {
+    max-height: 100% !important;
+  }
+  
+  .destination-admin-page .modal-dialog-scrollable .modal-body {
+    overflow-y: auto !important;
+  }
+  
+  
+  /* =========================================================
+     PREVENT PAGE SCROLL LOCK FROM BREAKING MODAL
+     ========================================================= */
+  
+  body.modal-open {
+    overflow: hidden;
+  }
+  
+  
+  /* =========================================================
+     INPUT FILE
+     ========================================================= */
+  
+  .destination-admin-page input[type="file"] {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  
+  .destination-admin-page input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--trip-navy);
+    color: #fff;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  
+  .destination-admin-page input[type="file"]::file-selector-button:hover {
+    background: var(--trip-navy-light);
+  }
+  
+  
+  /* =========================================================
+     SELECT
+     ========================================================= */
+  
+  .destination-admin-page select {
+    cursor: pointer;
+  }
+  
+  
+  /* =========================================================
+     FOCUS ACCESSIBILITY
+     ========================================================= */
+  
+  .destination-admin-page button:focus-visible,
+  .destination-admin-page input:focus-visible,
+  .destination-admin-page select:focus-visible,
+  .destination-admin-page textarea:focus-visible {
+    outline: 2px solid var(--trip-gold);
+    outline-offset: 2px;
+  }
+  
+  
+  /* =========================================================
+     SMOOTH UI
+     ========================================================= */
+  
+  .destination-admin-page button,
+  .destination-admin-page input,
+  .destination-admin-page select,
+  .destination-admin-page textarea {
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background-color 0.2s ease,
+                transform 0.2s ease;
+  }

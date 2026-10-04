@@ -1,0 +1,184 @@
+.custom-header {
+    padding: 15px 0;
+    background: #0f2d52;
+    transition: .4s;
+    z-index: 9999;
+}
+
+.blur-header {
+    top: 15px !important;
+    left: 20px;
+    right: 20px;
+
+    width: calc(100% - 40px);
+
+    border-radius: 20px;
+
+    background: rgba(15, 45, 82, .75);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+}
+
+
+/* LOGO */
+
+.navlogo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 20px; /* Reduced from 40px to free up navigation space */
+}
+
+/* LOGO IMAGE CONSTRAINTS */
+.logo-img {
+  width: auto;             /* Changed from fixed 170px to auto */
+  max-width: 150px;        /* Prevents horizontal overflow */
+  height: 48px;            /* Locks height relative to 76px header */
+  object-fit: contain;
+  display: block;
+}
+
+
+/* MENU */
+
+.desktop-menu {
+    display: flex;
+    gap: 35px;
+    list-style: none;
+    margin-bottom: 0;
+}
+.desktop-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.desktop-menu a:hover {
+    color: #D4AF37;
+}
+
+
+/* RIGHT SECTION */
+
+.right-section {
+    align-items: center;
+    gap: 20px;
+}
+
+.phone {
+    color: white;
+    text-decoration: none;
+}
+
+.deal-btn {
+    border: none;
+    background: #D4AF37;
+    color: #0F2D52;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+
+/* MOBILE BUTTON */
+
+.mobile-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 28px;
+}
+
+
+/* MOBILE MENU */
+
+.mobile-menu {
+
+    position: fixed;
+
+    top: 0;
+    left: -100%;
+
+    width: 320px;
+    height: 100vh;
+
+    background: #0F2D52;
+
+    transition: .4s;
+
+    z-index: 10000;
+
+    padding: 20px;
+}
+
+.show-menu {
+    left: 0;
+}
+
+.mobile-top {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 30px;
+}
+
+.mobile-logo {
+    height: 45px;
+}
+
+.close-btn {
+
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+}
+
+.mobile-menu a {
+
+    display: block;
+    padding: 18px 0;
+
+    color: white;
+    text-decoration: none;
+
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+
+.mobile-deal-btn {
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    background: #D4AF37;
+    border: none;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    font-weight: 700;
+}
+
+.sticky-top {
+    background-color: #0F2D52 !important;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:991px) {
+
+    .logo {
+        height: 50px;
+    }
+
+}

@@ -1,0 +1,118 @@
+:root {
+  --trip-navy: #0f2d52;
+  --trip-gold: #d4af37;
+  --trip-gold-bg: rgba(212, 175, 55, 0.12);
+  --trip-border: rgba(15, 45, 82, 0.08);
+}
+
+/* Base Styles */
+.bg-navy { background-color: var(--trip-navy) !important; }
+.text-navy { color: var(--trip-navy) !important; }
+.text-gold { color: var(--trip-gold) !important; }
+.bg-soft-gray { background-color: #f8fafc; }
+.tracking-wide { letter-spacing: 1.5px; }
+
+/* =========================================================
+   HERO BANNER & TRANSPARENT GRADIENT OVERLAY
+   ========================================================= */
+.about-hero {
+  position: relative;
+  min-height: 520px;
+  background-size: cover !important;
+  background-position: center bottom !important;
+  background-repeat: no-repeat !important;
+  overflow: hidden;
+}
+
+/* Transparent Gradient Overlay: Dark navy on the left, clear on the right */
+.about-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 45, 82, 0.92) 0%,
+    rgba(15, 45, 82, 0.75) 45%,
+    rgba(15, 45, 82, 0.25) 85%,
+    rgba(15, 45, 82, 0.10) 100%
+  );
+  z-index: 1;
+}
+
+.hero-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--trip-gold);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.btn-hero {
+  background-color: var(--trip-gold) !important;
+  color: var(--trip-navy) !important;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+}
+
+.btn-hero:hover {
+  background-color: #ffffff !important;
+  color: var(--trip-navy) !important;
+  transform: translateY(-2px);
+}
+
+/* Cards & Icons */
+.icon-box-gold {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--trip-gold);
+  background: var(--trip-gold-bg);
+  border-radius: 12px;
+}
+
+.about-card {
+  border: 1px solid var(--trip-border);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 10px 24px rgba(15, 45, 82, 0.08) !important;
+}
+
+/* Decorative Background Accents */
+.circle-decor {
+  position: absolute;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.circle-hero { width: 380px; height: 380px; right: -120px; top: -120px; z-index: 1; }
+.circle-lg { width: 420px; height: 420px; right: -140px; top: -140px; }
+.circle-sm { width: 240px; height: 240px; left: -80px; bottom: -80px; }
+
+/* Responsive adjustments for Mobile */
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 440px;
+  }
+  
+  /* On mobile, darken the overlay slightly so text remains readable across narrower widths */
+  .about-hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(15, 45, 82, 0.88) 0%,
+      rgba(15, 45, 82, 0.82) 65%,
+      rgba(15, 45, 82, 0.55) 100%
+    );
+  }
+}

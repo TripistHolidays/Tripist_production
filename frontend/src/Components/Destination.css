@@ -1,0 +1,203 @@
+/* Brand Color Variables */
+:root {
+  --tripist-navy: #0F2D52;
+  --tripist-gold: #D4AF37;
+  --tripist-teal: #0FA3B1;
+}
+
+.text-navy {
+  color: var(--tripist-navy);
+}
+
+/* 1. Reduced Section Padding to remove empty space */
+.destination-section {
+  padding: 30px 0;
+}
+
+/* Header */
+.destination-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.destination-header h2 {
+  font-size: 32px;
+}
+
+/* Slider Custom Buttons */
+.slider-buttons {
+  display: flex;
+  gap: 10px;
+
+}
+
+.custom-prev,
+.custom-next {
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color:var(--tripist-navy);
+  color: var(--tripist-gold);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.custom-prev:hover,
+.custom-next:hover {
+  background-color: var(--tripist-gold);
+  color: var(--tripist-navy);
+}
+
+/* Card Styling */
+.destination-card {
+  text-align: center;
+}
+.destination-image-container {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 220px; /* Locked height so all cards stay uniform */
+}
+
+.destination-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.destination-card:hover img {
+  transform: scale(1.08);
+}
+.swiper{
+  height: auto;
+}
+
+/* 2. Lock slide and card height to its actual content */
+.destination-swiper .swiper-slide {
+  height: fit-content !important;
+}
+
+.destination-card {
+  height: auto !important;
+}
+/* Compact Title - No unnecessary padding */
+.destination-title {
+  font-size: 19px;
+  transition: color 0.3s ease;
+  margin-bottom: 0;
+}
+
+.destination-card:hover .destination-title {
+  color:#D4AF37 !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .destination-section {
+    padding: 20px 0;
+  }
+
+  .destination-header {
+    margin-bottom: 16px;
+  }
+
+  .destination-header h2 {
+    font-size: 24px;
+  }
+
+  .destination-image-container {
+    height: 300px;
+  }
+  .destination-card img{
+    height: 300px;
+  }
+}
+@media (max-width: 480px) {
+  .destination-section {
+    padding: 14px 0;
+  }
+
+  .destination-header h2 {
+    font-size: 18px;
+  }
+
+  .slider-buttons {
+    margin-bottom: 40px; /* reduced from 60px so it doesn't push content too far */
+  }
+
+  .custom-prev,
+  .custom-next {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .destination-image-container {
+    height: 200px;
+    border-radius: 12px;
+  }
+
+  .destination-card img {
+    height: 200px;
+  }
+
+  .destination-title {
+    font-size: 15px;
+  }
+}
+
+/* Extra small phones (≤ 360px) */
+@media (max-width: 360px) {
+  .destination-header h2 {
+    font-size: 17px;
+  }
+
+  .custom-prev,
+  .custom-next {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .destination-image-container {
+    height: 180px;
+    border-radius: 12px;
+  }
+
+  .destination-card img {
+    height: 180px;
+  }
+
+  .destination-title {
+    font-size: 14px;
+  }
+}
+
+/* Touch devices — disable hover scale (avoids sticky zoom on tap) */
+@media (hover: none) and (pointer: coarse) {
+  .destination-card:hover img {
+    transform: none;
+  }
+
+  .destination-card:hover .destination-title {
+    color: inherit !important;
+  }
+}
+
+/* Landscape mobile — cap image height so cards don't dominate */
+@media (max-width: 900px) and (orientation: landscape) {
+  .destination-image-container,
+  .destination-card img {
+    height: 200px;
+  }
+}

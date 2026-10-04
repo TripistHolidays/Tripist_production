@@ -1,0 +1,50 @@
+.offer-section {
+  
+  border-radius: 25px;
+  padding: 20px 0 40px;
+ 
+}
+.offer-section .swiper {
+  height: 210px;
+}
+.offer-section .swiper-pagination {
+  bottom: -5px !important;
+}
+
+/* Normal Dot */
+.offer-section .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background:var(--trip-gold) !important;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+/* Active Dot */
+.offer-section .swiper-pagination-bullet-active {
+  width: 30px;
+  border-radius: 10px;
+  background: var(--trip-gold);
+  opacity: 1;
+}
+.offer-image {
+  width: 100%;
+  /* Set max height for large screens, allow auto shrink for mobile */
+  max-height: 180px;
+  height: 180px; 
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.offer-image:hover {
+  transform: scale(1.01);
+}
+
+/* Optional: Adjust max-height smoothly for smaller screens */
+@media (max-width: 768px) {
+  .offer-image {
+    max-height: 150px;
+    border-radius: 15px; /* Symmetrical border radius for smaller screens */
+  }
+}

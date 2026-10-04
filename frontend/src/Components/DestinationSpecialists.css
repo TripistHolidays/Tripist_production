@@ -1,0 +1,260 @@
+/* =========================================
+   TRIPIST THEME SECTION STYLING
+========================================= */
+
+.tripist-specialists-section {
+  background-color: #f8fafc;
+}
+
+.trip-subtitle {
+  color: #d4af37; /* Tripist Gold */
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+}
+
+.trip-main-heading {
+  color: #0f172a; /* Tripist Deep Navy */
+  font-family: inherit;
+  letter-spacing: -0.5px;
+}
+
+.trip-heading-divider {
+  width: 50px;
+  height: 3px;
+  background-color: #d4af37;
+  border-radius: 2px;
+}
+
+.trip-quote {
+  color: #64748b;
+  font-size: 1.05rem;
+}
+
+.trip-intro-text {
+  color: #475569 !important;
+  line-height: 1.6;
+}
+
+/* =========================================
+   SPECIALIST CARDS (ELEGANT DESIGN)
+========================================= */
+
+.custom-specialist-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.custom-specialist-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12);
+}
+
+.specialist-card-title {
+  color: #0f172a !important;
+  font-size: 1.2rem;
+  line-height: 1.35;
+}
+
+.custom-specialist-card .issued-by-text {
+  font-size: 0.7rem;
+  letter-spacing: 0.9px;
+  color: #64748b;
+}
+
+.custom-specialist-card .detail-list-item {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.custom-specialist-card .bullet-point {
+  color: #d4af37;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+/* =========================================
+   IMAGE CONTAINER & SCALE EFFECT
+========================================= */
+
+.specialist-image-container {
+  height: 210px;
+  background-color: #0f172a;
+  cursor: pointer;
+}
+
+.specialist-thumb-image {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.3s ease;
+}
+
+.specialist-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.trip-zoom-badge {
+  background: #d4af37;
+  color: #0f172a;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(10px);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.specialist-image-container:hover .specialist-thumb-image {
+  transform: scale(1.06);
+}
+
+.specialist-image-container:hover .specialist-image-overlay {
+  opacity: 1;
+}
+
+.specialist-image-container:hover .trip-zoom-badge {
+  transform: translateY(0);
+}
+
+/* =========================================
+   REFINED BADGES
+========================================= */
+
+.badge-emerald {
+  background-color: #f0fdf4;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.badge-amber {
+  background-color: #fffbeb;
+  color: #b45309;
+  border: 1px solid #ffe6a7;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.badge-blue {
+  background-color: #f0fdf4; /* or clean blue tone */
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #dbeafe;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* =========================================
+   COUNTRY FLAG
+========================================= */
+
+.country-flag {
+  width: 40px;
+  height: 28px;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================
+   CERTIFICATE LIGHTBOX (MODAL)
+========================================= */
+
+.certificate-lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  z-index: 99999;
+  animation: certificateFadeIn 0.25s ease;
+}
+
+.certificate-lightbox-content {
+  position: relative;
+  width: auto;
+  max-width: 100%;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.certificate-lightbox-image {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.certificate-lightbox-close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s ease;
+}
+
+.certificate-lightbox-close:hover {
+  background: #d4af37;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+@keyframes certificateFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .certificate-lightbox {
+    padding: 20px;
+  }
+  .certificate-lightbox-image {
+    max-width: 92vw;
+    max-height: 80vh;
+  }
+  .certificate-lightbox-close {
+    top: -15px;
+    right: -10px;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+}

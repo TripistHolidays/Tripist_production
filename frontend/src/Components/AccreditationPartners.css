@@ -1,0 +1,596 @@
+.tripist-accreditation {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 54px 0 44px;
+  background: #ffffff;
+  border-top: 1px solid rgba(15, 45, 82, 0.08);
+}
+
+.tripist-accreditation-container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.tripist-accreditation-heading {
+  max-width: 700px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.tripist-accreditation-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #d4af37;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.tripist-accreditation-heading h2 {
+  margin: 0 0 10px;
+  color: #0f2d52;
+  font-size: clamp(1.6rem, 3.2vw, 2.15rem);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.tripist-accreditation-heading p {
+  max-width: 620px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Marquee Mask */
+.tripist-logo-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+
+.tripist-logo-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+/* Row 1: Scrolling Left */
+.tripist-logo-track.scroll-left {
+  animation: scrollLeftMarquee 60s linear infinite;
+}
+
+/* Row 2: Scrolling Right */
+.tripist-logo-track.scroll-right {
+  animation: scrollRightMarquee 60s linear infinite;
+}
+
+@keyframes scrollLeftMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 10px));
+  }
+}
+
+@keyframes scrollRightMarquee {
+  from {
+    transform: translateX(calc(-50% - 10px));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Pause when hovering over the marquee track */
+.tripist-logo-marquee:hover .tripist-logo-track {
+  animation-play-state: paused;
+}
+
+/* Logo Card:
+   --card-w / --card-h  -> size of the background card (unchanged)
+   --logo-scale         -> scales every logo at once per screen size
+   --logo-size          -> size of each logo image, set per logo in the
+                           nth-child rules further below */
+.tripist-partner-logo {
+  --card-w: 200px;
+  --card-h: 130px;
+  --logo-scale: 1;
+  --logo-size: 130px;
+
+  position: relative;
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+  height: var(--card-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border: 1px solid rgba(15, 45, 82, 0.08);
+  border-radius: 12px;
+  background: #fae880ad;
+  box-shadow: 0 2px 8px rgba(15, 45, 82, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.tripist-partner-logo:hover {
+  transform: translateY(-3px);
+  border-color: rgba(15, 45, 82, 0.2) !important;
+  box-shadow: 0 6px 16px rgba(15, 45, 82, 0.12);
+}
+
+/* Logo image size comes from --logo-size (set per logo below).
+   Each source image is a 1000x1000 canvas, so --logo-size is the box side:
+   bigger number = bigger logo. The card size is never affected. */
+.tripist-partner-logo img {
+  display: block;
+  flex: 0 0 auto;
+  position: relative;
+  left: calc(var(--logo-x, 0px) * var(--logo-scale));
+  width: calc(var(--logo-size) * var(--logo-scale));
+  height: auto;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  object-fit: contain;
+  filter: none;
+  opacity: 1;
+  transition: transform 0.25s ease;
+}
+
+.tripist-partner-logo:hover img {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* ==========================================================
+   PER-LOGO IMAGE SIZE (nth-child)
+   Change only the --logo-size number of the logo you want.
+   The card size does not change.
+   28n / 39n = number of logos in that row, so the rule also
+   hits the duplicated copy used for the seamless loop.
+   If you add or remove a logo, update the 28 / 39 and the order.
+   --logo-x (optional) nudges a logo sideways if its artwork is
+   off-centre inside the image file (+ moves right, - moves left).
+   ========================================================== */
+
+/* TOP ROW (28 logos) - Government + Destination */
+/* 1. Incredible India */
+.scroll-left .tripist-partner-logo:nth-child(28n + 1) {
+  --logo-size: 225px;
+}
+
+/* 2. Ministry of Tourism (India) */
+.scroll-left .tripist-partner-logo:nth-child(28n + 2) {
+  --logo-size: 180px;
+}
+
+/* 3. NIDHI */
+.scroll-left .tripist-partner-logo:nth-child(28n + 3) {
+  --logo-size: 130px;
+}
+
+/* 4. Trek Tamil Nadu */
+.scroll-left .tripist-partner-logo:nth-child(28n + 4) {
+  --logo-size: 175px;
+}
+
+/* 5. 100% Pure New Zealand */
+.scroll-left .tripist-partner-logo:nth-child(28n + 5) {
+  --logo-size: 180px;
+}
+
+/* 6. Azerbaijan */
+.scroll-left .tripist-partner-logo:nth-child(28n + 6) {
+  --logo-size: 195px;
+}
+
+/* 7. Bali */
+.scroll-left .tripist-partner-logo:nth-child(28n + 7) {
+  --logo-size: 165px;
+}
+
+/* 8. Cook Islands */
+.scroll-left .tripist-partner-logo:nth-child(28n + 8) {
+  --logo-size: 175px;
+}
+
+/* 9. Visit Dubai */
+.scroll-left .tripist-partner-logo:nth-child(28n + 9) {
+  --logo-size: 180px;
+}
+
+/* 10. Georgia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 10) {
+  --logo-size: 185px;
+}
+
+/* 11. Kazakhstan */
+.scroll-left .tripist-partner-logo:nth-child(28n + 11) {
+  --logo-size: 125px;
+}
+
+/* 12. Laos */
+.scroll-left .tripist-partner-logo:nth-child(28n + 12) {
+  --logo-size: 110px;
+}
+
+/* 13. Mauritius */
+.scroll-left .tripist-partner-logo:nth-child(28n + 13) {
+  --logo-size: 185px;
+}
+
+/* 14. Cambodia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 14) {
+  --logo-size: 200px;
+}
+
+/* 15. Nepal */
+.scroll-left .tripist-partner-logo:nth-child(28n + 15) {
+  --logo-size: 185px;
+}
+
+/* 16. Visit Saudi */
+.scroll-left .tripist-partner-logo:nth-child(28n + 16) {
+  --logo-size: 165px;
+}
+
+/* 17. Singapore Tourism Board */
+.scroll-left .tripist-partner-logo:nth-child(28n + 17) {
+  --logo-size: 115px;
+}
+
+/* 18. Sri Lanka */
+.scroll-left .tripist-partner-logo:nth-child(28n + 18) {
+  --logo-size: 200px;
+}
+
+/* 19. Tourism Australia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 19) {
+  --logo-size: 180px;
+}
+
+/* 20. Amazing Thailand */
+.scroll-left .tripist-partner-logo:nth-child(28n + 20) {
+  --logo-size: 180px;
+}
+
+/* 21. Armenia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 21) {
+  --logo-size: 180px;
+}
+
+/* 22. Fiji */
+.scroll-left .tripist-partner-logo:nth-child(28n + 22) {
+  --logo-size: 180px;
+}
+
+/* 23. Tourism Malaysia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 23) {
+  --logo-size: 180px;
+}
+
+/* 24. Seychelles */
+.scroll-left .tripist-partner-logo:nth-child(28n + 24) {
+  --logo-size: 125px;
+}
+
+/* 25. Uzbekistan */
+.scroll-left .tripist-partner-logo:nth-child(28n + 25) {
+  --logo-size: 195px;
+}
+
+/* 26. Vietnam */
+.scroll-left .tripist-partner-logo:nth-child(28n + 26) {
+  --logo-size: 150px;
+}
+
+/* 27. Maldives */
+.scroll-left .tripist-partner-logo:nth-child(28n + 27) {
+  --logo-size: 210px;
+}
+
+/* 28. Wonderful Indonesia */
+.scroll-left .tripist-partner-logo:nth-child(28n + 28) {
+  --logo-size: 180px;
+}
+
+/* BOTTOM ROW (39 logos) - Hotels, Airlines & Other brands */
+/* 1. Accor */
+.scroll-right .tripist-partner-logo:nth-child(39n + 1) {
+  --logo-size: 110px;
+}
+
+/* 2. Bloom Hotels */
+.scroll-right .tripist-partner-logo:nth-child(39n + 2) {
+  --logo-size: 180px;
+}
+
+/* 3. CGH Earth */
+.scroll-right .tripist-partner-logo:nth-child(39n + 3) {
+  --logo-size: 180px;
+}
+
+/* 4. Daiwik Hotels */
+.scroll-right .tripist-partner-logo:nth-child(39n + 4) {
+  --logo-size: 160px;
+}
+
+/* 5. Hilton */
+.scroll-right .tripist-partner-logo:nth-child(39n + 5) {
+  --logo-size: 180px;
+}
+
+/* 6. Hyatt */
+.scroll-right .tripist-partner-logo:nth-child(39n + 6) {
+  --logo-size: 185px;
+}
+
+/* 7. ITC Hotels */
+.scroll-right .tripist-partner-logo:nth-child(39n + 7) {
+  --logo-size: 170px;
+}
+
+/* 8. jüSTa */
+.scroll-right .tripist-partner-logo:nth-child(39n + 8) {
+  --logo-size: 185px;
+}
+
+/* 9. Marigold Regency */
+.scroll-right .tripist-partner-logo:nth-child(39n + 9) {
+  --logo-size: 180px;
+}
+
+/* 10. Marriott */
+.scroll-right .tripist-partner-logo:nth-child(39n + 10) {
+  --logo-size: 160px;
+}
+
+/* 11. Novotel */
+.scroll-right .tripist-partner-logo:nth-child(39n + 11) {
+  --logo-size: 180px;
+}
+
+/* 12. OYO */
+.scroll-right .tripist-partner-logo:nth-child(39n + 12) {
+  --logo-size: 235px;
+}
+
+/* 13. Poppys Hotel */
+.scroll-right .tripist-partner-logo:nth-child(39n + 13) {
+  --logo-size: 180px;
+}
+
+/* 14. Praveg */
+.scroll-right .tripist-partner-logo:nth-child(39n + 14) {
+  --logo-size: 180px;
+}
+
+/* 15. Radisson */
+.scroll-right .tripist-partner-logo:nth-child(39n + 15) {
+  --logo-size: 185px;
+}
+
+/* 16. Sterling */
+.scroll-right .tripist-partner-logo:nth-child(39n + 16) {
+  --logo-size: 205px;
+}
+
+/* 17. Taj */
+.scroll-right .tripist-partner-logo:nth-child(39n + 17) {
+  --logo-size: 190px;
+}
+
+/* 18. The Leela */
+.scroll-right .tripist-partner-logo:nth-child(39n + 18) {
+  --logo-size: 140px;
+}
+
+/* 19. Oberoi */
+.scroll-right .tripist-partner-logo:nth-child(39n + 19) {
+  --logo-size: 340px;
+}
+
+/* 20. Residency */
+.scroll-right .tripist-partner-logo:nth-child(39n + 20) {
+  --logo-size: 90px;
+}
+
+/* 21. Air India */
+.scroll-right .tripist-partner-logo:nth-child(39n + 21) {
+  --logo-size: 230px;
+}
+
+/* 22. Air India Express */
+.scroll-right .tripist-partner-logo:nth-child(39n + 22) {
+  --logo-size: 260px;
+}
+
+/* 23. AirAsia */
+.scroll-right .tripist-partner-logo:nth-child(39n + 23) {
+  --logo-size: 180px;
+}
+
+/* 24. Akasa Air */
+.scroll-right .tripist-partner-logo:nth-child(39n + 24) {
+  --logo-size: 180px;
+}
+
+/* 25. Emirates */
+.scroll-right .tripist-partner-logo:nth-child(39n + 25) {
+  --logo-size: 165px;
+}
+
+/* 26. Etihad */
+.scroll-right .tripist-partner-logo:nth-child(39n + 26) {
+  --logo-size: 185px;
+}
+
+/* 27. Fly91 */
+.scroll-right .tripist-partner-logo:nth-child(39n + 27) {
+  --logo-size: 180px;
+}
+
+/* 28. IndiGo */
+.scroll-right .tripist-partner-logo:nth-child(39n + 28) {
+  --logo-size: 180px;
+}
+
+/* 29. Malaysia Airlines */
+.scroll-right .tripist-partner-logo:nth-child(39n + 29) {
+  --logo-size: 185px;
+}
+
+/* 30. Qatar Airways */
+.scroll-right .tripist-partner-logo:nth-child(39n + 30) {
+  --logo-size: 180px;
+}
+
+/* 31. Scoot */
+.scroll-right .tripist-partner-logo:nth-child(39n + 31) {
+  --logo-size: 90px;
+}
+
+/* 32. Singapore Airlines */
+.scroll-right .tripist-partner-logo:nth-child(39n + 32) {
+  --logo-size: 160px;
+}
+
+/* 33. SpiceJet */
+.scroll-right .tripist-partner-logo:nth-child(39n + 33) {
+  --logo-size: 185px;
+}
+
+/* 34. SriLankan */
+.scroll-right .tripist-partner-logo:nth-child(39n + 34) {
+  --logo-size: 235px;
+}
+
+/* 35. Thai Airways */
+.scroll-right .tripist-partner-logo:nth-child(39n + 35) {
+  --logo-size: 205px;
+}
+
+/* 36. Cordelia Cruises */
+.scroll-right .tripist-partner-logo:nth-child(39n + 36) {
+  --logo-size: 100px;
+}
+
+/* 37. MakeMyTrip */
+.scroll-right .tripist-partner-logo:nth-child(39n + 37) {
+  --logo-size: 205px;
+  --logo-x: 16px;
+}
+
+/* 38. RedBus */
+.scroll-right .tripist-partner-logo:nth-child(39n + 38) {
+  --logo-size: 145px;
+}
+
+/* 39. Wonderla */
+.scroll-right .tripist-partner-logo:nth-child(39n + 39) {
+  --logo-size: 180px;
+}
+
+.tripist-partner-placeholder {
+  color: #0f2d52;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.tripist-accreditation-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tripist-accreditation-line {
+  width: 32px;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.5);
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 992px) {
+  .tripist-partner-logo {
+    --card-w: 180px;
+    --card-h: 98px;
+    --logo-scale: 0.78;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 576px) {
+  .tripist-accreditation {
+    padding: 40px 0 32px;
+  }
+
+  .tripist-logo-track {
+    gap: 12px;
+  }
+
+  @keyframes scrollLeftMarquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 6px));
+    }
+  }
+
+  @keyframes scrollRightMarquee {
+    from {
+      transform: translateX(calc(-50% - 6px));
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .tripist-partner-logo {
+    --card-w: 150px;
+    --card-h: 84px;
+    --logo-scale: 0.66;
+    padding: 8px 10px;
+  }
+
+  .tripist-partner-placeholder {
+    font-size: 0.8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tripist-logo-track {
+    animation: none !important;
+  }
+}

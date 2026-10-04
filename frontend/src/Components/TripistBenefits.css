@@ -1,0 +1,183 @@
+/* Custom Tripist Color Palette & Refresh */
+:root {
+  --tripist-blue: #0076cf;
+  --tripist-blue-hover: #005fa8;
+  --tripist-border-blue: #d4e8fc;
+  --tripist-bg-soft: #f0f7ff;
+  --tripist-bg-subtle: #f8fbff;
+  --tripist-text-dark: #0f172a;
+  --tripist-text-muted: #475569;
+}
+
+.tripist-container {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+}
+
+/* Hero Wrapper Styling */
+.tripist-hero-wrapper {
+  background: linear-gradient(135deg, #f4fbff 0%, #ffffff 100%);
+  border: 1px solid var(--tripist-border-blue);
+}
+
+/* Small Tag Badge */
+.tripist-badge {
+  background-color: var(--tripist-bg-soft);
+  color: var(--tripist-blue);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+/* Accent Line */
+.tripist-horline {
+  width: 40px;
+  height: 4px;
+  background-color: var(--tripist-blue);
+  border-radius: 2px;
+}
+
+/* Headings */
+.tripist-main-heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--tripist-text-dark);
+  letter-spacing: -0.5px;
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+.tripist-sub-heading {
+  font-size: 1rem;
+  color: var(--tripist-text-muted);
+  line-height: 1.5;
+}
+
+/* Card Styling - Dynamic & Modern */
+.tripist-card {
+  border: 1.5px solid var(--tripist-border-blue) !important;
+  border-radius: 16px !important;
+  background-color: #ffffff;
+  padding: 24px 20px !important;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 4px 12px rgba(0, 118, 207, 0.03);
+}
+
+.tripist-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--tripist-blue) !important;
+  box-shadow: 0 12px 28px -6px rgba(0, 118, 207, 0.15);
+}
+
+.tripist-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background-color: var(--tripist-bg-soft);
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.tripist-card:hover .tripist-icon-wrapper {
+  background-color: var(--tripist-blue);
+}
+
+.tripist-icon {
+  font-size: 1.5rem;
+  color: var(--tripist-blue);
+  transition: color 0.3s ease;
+}
+
+.tripist-card:hover .tripist-icon {
+  color: #ffffff;
+}
+
+.tripist-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tripist-text-dark);
+  margin-bottom: 8px;
+}
+
+.tripist-card-text {
+  font-size: 0.875rem;
+  color: var(--tripist-text-muted);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Lower Content Block Styling */
+
+
+.tripist-feature-box {
+  background-color: var(--tripist-bg-subtle);
+  border: 1px solid var(--tripist-border-blue);
+  transition: border-color 0.2s ease;
+}
+
+.tripist-feature-box:hover {
+  border-color: #93c5fd;
+}
+
+.tripist-section-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--tripist-text-dark);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.tripist-sub-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--tripist-text-dark);
+  margin-bottom: 10px;
+}
+
+.tripist-paragraph {
+  font-size: 0.92rem;
+  color: var(--tripist-text-muted);
+  line-height: 1.7;
+}
+
+/* Mobile & Tablet Responsive Rules */
+@media (max-width: 767.98px) {
+  .tripist-main-heading {
+    font-size: 1.5rem;
+  }
+
+  .tripist-sub-heading {
+    font-size: 0.9rem;
+  }
+
+  .tripist-section-title {
+    font-size: 1.3rem;
+  }
+
+  .tripist-sub-title {
+    font-size: 1rem;
+  }
+
+  .tripist-paragraph {
+    font-size: 0.86rem;
+  }
+
+  .tripist-card {
+    border-radius: 12px !important;
+    padding: 18px 14px !important;
+  }
+
+  .tripist-icon-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tripist-icon {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,706 @@
+/* =========================================================
+   TRIPIST CREATOR PROGRAM
+   Primary:   #0f2d52
+   Secondary: #D4AF37
+   Ternary:   #ffffff
+   ========================================================= */
+
+:root {
+  --creator-primary: #0f2d52;
+  --creator-secondary: #D4AF37;
+  --creator-white: #ffffff;
+
+  --creator-text: #233247;
+  --creator-muted: #64748b;
+  --creator-border: #dbe3ec;
+  --creator-soft: #f5f8fb;
+
+  --creator-radius: 14px;
+  --creator-shadow: 0 8px 30px rgba(15, 45, 82, 0.08);
+}
+
+.creator-program {
+  width: 100%;
+  color: var(--creator-text);
+  background: var(--creator-white);
+  overflow-x: hidden;
+}
+
+.creator-program *,
+.creator-program *::before,
+.creator-program *::after {
+  box-sizing: border-box;
+}
+
+.creator-container {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.creator-section {
+  padding: 64px 0;
+}
+
+.creator-section-soft {
+  background: var(--creator-soft);
+}
+
+.creator-section-label,
+.creator-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--creator-secondary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.creator-section h2 {
+  max-width: 850px;
+  margin: 0 0 16px;
+  color: var(--creator-primary);
+  font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.creator-section p {
+  margin: 0 0 14px;
+  font-size: 0.96rem;
+  line-height: 1.68;
+}
+
+/* =========================================================
+   HERO SECTION (Image + Gradient Overlay)
+   ========================================================= */
+.creator-hero {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--creator-white);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.creator-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 45, 82, 0.85) 0%,
+    rgba(15, 45, 82, 0.72) 50%,
+    rgba(15, 45, 82, 0.90) 100%
+  );
+  z-index: 1;
+}
+
+.creator-hero-inner {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0 60px;
+}
+
+.creator-hero h1 {
+  margin: 0 auto 14px;
+  max-width: 850px;
+  color: var(--creator-white);
+  font-size: clamp(1.85rem, 4.5vw, 3.2rem);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.creator-tagline {
+  margin: 0 0 12px;
+  color: var(--creator-secondary);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 700;
+}
+
+.creator-hero-description {
+  max-width: 640px;
+  margin: 0 auto 26px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.92rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+}
+
+.creator-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 28px;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.creator-btn-gold {
+  background: var(--creator-secondary);
+  color: var(--creator-primary);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.22);
+}
+
+.creator-btn-gold:hover {
+  background: #e0bd45;
+  color: var(--creator-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(212, 175, 55, 0.35);
+}
+
+/* =========================================================
+   CARDS & GRIDS
+   ========================================================= */
+.creator-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.creator-info-card,
+.creator-benefit-card {
+  background: var(--creator-white);
+  border: 1px solid var(--creator-border);
+  border-radius: var(--creator-radius);
+  box-shadow: var(--creator-shadow);
+}
+
+.creator-info-card {
+  position: relative;
+  padding: 22px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.creator-info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(15, 45, 82, 0.12);
+}
+
+.creator-card-icon-wrapper {
+  margin-bottom: 14px;
+  color: var(--creator-secondary);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.creator-info-card h3,
+.creator-benefit-card h3,
+.creator-process-item h3 {
+  margin: 0 0 8px;
+  color: var(--creator-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.creator-info-card p,
+.creator-benefit-card p,
+.creator-process-item p {
+  margin: 0;
+  color: var(--creator-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.creator-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.creator-benefit-card {
+  display: flex;
+  gap: 15px;
+  padding: 20px;
+}
+
+.creator-check {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--creator-secondary);
+  color: var(--creator-primary);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.creator-section-navy,
+.creator-final-cta {
+  color: var(--creator-white);
+  background: var(--creator-primary);
+}
+
+.creator-section-navy h2,
+.creator-final-cta h2 {
+  color: var(--creator-white);
+}
+
+.creator-label-light {
+  color: var(--creator-secondary);
+}
+
+.creator-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.creator-chip {
+  padding: 8px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 50px;
+  color: var(--creator-white);
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.creator-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 50px;
+  align-items: start;
+}
+
+.creator-check-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.creator-check-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--creator-text);
+  font-size: 0.925rem;
+  line-height: 1.55;
+}
+
+.creator-check-list li span {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--creator-secondary);
+  color: var(--creator-primary);
+  font-size: 0.7rem;
+  font-weight: 900;
+  margin-top: 2px;
+}
+
+.creator-note {
+  margin-top: 32px;
+  padding: 14px 18px;
+  border-left: 4px solid var(--creator-secondary);
+  color: var(--creator-muted);
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.creator-responsibility {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 50px;
+}
+
+/* =========================================================
+   FORM STYLES & MULTI-STEP RESPONSIVE DESIGN
+   ========================================================= */
+.creator-application-section {
+  background: #eef3f8;
+}
+
+.creator-form-heading {
+  margin-bottom: 28px;
+}
+
+.creator-form-heading p {
+  color: var(--creator-muted);
+  font-size: 0.95rem;
+}
+
+.creator-form {
+  padding: clamp(20px, 3.5vw, 36px);
+  background: var(--creator-white);
+  border: 1px solid var(--creator-border);
+  border-radius: 16px;
+  box-shadow: var(--creator-shadow);
+}
+
+.creator-form fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.creator-form legend {
+  margin-bottom: 18px;
+  padding: 0;
+  color: var(--creator-primary);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.creator-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.creator-form-field {
+  min-width: 0;
+}
+
+.creator-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--creator-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.creator-label span {
+  color: #c0392b;
+}
+
+.creator-form input[type="text"],
+.creator-form input[type="email"],
+.creator-form input[type="tel"],
+.creator-form input[type="url"],
+.creator-form input[type="file"],
+.creator-form textarea,
+.creator-form select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--creator-border);
+  border-radius: 8px;
+  outline: none;
+  color: var(--creator-text);
+  background: var(--creator-white);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: 0.2s ease;
+}
+
+.creator-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.creator-form input:focus,
+.creator-form textarea:focus,
+.creator-form select:focus {
+  border-color: var(--creator-secondary);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.creator-form input::placeholder,
+.creator-form textarea::placeholder {
+  color: #9aa8b7;
+  font-size: 0.88rem;
+}
+
+.creator-field-help {
+  margin-top: -4px !important;
+  margin-bottom: 10px !important;
+  color: var(--creator-muted);
+  font-size: 0.85rem !important;
+}
+
+.creator-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.creator-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--creator-border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--creator-text);
+  background: var(--creator-white);
+  transition: 0.2s ease;
+}
+
+.creator-checkbox:hover {
+  border-color: var(--creator-secondary);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.creator-checkbox input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--creator-secondary);
+}
+
+.creator-checkbox span {
+  font-size: 0.85rem;
+}
+
+.creator-file-input {
+  padding: 8px !important;
+}
+
+.creator-submit-area {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.creator-success {
+  margin: 16px auto 0 !important;
+  max-width: 650px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--creator-primary);
+  background: rgba(212, 175, 55, 0.12);
+  font-size: 0.875rem !important;
+}
+
+/* =========================================================
+   MULTI-STEP FORM PROGRESS BAR
+   ========================================================= */
+.creator-form-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px auto 10px auto;
+  padding: 0 10px;
+}
+
+.creator-form-steps::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  right: 24px;
+  height: 3px;
+  background: var(--creator-border);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.creator-form-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--creator-application-section, #eef3f8);
+  padding: 0 6px;
+}
+
+.creator-form-step-number {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--creator-white);
+  border: 2px solid var(--creator-border);
+  color: var(--creator-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.creator-form-step-label {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--creator-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.creator-form-step.active .creator-form-step-number,
+.creator-form-step.completed .creator-form-step-number {
+  background: var(--creator-secondary);
+  border-color: var(--creator-secondary);
+  color: var(--creator-primary);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+}
+
+.creator-form-step.active .creator-form-step-label,
+.creator-form-step.completed .creator-form-step-label {
+  color: var(--creator-primary);
+  font-weight: 700;
+}
+
+/* =========================================================
+   PROCESS SECTION
+   ========================================================= */
+.creator-process {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.creator-process-item {
+  padding: 20px;
+  border-top: 3px solid var(--creator-secondary);
+  background: var(--creator-white);
+  border-radius: 0 0 10px 10px;
+  box-shadow: var(--creator-shadow);
+}
+
+.creator-process-icon-wrapper {
+  margin-bottom: 12px;
+  color: var(--creator-secondary);
+}
+
+/* =========================================================
+   FINAL CTA
+   ========================================================= */
+.creator-final-cta {
+  padding: 72px 0;
+  text-align: center;
+}
+
+.creator-final-cta h2 {
+  max-width: 850px;
+  margin: 0 auto 16px;
+}
+
+.creator-final-cta p {
+  max-width: 680px;
+  margin: 0 auto 24px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================= */
+@media (max-width: 1000px) {
+  .creator-card-grid,
+  .creator-process,
+  .creator-checkbox-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .creator-two-column,
+  .creator-responsibility {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .creator-note {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .creator-hero {
+    min-height: 445px;
+  }
+
+  .creator-hero-inner {
+    padding: 60px 0 45px;
+  }
+}
+
+@media (max-width: 600px) {
+  .creator-container {
+    width: calc(100% - 24px);
+  }
+
+  .creator-section {
+    padding: 44px 0;
+  }
+
+  .creator-hero {
+    min-height: 400px;
+  }
+
+  .creator-hero-inner {
+    padding: 50px 0 35px;
+  }
+
+  .creator-card-grid,
+  .creator-benefit-grid,
+  .creator-process,
+  .creator-form-grid,
+  .creator-checkbox-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .creator-benefit-card {
+    padding: 16px;
+  }
+
+  .creator-chip-grid {
+    gap: 8px;
+  }
+
+  .creator-chip {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .creator-form {
+    padding: 20px 14px;
+    border-radius: 12px;
+  }
+
+  .creator-form legend {
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+  }
+
+  .creator-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .creator-section h2 {
+    font-size: 1.45rem;
+  }
+
+  .creator-info-card {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creator-program *,
+  .creator-program *::before,
+  .creator-program *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

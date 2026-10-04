@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---- Tripist brand tokens (from logo / brand guide) ---- */
+:root{
+  --trip-navy: #0f2d52;
+  --trip-navy-light: #16406f;
+  --trip-gold: #d4af37;
+  --trip-white: #ffffff;
+}
+.horline{
+  width: 50px;
+  height: 3px;
+  background-color: var(--trip-gold);
+}
+.text-trip{
+  color: var(--trip-navy);
+}
+.text-gold{
+  color: var(--trip-gold);
+}
+.bg-navy{
+  background-color: var(--trip-navy);
+}
+.bg-gold{
+  background-color: var(--trip-gold);
+}
+
+/* Gold CTA button used across the site */
+.btn-trip{
+  background-color: var(--trip-gold);
+  color: var(--trip-navy);
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.btn-trip:hover{
+  color: var(--trip-navy);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(212,175,55,0.35);
+}
+
+/* Outline variant for use on navy backgrounds */
+.btn-trip-outline{
+  background-color: transparent;
+  color: var(--trip-white);
+  font-weight: 600;
+  border: 1.5px solid var(--trip-gold);
+  border-radius: 8px;
+  padding: 9px 20px;
+  transition: background-color .2s ease, color .2s ease;
+}
+.btn-trip-outline:hover{
+  background-color: var(--trip-gold);
+  color: var(--trip-navy);
+}
+.bg-sec{
+  background-color: #faf5e8;
+}
+
+

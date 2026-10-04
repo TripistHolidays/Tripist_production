@@ -1,0 +1,657 @@
+/* ============================================================
+   BECOME A PARTNER — PREMIUM TRAVEL DESIGN
+   ============================================================ */
+
+   .partner-section {
+    position: relative;
+    padding: 64px 0;
+    background: #f8f7f3;
+  }
+  
+  .partner-section:nth-child(even) {
+    background: #ffffff;
+  }
+  
+  .partner-section .container {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* ============================================================
+     HERO
+     ============================================================ */
+  
+  .partner-hero {
+    position: relative;
+    min-height: 440px;
+    height: 52vh;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+  
+  .partner-overlay {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(8, 31, 57, 0.94) 0%,
+        rgba(8, 31, 57, 0.80) 45%,
+        rgba(8, 31, 57, 0.35) 100%
+      );
+  }
+  
+  .partner-hero .container {
+    padding-top: 20px;
+  }
+  
+  .partner-hero .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    margin-bottom: 16px;
+  }
+  
+  
+  .partner-hero h1 {
+    max-width: 800px;
+    margin: 0 0 16px;
+    color: var(--trip-white);
+    font-size: clamp(2rem, 3.8vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+  
+  .partner-hero p {
+    max-width: 620px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  
+  /* ============================================================
+     COMMON TYPOGRAPHY
+     ============================================================ */
+  
+  .section-tag {
+    display: inline-block;
+    color: var(--trip-gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .partner-title {
+    margin: 8px 0 14px;
+    color: var(--trip-navy);
+    font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.22;
+    letter-spacing: -0.5px;
+  }
+  
+  .partner-subtitle {
+    max-width: 650px;
+    margin: 0 auto 36px;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  
+  /* ============================================================
+     WHO CAN PARTNER WITH US
+     ============================================================ */
+  
+  .who-partner {
+    background: #f7f5ef;
+  }
+  
+  .who-partner .text-center {
+    margin-bottom: 36px;
+  }
+  
+  .partner-category-card {
+    position: relative;
+    height: 100%;
+    min-height: 210px;
+    padding: 24px 20px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 45, 82, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    text-align: left;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  
+  .partner-category-card::after {
+    content: "";
+    position: absolute;
+    right: -35px;
+    bottom: -35px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(201, 164, 92, 0.08);
+    transition: transform 0.35s ease;
+  }
+  
+  .partner-category-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(201, 164, 92, 0.4);
+    box-shadow: 0 12px 30px rgba(15, 45, 82, 0.08);
+  }
+  
+  .partner-category-card:hover::after {
+    transform: scale(1.3);
+  }
+  
+  .category-icon {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--trip-gold);
+    background: #f8f2e6;
+    border-radius: 10px;
+  }
+  
+  .partner-category-card h5 {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 8px;
+    color: var(--trip-navy);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  
+  .partner-category-card p {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    color: #64748b;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  
+  /* ============================================================
+     WHY PARTNER
+     ============================================================ */
+  
+  .why-partner {
+    background: #ffffff;
+  }
+  
+  .why-partner .partner-title {
+    max-width: 600px;
+  }
+  
+  .feature-card {
+    height: 100%;
+    padding: 16px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #edf2f7;
+    border-radius: 0;
+  }
+  
+  .feature-icon {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--trip-gold);
+    background: #f8f2e6;
+    border-radius: 8px;
+  }
+  
+  .feature-card h5 {
+    margin-bottom: 6px;
+    color: var(--trip-navy);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  
+  .feature-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  
+  .partner-marketing {
+    margin-top: 20px;
+    padding: 14px 18px;
+    background: #f7f3ea;
+    border-left: 3px solid var(--trip-gold);
+    border-radius: 0 10px 10px 0;
+    color: #4f5965;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  
+  .partner-marketing strong {
+    color: var(--trip-navy);
+  }
+  
+  /* ============================================================
+     PARTNERSHIP CATEGORIES CARD
+     ============================================================ */
+  
+  .partner-categories-card {
+    position: relative;
+    min-height: 380px;
+    padding: 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--trip-navy);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  
+  .partner-categories-card::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 240px;
+    height: 240px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+  
+  .partner-categories-card::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    bottom: -90px;
+    width: 220px;
+    height: 220px;
+    border: 1px solid rgba(201, 164, 92, 0.2);
+    border-radius: 50%;
+  }
+  
+  .partner-categories-card h5 {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 22px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  
+  .category-tags {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  
+  .category-tags span {
+    padding: 7px 14px;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+  }
+  
+  .category-tags span:hover {
+    color: var(--trip-navy);
+    background: var(--trip-gold);
+    border-color: var(--trip-gold);
+  }
+  
+  /* ============================================================
+     REGISTRATION & STEPS
+     ============================================================ */
+  
+  .registration-section {
+    background: #f7f5ef;
+  }
+  
+  .partner-steps-intro {
+    max-width: 520px;
+    margin-bottom: 28px;
+    color: #64748b;
+    font-size: 0.925rem;
+    line-height: 1.6;
+  }
+  
+  .steps-list {
+    position: relative;
+    margin-top: 24px;
+  }
+  
+  .steps-list::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    bottom: 20px;
+    width: 1px;
+    background: #ded9cd;
+  }
+  
+  .step-item {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 22px;
+    align-items: flex-start;
+  }
+  
+  .step-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .step-number {
+    position: relative;
+    z-index: 2;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--trip-navy);
+    background: var(--trip-gold);
+    border: 3px solid #f7f5ef;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  
+  .step-content {
+    padding-top: 4px;
+  }
+  
+  .step-content h5 {
+    margin-bottom: 4px;
+    color: var(--trip-navy);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  
+  .step-content p {
+    max-width: 440px;
+    margin: 0;
+    color: #64748b;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+  
+  /* ============================================================
+     FORM CARD
+     ============================================================ */
+  
+  .partner-form-card {
+    padding: 32px 28px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 45, 82, 0.07);
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(15, 45, 82, 0.07);
+  }
+  
+  .partner-form-card h2 {
+    margin-bottom: 6px;
+    color: var(--trip-navy);
+    font-size: 1.45rem;
+    font-weight: 800;
+  }
+  
+  .partner-form-card > p {
+    margin-bottom: 22px;
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+  
+  .partner-form-card label {
+    display: block;
+    margin-bottom: 6px;
+    color: #26384d;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+  }
+  
+  .partner-form-card .row {
+    --bs-gutter-y: 14px;
+  }
+  
+  .partner-form-card .form-control,
+  .partner-form-card .form-select {
+    min-height: 44px;
+    padding: 10px 14px;
+    color: #26384d;
+    background-color: #fbfbfa;
+    border: 1px solid #e1e3e6;
+    border-radius: 8px;
+    box-shadow: none !important;
+    font-size: 0.88rem;
+    transition: 0.2s ease;
+  }
+  
+  .partner-form-card .form-control::placeholder {
+    color: #9aa8b7;
+    font-size: 0.85rem;
+  }
+  
+  .partner-form-card .form-control:hover,
+  .partner-form-card .form-select:hover {
+    border-color: #c9cdd2;
+  }
+  
+  .partner-form-card .form-control:focus,
+  .partner-form-card .form-select:focus {
+    background: #ffffff;
+    border-color: var(--trip-gold);
+    box-shadow: 0 0 0 3px rgba(201, 164, 92, 0.12) !important;
+  }
+  
+  .partner-form-card textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .partner-btn {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 6px;
+    padding: 12px 20px;
+    color: var(--trip-navy);
+    background: var(--trip-gold);
+    border: 1px solid var(--trip-gold);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  
+  .partner-btn:hover {
+    color: #ffffff;
+    background: var(--trip-navy);
+    border-color: var(--trip-navy);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 45, 82, 0.16);
+  }
+  
+  /* ============================================================
+     FINAL CTA
+     ============================================================ */
+  
+  .partner-final-cta {
+    position: relative;
+    padding: 72px 0;
+    overflow: hidden;
+    color: #ffffff;
+    background: var(--trip-navy);
+  }
+  
+  .partner-final-cta::before {
+    content: "";
+    position: absolute;
+    top: -150px;
+    left: -80px;
+    width: 360px;
+    height: 360px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 50%;
+  }
+  
+  .partner-final-cta::after {
+    content: "";
+    position: absolute;
+    right: -100px;
+    bottom: -150px;
+    width: 380px;
+    height: 380px;
+    border: 1px solid rgba(201, 164, 92, 0.15);
+    border-radius: 50%;
+  }
+  
+  .partner-final-cta .container {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .partner-final-cta h2 {
+    max-width: 800px;
+    margin: 0 auto 16px;
+    color: #ffffff;
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  
+  .partner-final-cta p {
+    max-width: 680px;
+    margin: 0 auto 24px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  
+  .partner-btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 26px;
+    color: var(--trip-navy);
+    background: var(--trip-gold);
+    border: 1px solid var(--trip-gold);
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.25s ease;
+  }
+  
+  .partner-btn-cta:hover {
+    color: var(--trip-navy);
+    background: #ffffff;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* ============================================================
+     RESPONSIVE — TABLET & MOBILE
+     ============================================================ */
+  
+  @media (max-width: 991.98px) {
+    .partner-section {
+      padding: 54px 0;
+    }
+  
+    .partner-hero {
+      min-height: 380px;
+    }
+  
+    .partner-category-card {
+      min-height: auto;
+    }
+  
+    .partner-categories-card {
+      min-height: auto;
+      margin-top: 24px;
+    }
+  
+    .partner-form-card {
+      margin-top: 32px;
+    }
+  }
+  
+  @media (max-width: 767.98px) {
+    .partner-section {
+      padding: 46px 0;
+    }
+  
+    .partner-hero {
+      min-height: 340px;
+      /* height: auto; */
+    }
+  
+    .partner-overlay {
+      padding: 44px 0;
+    }
+  
+    .partner-hero h1 {
+      font-size: 1.85rem;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+  
+    .partner-hero p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+  
+    .partner-title {
+      font-size: 1.6rem;
+    }
+  
+    .partner-subtitle {
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+    }
+  
+    .partner-category-card {
+      padding: 20px 16px;
+    }
+  
+    .partner-categories-card {
+      padding: 24px 18px;
+    }
+  
+    .partner-form-card {
+      padding: 22px 16px;
+    }
+  
+    .partner-final-cta {
+      padding: 54px 16px;
+    }
+  
+    .partner-btn-cta {
+      width: 100%;
+      justify-content: center;
+    }
+  }

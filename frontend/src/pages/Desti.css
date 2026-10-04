@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+.destinations-wrapper {
+  background-color: #fcfbf7;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* --- HERO SECTION (Matching About & Contact pages) --- */
+.desti-hero {
+  min-height: 380px;
+  height: 60vh !important;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.card-desc {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  line-height: 1.5;
+  min-height: 4.5em;
+  max-height: 4.5em;
+
+  margin-bottom: 0.75rem;
+}
+.desti-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 45, 82, 0.95) 0%,
+    rgba(15, 45, 82, 0.78) 50%,
+    rgba(15, 45, 82, 0.45) 100%
+  );
+  display: flex;
+  align-items: center;
+}
+
+.desti-hero h1 {
+  color: #ffffff;
+  font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.hero-subdesc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  font-weight: 300;
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.section-tag {
+  color: var(--trip-gold, #d4af37);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* --- CUSTOM PILL TABS --- */
+.custom-pill-btn {
+  background-color: #f1ebd9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.825rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.custom-pill-btn:hover,
+.custom-pill-btn.active {
+  background-color: #0f2d52;
+  border-color: #0f2d52;
+  color: #ffffff;
+}
+
+/* --- DESTINATION CARDS --- */
+.custom-dest-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.custom-dest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* Image Container with Overlay */
+.card-img-container {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.card-img-container .card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-img-overlay-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 12px 8px;
+  background: linear-gradient(to top, rgba(13, 27, 62, 0.9) 0%, rgba(13, 27, 62, 0.45) 60%, transparent 100%);
+  color: #ffffff;
+}
+
+.tag-badge-gold {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #cca037;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+
+.location-pin {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: #e2e8f0;
+  margin-bottom: 2px;
+}
+
+.overlay-card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.card-desc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #64748b !important;
+  margin-bottom: 8px;
+  min-height: 36px;
+}
+
+.price-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f2d52;
+}
+
+.explore-link {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #cca037;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.explore-link:hover {
+  color: #0f2d52;
+  gap: 6px;
+}
+
+/* --- SWIPER SECTION --- */
+.more-destinations-section {
+  background-color: #f7f3ed;
+  border-radius: 16px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.section-heading {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f2d52;
+}
+
+.country-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+.country-slide {
+  width: auto !important;
+}
+
+.country-chip {
+  background: #ffffff;
+  border: 1px solid #e2ded7;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 767.98px) {
+  .desti-hero {
+    min-height: 280px;
+    height: auto !important;
+    padding: 40px 0;
+  }
+
+  .hero-desc {
+    font-size: 0.88rem;
+  }
+
+  .hero-subdesc {
+    font-size: 0.8rem;
+  }
+
+  .card-img-container {
+    height: 160px;
+  }
+
+  .more-destinations-section {
+    padding: 30px 10px;
+    margin: 25px 0;
+  }
+
+  .section-heading {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 480px){
+  .desti-hero{
+    min-height: 450px;
+    height: 50vh !important;
+  }
+  .desti-hero h1{
+    font-size: 26px;
+  }
+}

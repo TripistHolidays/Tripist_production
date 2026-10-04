@@ -1,0 +1,527 @@
+/* ---- Contact Page Specific Styles ---- */
+
+.contact-page-wrapper {
+  background: #fcfbfa; /* Soft warm background */
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.contact-hero {
+  height: 60vh !important;
+  /* min-height: 400px; */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.contact-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 45, 82, 0.95) 0%,
+    rgba(15, 45, 82, 0.75) 50%,
+    rgba(15, 45, 82, 0.5) 100%
+  );
+  display: flex;
+  align-items: center;
+}
+
+.contact-hero h1 {
+  color: var(--trip-white);
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 750px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.hero-subdesc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 650px;
+  line-height: 1.5;
+}
+
+.section-tag {
+  color: var(--trip-gold);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+/* Left Side Cards styling */
+.info-card {
+  border: 1px solid rgba(15, 45, 82, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(15, 45, 82, 0.06) !important;
+}
+
+.card-heading-gold {
+  color: var(--trip-navy);
+  font-weight: 700;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon-title-gold {
+  color: var(--trip-gold);
+}
+
+.icon-container-accent {
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--trip-navy);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.contact-link-item:hover .icon-container-accent {
+  background: var(--trip-gold);
+  color: var(--trip-navy);
+  transform: scale(1.08);
+}
+
+.link-value {
+  color: var(--trip-navy);
+  transition: color 0.2s ease;
+  font-size: 1.05rem;
+}
+
+.contact-link-item:hover .link-value {
+  color: var(--trip-gold);
+}
+
+/* Business Hours Table */
+.business-hours-table td {
+  background-color: transparent !important;
+}
+
+.business-hours-table tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.business-hours-table tr:last-child {
+  border-bottom: none;
+}
+
+.table-row-special {
+  background-color: rgba(212, 175, 55, 0.05) !important;
+}
+
+.business-hours-notice {
+  font-style: italic;
+}
+
+/* Why Choose Us Card */
+.why-choose-card {
+  background: linear-gradient(135deg, var(--trip-navy) 0%, #081b33 100%);
+  border: none;
+  box-shadow: 0 10px 30px rgba(15, 45, 82, 0.15);
+}
+
+.check-bullet {
+  min-width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.highlight-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+}
+
+/* Social Connect icons */
+.social-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  background: #f5f5f5;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.social-btn:hover {
+  color: white;
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.social-ig:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-fb:hover {
+  background: #3b5998;
+}
+
+.social-in:hover {
+  background: #0077b5;
+}
+
+.social-yt:hover {
+  background: #ff0000;
+}
+
+/* Right Side: Form styling */
+.form-card {
+  border: 1px solid rgba(15, 45, 82, 0.05);
+}
+
+.form-accent-stripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(to right, var(--trip-navy), var(--trip-gold));
+}
+
+.form-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--trip-navy);
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid rgba(15, 45, 82, 0.08);
+  padding-bottom: 10px;
+}
+
+.form-section-title .badge {
+  font-size: 0.9rem;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom form fields */
+.form-group-custom {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-custom label {
+  color: var(--trip-navy);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.required-label::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Container */
+.date-picker-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Text box display */
+.date-display-input {
+  width: 100%;
+  cursor: pointer !important;
+  user-select: none;
+  background-color: #fdfdfd !important;
+  padding-right: 46px; /* space so text doesn't hit the icon */
+}
+
+.date-display-input:focus {
+  outline: none;
+  border-color: var(--trip-gold);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+}
+
+/* Real native date input - kept active in DOM for showPicker() */
+.date-picker-hidden-native {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Calendar Button icon aligned on the right */
+.date-picker-calendar-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: none; /* Let container catch the click */
+  opacity: 0.85;
+}
+
+.date-picker-container:hover .date-picker-calendar-btn {
+  opacity: 1;
+}
+
+.form-control-custom,
+.form-select-custom {
+  background-color: #fdfdfd;
+  border: 1px solid #dcdad5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: var(--trip-navy);
+  transition: all 0.25s ease;
+  min-height: 50px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-control-custom::placeholder {
+  color: #a09d98;
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--trip-gold);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+}
+
+.form-control-custom.is-invalid {
+  border-color: #dc3545;
+}
+
+.form-control-custom.is-invalid:focus {
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15);
+}
+
+.invalid-feedback-custom {
+  color: #dc3545;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.textarea-custom {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Custom services checkboxes as chips */
+.services-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.service-chip-btn {
+  background: #f7f6f2;
+  border: 1px solid #e0ded9;
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.service-chip-btn:hover {
+  background: rgba(15, 45, 82, 0.05);
+  border-color: var(--trip-navy);
+  color: var(--trip-navy);
+}
+
+.service-chip-btn.active {
+  background: var(--trip-navy);
+  border-color: var(--trip-navy);
+  color: var(--trip-gold);
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(15, 45, 82, 0.25);
+}
+
+/* Submit Button */
+.btn-trip-submit {
+  background: var(--trip-gold);
+  color: var(--trip-navy);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.btn-trip-submit:hover {
+  background: var(--trip-navy);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(15, 45, 82, 0.2) !important;
+}
+
+.btn-trip-submit:active {
+  transform: translateY(0);
+}
+
+/* Success Container Styling */
+.enquiry-success-container {
+  animation: fadeIn 0.6s ease;
+}
+
+.success-icon-wrapper {
+  color: var(--trip-gold);
+  display: inline-block;
+}
+
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.btn-trip-outline-reset {
+  background: transparent;
+  color: var(--trip-navy);
+  border: 2px solid var(--trip-navy);
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-trip-outline-reset:hover {
+  background: var(--trip-navy);
+  color: white;
+}
+
+/* Google Maps styling */
+.map-card-wrapper {
+  overflow: hidden;
+  border-radius: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.map-card-wrapper:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Responsive adjust */
+@media (max-width: 991px) {
+  .contact-hero {
+    height: auto;
+    padding: 100px 0;
+  }
+  
+  .contact-hero h1 {
+    font-size: 2.8rem;
+  }
+
+  .contact-overlay {
+    padding: 40px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .services-chips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .form-card {
+    padding: 25px 20px !important;
+  }
+  
+  .info-card {
+    padding: 25px 20px !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 480px){
+  .contact-hero{
+    min-height: 450px !important;
+    height: 50vh !important;
+
+  }
+  .contact-hero h1 {
+    font-size: 26px !important;
+  }
+}

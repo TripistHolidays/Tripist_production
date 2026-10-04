@@ -1,0 +1,310 @@
+/* TermsConditions.css */
+
+.terms-container {
+  background-color: #f8f6f0;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.terms-paper {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #D4AF37;
+}
+
+/* Header */
+.terms-header {
+  text-align: center;
+  border-bottom: 2px solid #D4AF37;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.terms-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #0f2d52;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.terms-subtitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #0f2d52;
+  margin-top: 0.2rem;
+  opacity: 0.8;
+}
+
+.terms-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap; /* Added: allows wrapping on small screens */
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.terms-meta span {
+  background: #f0ede8;
+  padding: 0.2rem 1rem;
+  border-radius: 20px;
+  white-space: nowrap; /* Keeps dates from breaking mid-word */
+}
+
+/* Sections */
+.terms-section {
+  margin-bottom: 2.2rem;
+}
+
+.terms-heading {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0f2d52;
+  border-left: 5px solid #D4AF37;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.terms-section p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1e1e1e;
+  margin-bottom: 0.8rem;
+  word-break: break-word; /* Prevents long words/URLs from overflowing */
+}
+
+.terms-list {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.terms-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.6;
+  color: #1e1e1e;
+  word-break: break-word;
+}
+
+.terms-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #D4AF37;
+  font-weight: bold;
+}
+
+/* Address */
+.terms-address {
+  font-style: normal;
+  background: #f9f7f4;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #D4AF37;
+  margin: 1rem 0;
+  line-height: 1.8;
+  word-break: break-word;
+}
+
+.terms-address strong {
+  color: #0f2d52;
+}
+
+/* Links */
+.terms-section a {
+  color: #0f2d52;
+  text-decoration: none;
+  border-bottom: 1px dotted #D4AF37;
+  word-break: break-word;
+}
+
+.terms-section a:hover {
+  color: #D4AF37;
+  border-bottom: 1px solid #D4AF37;
+}
+
+/* Footer */
+.terms-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0dbd3;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ========================================= */
+/* 1️⃣  LARGE TABLETS & SMALL LAPTOPS (≤ 768px) */
+/* ========================================= */
+@media (max-width: 768px) {
+  .terms-paper {
+    padding: 2rem 2rem;
+  }
+}
+
+/* ========================================= */
+/* 2️⃣  MOBILE LANDSCAPE & LARGE PHONES (≤ 600px) */
+/* ========================================= */
+@media (max-width: 600px) {
+  .terms-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .terms-paper {
+    padding: 1.5rem 1.25rem;
+    border-radius: 10px;
+  }
+
+  .terms-title {
+    font-size: 1.8rem;
+  }
+
+  .terms-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .terms-meta span {
+    display: inline-block;
+    width: auto;
+  }
+
+  .terms-heading {
+    font-size: 1.3rem;
+    padding-left: 0.8rem;
+  }
+
+  .terms-list {
+    padding-left: 0.75rem;
+  }
+}
+
+/* ========================================= */
+/* 3️⃣  SMALL MOBILE PHONES (≤ 480px)           */
+/* ========================================= */
+@media (max-width: 480px) {
+  .terms-container {
+    padding: 0.75rem 0.4rem;
+  }
+
+  .terms-paper {
+    padding: 1.25rem 1rem;
+    border-radius: 8px;
+    border-top-width: 4px;
+  }
+
+  .terms-title {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  .terms-subtitle {
+    font-size: 1rem;
+  }
+
+  .terms-meta {
+    gap: 0.4rem;
+  }
+
+  .terms-meta span {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.8rem;
+  }
+
+  .terms-heading {
+    font-size: 1.1rem;
+    padding-left: 0.7rem;
+    border-left-width: 4px;
+    margin-bottom: 0.75rem;
+  }
+
+  .terms-section {
+    margin-bottom: 1.8rem;
+  }
+
+  .terms-section p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .terms-list {
+    padding-left: 0.3rem;
+  }
+
+  .terms-list li {
+    padding-left: 1.2rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .terms-address {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .terms-footer {
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+}
+
+/* ========================================= */
+/* 4️⃣  VERY TINY SCREENS (≤ 375px) – e.g. iPhone SE */
+/* ========================================= */
+@media (max-width: 375px) {
+  .terms-paper {
+    padding: 1rem 0.75rem;
+  }
+
+  .terms-title {
+    font-size: 1.3rem;
+  }
+
+  .terms-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .terms-heading {
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    border-left-width: 3px;
+  }
+
+  .terms-section p,
+  .terms-list li {
+    font-size: 0.9rem;
+  }
+
+  .terms-list {
+    padding-left: 0.1rem;
+  }
+
+  .terms-list li {
+    padding-left: 1rem;
+  }
+
+  .terms-meta span {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.6rem;
+  }
+
+  .terms-address {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    border-left-width: 3px;
+  }
+
+  .terms-footer {
+    font-size: 0.7rem;
+  }
+}

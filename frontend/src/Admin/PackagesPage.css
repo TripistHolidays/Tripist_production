@@ -1,0 +1,281 @@
+/* Instagram-Style Avatar Ring */
+.insta-avatar-container {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.insta-avatar-active {
+  background: linear-gradient(45deg, #10b981, #059669, #34d399);
+}
+
+.insta-avatar-inactive {
+  background: #ef4444;
+}
+.form-check-input{
+  left: 38px;
+}
+.insta-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  background: #f3f4f6;
+}
+
+/* Modal Structural Fixes for Vertical Scrolling */
+.package-modal-content {
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.package-modal-body {
+  overflow-y: auto !important;
+  max-height: calc(85vh - 160px);
+  flex: 1 1 auto;
+}
+
+.package-modal-footer {
+  flex-shrink: 0;
+}
+
+.insta-pulse-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.dot-active {
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
+}
+
+.dot-inactive {
+  background-color: #ef4444;
+}
+
+/* Status Pill Buttons */
+.btn-status-pill {
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.status-pill-active {
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.status-pill-active:hover {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.status-pill-inactive {
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.status-pill-inactive:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+/* Single Box Tag Inputs */
+.tag-box-container {
+  min-height: 48px;
+  background: #ffffff;
+}
+
+.inc-tag-badge {
+  background-color: #e6f4ea;
+  color: #137333;
+  border: 1px solid #ceead6;
+  border-radius: 16px;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.exc-tag-badge {
+  background-color: #fce8e6;
+  color: #c5221f;
+  border: 1px solid #fad2cf;
+  border-radius: 16px;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-tag-close {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: 4px;
+  color: currentColor;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Compact Badges */
+.inc-badge {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.exc-badge {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  font-weight: 500;
+  border-radius: 16px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-bar-input {
+  min-width: 250px;
+  height: 40px;
+
+}
+
+/* Collapsed Sleek Pagination Select */
+.pagination-select-collapsed {
+  border-radius: 50rem !important;
+  font-size: 0.8rem;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-select-collapsed:hover {
+  background-color: #e9ecef;
+}
+
+/* Ensure the table cell acts as a proper flex container */
+.table td:first-child .d-flex {
+  align-items: center;
+}
+
+/* Fix the avatar container so it never shrinks or distorts */
+.insta-avatar-container {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  border-radius: 15%;
+  overflow: hidden;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Table Body Scrollable Container */
+.packages-table-scroll-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.btn-trip-gold {
+  background-color: var(--trip-navy) !important;
+  color: white !important;
+}
+
+/* Keep table headers sticky when scrolling */
+.packages-table-scroll-container thead th {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 2;
+  box-shadow: inset 0 -1px 0 #dee2e6;
+}
+
+.pkg-title {
+  font-weight: 600;
+  color: var(--trip-navy, #051428);
+  font-size: 0.95rem;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.pkg-sub {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.btn-modern-close {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-modern-close:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.pkg-modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.pkg-img-preview {
+  max-height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.pkg-card-compact {
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.pkg-card-compact:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.pkg-min-width-actions {
+  min-width: 210px;
+}

@@ -1,0 +1,377 @@
+/* ---- About Page Specific Styles ---- */
+
+.about-page-wrapper {
+  background: #fcfbfa;
+  overflow-x: hidden;
+}
+
+/* Colors & Accents */
+.text-trip {
+  color: var(--trip-navy, #0f2d52);
+}
+
+.text-gold {
+  color: var(--trip-gold, #d4af37) !important;
+}
+
+.bg-navy {
+  background-color: var(--trip-navy, #0f2d52) !important;
+}
+
+.bg-sec {
+  background-color: #f7f5ef !important;
+}
+
+/* Hero Section */
+.about-hero {
+  min-height: 60vh !important;
+  position: relative;
+  /* Focus on the bottom where the van and road are */
+  background-position: center bottom !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  overflow: hidden;
+}
+
+/* Hero Overlay */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Darker on the left for text readability, clear on the right to show the scenery */
+  background: linear-gradient(90deg,
+      rgba(15, 45, 82, 0.85) 0%,
+      rgba(15, 45, 82, 0.60) 45%,
+      rgba(0, 0, 0, 0.15) 100%);
+  display: flex;
+  align-items: center;
+}
+
+.hero-overlay>.container {
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.about-hero h1 {
+  color: var(--trip-white, #ffffff);
+  font-size: clamp(1.85rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.hero-subdesc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  font-weight: 300;
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+.section-tag {
+  border-radius: 20px;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.167);
+  color: var(--trip-gold, #d4af37);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+/* Story and Stats */
+.story-quote {
+  border-left: 3px solid var(--trip-gold, #d4af37);
+  padding-left: 12px;
+  font-family: Georgia, serif;
+  font-size: 1.05rem !important;
+}
+
+.stats-container {
+  background: #f7f5ef;
+  border: 1px solid rgba(15, 45, 82, 0.05);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat-card-custom {
+  border: 1px solid rgba(15, 45, 82, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 45, 82, 0.05);
+}
+
+.stat-card-custom h3 {
+  font-size: 1.45rem;
+}
+
+/* Vision and Mission Cards */
+.vision-card-custom {
+  background: linear-gradient(135deg, var(--trip-navy, #0f2d52) 0%, #081b33 100%);
+  border: none;
+  box-shadow: 0 8px 24px rgba(15, 45, 82, 0.12);
+}
+
+.vision-card-custom h3,
+.mission-card-custom h3 {
+  font-size: 1.35rem;
+}
+
+.text-light-muted {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.mission-card-custom {
+  border: 1px solid rgba(15, 45, 82, 0.06);
+}
+
+/* Offerings Chips Grid */
+.services-chips-container {
+  margin-top: 20px;
+}
+
+.services-chips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.service-offering-chip {
+  background: #f7f6f2;
+  border: 1px solid #e0ded9;
+  border-radius: 25px;
+  padding: 8px 16px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--trip-navy, #0f2d52);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.service-offering-chip:hover {
+  background: #ffffff;
+  border-color: var(--trip-gold, #d4af37);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.12);
+}
+
+.dot-gold {
+  width: 6px;
+  height: 6px;
+  background-color: var(--trip-gold, #d4af37);
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Core Values Cards */
+.value-card-custom {
+  border: 1px solid rgba(15, 45, 82, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.value-card-custom:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(15, 45, 82, 0.06) !important;
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.value-icon-wrapper {
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--trip-navy, #0f2d52);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+}
+
+.value-card-custom:hover .value-icon-wrapper {
+  background: var(--trip-gold, #d4af37);
+  color: var(--trip-navy, #0f2d52);
+}
+
+.value-card-custom h4 {
+  font-size: 1.05rem;
+}
+
+/* Why Choose Us Cards */
+.choose-card-custom {
+  border: 1px solid rgba(15, 45, 82, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.choose-card-custom:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(15, 45, 82, 0.15);
+}
+
+.choose-icon-container {
+  background: rgba(15, 45, 82, 0.06);
+  color: var(--trip-gold, #d4af37);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.choose-card-custom:hover .choose-icon-container {
+  background: var(--trip-navy, #0f2d52);
+  color: #ffffff;
+}
+
+.choose-card-custom h5 {
+  font-size: 0.95rem;
+}
+
+/* Commitment and CTA Banner */
+.commitment-cta-section {
+  background: linear-gradient(135deg, var(--trip-navy, #0f2d52) 0%, #081b33 100%);
+  border: none;
+  box-shadow: 0 8px 24px rgba(15, 45, 82, 0.15);
+}
+
+.commitment-cta-section h2 {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+}
+
+.bg-white-opacity {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-trip {
+  background: var(--trip-gold, #d4af37);
+  color: var(--trip-navy, #0f2d52);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.btn-trip:hover {
+  background: #ffffff;
+  color: var(--trip-navy, #0f2d52);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.leading-relaxed {
+  line-height: 1.65;
+  font-size: 0.925rem;
+}
+
+.max-w-xl {
+  max-width: 680px;
+}
+
+.max-w-lg {
+  max-width: 600px;
+}
+
+.max-w-md {
+  max-width: 440px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+  .about-hero {
+    height: auto !important;
+    min-height: 320px;
+    padding: 50px 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .about-hero {
+    min-height: 280px;
+    padding: 40px 0;
+  }
+
+  .about-hero h1 {
+    font-size: 26px;
+  }
+
+  .hero-desc {
+    font-size: 0.88rem;
+  }
+
+  .hero-subdesc {
+    font-size: 0.8rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-chips-wrapper {
+    justify-content: flex-start !important;
+  }
+
+  .service-offering-chip {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+
+  .vision-card-custom,
+  .mission-card-custom,
+  .value-card-custom,
+  .choose-card-custom {
+    padding: 20px 16px !important;
+    border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    text-align: start;
+    height: 50vh !important;
+    min-height: 450px !important;
+  }
+
+  
+}
