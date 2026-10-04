@@ -7,7 +7,7 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
       <div>
         <div className="sidebar-logo">
           <img src={logo} alt="Tripist" />
-          <div className="admin-badge">Admin Panel</div>
+         
         </div>
 
         {currentUser && (
