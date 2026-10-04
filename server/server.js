@@ -22,11 +22,26 @@ app.set("trust proxy", 1); // add this
 const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "uploads");
 
 
-const allowedOrigin = process.env.CLIENT_ORIGIN ? process.env.CLIENT_ORIGIN.replace(/\/$/, "") : "http://localhost:5173/";
+const cleanOrigin = (url) => url ? url.replace(/\/$/, "") : "";
+
+const allowedOrigins = [
+  cleanOrigin(process.env.CLIENT_ORIGIN),
+  "http://187.127.171.250",
+  "http://tripistholidays.com",
+  "http://www.tripistholidays.com",
+  "http://localhost:5173"
+].filter(Boolean); // Filters out any empty environment variable strings
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS policy error: Origin not allowed"));
+      }
+    },
     credentials: true
   })
 );
