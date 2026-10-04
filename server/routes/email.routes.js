@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const LOGO_URL = "https://i.ibb.co/3Y72vJGW/logo-3.png";
+const LOGO_URL = "http://187.127.171.250/api/static-assets/logo.png";
 
 // ------------------------------------
 // Safe Parsing Helpers (prevent NaN / "" reaching PostgreSQL)
