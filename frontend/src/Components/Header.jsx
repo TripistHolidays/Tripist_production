@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, Menu, X } from "lucide-react";
-import navlogo from '../assets/logo 3.png';
+import navlogo from '../assets/logoo.png';
 import './Header.css';
 import { api } from "../Admin/api";
 
