@@ -3,7 +3,6 @@ const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
 
-
 const uploadDir = "/var/www/tripist-admin/uploads";
 
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
@@ -17,12 +16,13 @@ const storage = multer.diskStorage({
   },
 });
 
-const ALLOWED = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+// Added .jfif, .avif, and .svg to the allowed formats
+const ALLOWED = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".jfif", ".avif"]);
 
 function fileFilter(req, file, cb) {
   const ext = path.extname(file.originalname).toLowerCase();
   if (!ALLOWED.has(ext)) {
-    return cb(new Error("Only image files (jpg, jpeg, png, webp, gif) are allowed"));
+    return cb(new Error("Only image files (jpg, jpeg, png, webp, gif, jfif, avif) are allowed"));
   }
   cb(null, true);
 }
@@ -30,7 +30,8 @@ function fileFilter(req, file, cb) {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 5MB
+  // Increased limit to 30MB (30 * 1024 * 1024)
+  limits: { fileSize: 30 * 1024 * 1024 }, 
 });
 
 module.exports = upload;
