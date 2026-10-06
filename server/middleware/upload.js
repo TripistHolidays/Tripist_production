@@ -4,7 +4,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 
 
-const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, "..", "uploads");
+const uploadDir = "/var/www/tripist-admin/uploads";
 
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 

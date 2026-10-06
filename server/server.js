@@ -19,26 +19,34 @@ const statesroutes = require("./routes/States.routes");
 const app = express();
 app.set("trust proxy", 1); // add this
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, "uploads");
-
+const UPLOAD_DIR = process.env.UPLOAD_DIR || "/var/www/tripist-admin/uploads";
 
 const cleanOrigin = (url) => url ? url.replace(/\/$/, "") : "";
 
 const allowedOrigins = [
   cleanOrigin(process.env.CLIENT_ORIGIN),
+  // IP access
   "http://187.127.171.250",
+  "https://187.127.171.250",
+  // Domain access (both HTTP and HTTPS)
   "http://tripistholidays.com",
+  "https://tripistholidays.com",
   "http://www.tripistholidays.com",
+  "https://www.tripistholidays.com",
+  // Local development
   "http://localhost:5173"
-].filter(Boolean); // Filters out any empty environment variable strings
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Clean trailing slash from incoming browser origin if present
+      const formattedOrigin = origin ? cleanOrigin(origin) : origin;
+
+      if (!formattedOrigin || allowedOrigins.includes(formattedOrigin)) {
         callback(null, true);
       } else {
+        console.error(`Blocked CORS Origin: ${origin}`); // Logs blocked origins in PM2/server logs
         callback(new Error("CORS policy error: Origin not allowed"));
       }
     },
