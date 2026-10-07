@@ -10,9 +10,36 @@ import {
 } from "./Constants";
 import { api } from "./api";
 import "./PackagesPage.css";
- 
+
 /* =========================================================
-   IMAGE PREVIEW HELPERS (thumbnail + delete button)
+   AMENITY ICON MAP — maps amenity key to a Bootstrap icon
+========================================================= */
+const AMENITY_ICON_MAP = {
+  hotel: "bi-building",
+  utensils: "bi-cup-hot",
+  car: "bi-car-front",
+  camera: "bi-camera",
+  support: "bi-headset",
+  check: "bi-check-circle",
+  wifi: "bi-wifi",
+  pool: "bi-water",
+  spa: "bi-flower1",
+  gym: "bi-bicycle",
+  flight: "bi-airplane",
+  bus: "bi-bus-front",
+  train: "bi-train-front",
+  beach: "bi-sun",
+  mountain: "bi-tree",
+  shopping: "bi-bag",
+  food: "bi-egg-fried",
+  medical: "bi-heart-pulse",
+};
+
+const getAmenityIcon = (iconKey) =>
+  AMENITY_ICON_MAP[iconKey] || AMENITY_ICON_MAP.check;
+
+/* =========================================================
+   IMAGE PREVIEW HELPERS
 ========================================================= */
 
 function ImageThumb({ src, onRemove, size = 96, badge }) {
@@ -109,13 +136,12 @@ function FileThumb({ file, onRemove, size, badge }) {
   return <ImageThumb src={url} size={size} badge={badge} onRemove={onRemove} />;
 }
 
-
 export default function PackagesPage({ packages, setPackages, notify }) {
   const [packageForm, setPackageForm] = useState({
-  ...EMPTY_PACKAGE,
-  destinationId: "",
-  amenities: [],
-});
+    ...EMPTY_PACKAGE,
+    destinationId: "",
+    amenities: [],
+  });
   const [packageImgUploading, setPackageImgUploading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -126,12 +152,15 @@ export default function PackagesPage({ packages, setPackages, notify }) {
   const [isDestinationsLoading, setIsDestinationsLoading] = useState(false);
 
   // Dynamic Countries API State
-  const [countriesList, setCountriesList] = useState([]); 
+  const [countriesList, setCountriesList] = useState([]);
   const [isCountriesLoading, setIsCountriesLoading] = useState(true);
 
   // Dynamic States/Provinces API State
   const [statesList, setStatesList] = useState([]);
   const [isStatesLoading, setIsStatesLoading] = useState(false);
+
+  // Manual state entry flag: when true, show text input instead of dropdown
+  const [isManualStateEntry, setIsManualStateEntry] = useState(false);
 
   const today = todayDateStr();
 
@@ -139,7 +168,6 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     Boolean(pkg.validUntil || pkg.valid_until) &&
     (pkg.validUntil || pkg.valid_until) < today;
 
-  // Helper to format ISO/DB date string into DD/MM/YYYY format for UI view
   const formatToDDMMYYYY = (dateString) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
@@ -215,9 +243,19 @@ export default function PackagesPage({ packages, setPackages, notify }) {
       } catch (err) {
         console.warn("Countries endpoint failed, falling back to static list...", err);
         const staticFallback = Object.keys(LOCATION_DATA || {});
-        const fallbackList = staticFallback.length > 0
-          ? staticFallback.sort((a, b) => a.localeCompare(b))
-          : ["India", "United States", "United Kingdom", "Canada", "Australia", "France", "Germany", "Japan"];
+        const fallbackList =
+          staticFallback.length > 0
+            ? staticFallback.sort((a, b) => a.localeCompare(b))
+            : [
+              "India",
+              "United States",
+              "United Kingdom",
+              "Canada",
+              "Australia",
+              "France",
+              "Germany",
+              "Japan",
+            ];
         setCountriesList(fallbackList.map((name) => ({ name, iso2: null })));
         notify("warning", "Using offline country list — couldn't reach the countries service.");
       } finally {
@@ -257,6 +295,18 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     { name: "Airport Transfers", icon: "car" },
     { name: "Guided Sightseeing", icon: "camera" },
     { name: "24/7 Travel Support", icon: "support" },
+    { name: "Free WiFi", icon: "wifi" },
+    { name: "Swimming Pool", icon: "pool" },
+    { name: "Spa Access", icon: "spa" },
+    { name: "Fitness Center", icon: "gym" },
+    { name: "Flight Tickets", icon: "flight" },
+    { name: "Bus Transfer", icon: "bus" },
+    { name: "Train Tickets", icon: "train" },
+    { name: "Beach Access", icon: "beach" },
+    { name: "Mountain View", icon: "mountain" },
+    { name: "Shopping Tour", icon: "shopping" },
+    { name: "Meals Included", icon: "food" },
+    { name: "Medical Assistance", icon: "medical" },
   ];
 
   const [amenityOptions, setAmenityOptions] = useState(DEFAULT_AMENITIES);
@@ -272,7 +322,10 @@ export default function PackagesPage({ packages, setPackages, notify }) {
       if (alreadyExists) return prev;
       return {
         ...prev,
-        amenities: [...current, { name: amenity.name, icon: amenity.icon || "check" }],
+        amenities: [
+          ...current,
+          { name: amenity.name, icon: amenity.icon || "check" },
+        ],
       };
     });
   };
@@ -303,7 +356,6 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     setIsAddingAmenity(false);
   };
 
-  // Filtering & Pagination States (Default itemsPerPage set to 10 as requested)
   const [sortField, setSortField] = useState("name");
   const [sortOrder, setSortOrder] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
@@ -319,6 +371,7 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     setCurrentStep(1);
     setIsModalOpen(true);
     setStatesList([]);
+    setIsManualStateEntry(false);
   };
 
   const handleCloseModal = () => {
@@ -330,6 +383,7 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     setCurrentStep(1);
     setStatesList([]);
     setIsAddingCategory(false);
+    setIsManualStateEntry(false);
   };
 
   const handleCountryChange = async (e) => {
@@ -339,6 +393,7 @@ export default function PackagesPage({ packages, setPackages, notify }) {
 
     setPackageForm((prev) => ({ ...prev, country: selectedCountry, state: "" }));
     setStatesList([]);
+    setIsManualStateEntry(false);
 
     const liveStates = await fetchStatesForCountry(iso2);
     if (liveStates.length > 0) {
@@ -349,9 +404,13 @@ export default function PackagesPage({ packages, setPackages, notify }) {
 
     const staticStates = LOCATION_DATA[selectedCountry];
     if (staticStates && staticStates.length > 0) {
+      setStatesList(staticStates);
       setPackageForm((prev) => ({ ...prev, state: staticStates[0] }));
       return;
     }
+
+    // No data available → force manual entry
+    setIsManualStateEntry(true);
   };
 
   const handleAddCategory = () => {
@@ -448,15 +507,24 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     try {
       const payload = {
         ...packageForm,
-        destination_id: packageForm.destinationId || packageForm.destination_id,
-        amenities: Array.isArray(packageForm.amenities) ? packageForm.amenities : [],
-        itinerary: packageForm.itinerary.filter((d) => d.title.trim() || d.activities.trim()),
-        faqs: packageForm.faqs.filter((f) => f.question.trim() || f.answer.trim()),
+        destination_id:
+          packageForm.destinationId || packageForm.destination_id,
+        amenities: Array.isArray(packageForm.amenities)
+          ? packageForm.amenities
+          : [],
+        itinerary: packageForm.itinerary.filter(
+          (d) => d.title.trim() || d.activities.trim()
+        ),
+        faqs: packageForm.faqs.filter(
+          (f) => f.question.trim() || f.answer.trim()
+        ),
       };
 
       if (packageForm.id) {
         const updated = await api.updatePackage(packageForm.id, payload);
-        setPackages((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+        setPackages((prev) =>
+          prev.map((p) => (p.id === updated.id ? updated : p))
+        );
         notify("success", "Package updated successfully!");
       } else {
         const created = await api.createPackage(payload);
@@ -475,31 +543,79 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     setPackageForm({
       ...EMPTY_PACKAGE,
       ...packageItem,
-      destinationId: packageItem.destinationId || packageItem.destination_id || "",
+      destinationId:
+        packageItem.destinationId || packageItem.destination_id || "",
       category: packageItem.category || categoriesList[0] || "",
-      durationDays: packageItem.durationDays || packageItem.duration_days || "4",
-      durationNights: packageItem.durationNights || packageItem.duration_nights || "3",
-      shortDescription: packageItem.shortDescription || packageItem.short_description || "",
-      longDescription: packageItem.longDescription || packageItem.long_description || "",
+      durationDays:
+        packageItem.durationDays || packageItem.duration_days || "4",
+      durationNights:
+        packageItem.durationNights || packageItem.duration_nights || "3",
+      shortDescription:
+        packageItem.shortDescription || packageItem.short_description || "",
+      longDescription:
+        packageItem.longDescription || packageItem.long_description || "",
       status: packageItem.status || "active",
       validUntil: packageItem.validUntil || packageItem.valid_until || "",
       inclusions: packageItem.inclusions || [],
       exclusions: packageItem.exclusions || [],
-      amenities: Array.isArray(packageItem.amenities) ? packageItem.amenities : [],
-      itinerary: packageItem.itinerary?.length > 0 ? packageItem.itinerary : [{ ...EMPTY_ITINERARY_DAY }],
-      faqs: packageItem.faqs?.length > 0 ? packageItem.faqs : [{ ...EMPTY_FAQ }],
+      amenities: Array.isArray(packageItem.amenities)
+        ? packageItem.amenities
+        : [],
+      itinerary:
+        packageItem.itinerary?.length > 0
+          ? packageItem.itinerary
+          : [{ ...EMPTY_ITINERARY_DAY }],
+      faqs:
+        packageItem.faqs?.length > 0
+          ? packageItem.faqs
+          : [{ ...EMPTY_FAQ }],
     });
     setIncInput("");
     setExcInput("");
     setCurrentStep(1);
     setIsModalOpen(true);
+    setIsManualStateEntry(false);
 
     setStatesList([]);
-    const countryEntry = countriesList.find((c) => c.name === packageItem.country);
+    const countryEntry = countriesList.find(
+      (c) => c.name === packageItem.country
+    );
     if (countryEntry?.iso2) {
       fetchStatesForCountry(countryEntry.iso2).then((liveStates) => {
-        if (liveStates.length > 0) setStatesList(liveStates);
+        if (liveStates.length > 0) {
+          setStatesList(liveStates);
+          // If the saved state isn't in the list, switch to manual mode
+          if (
+            packageItem.state &&
+            !liveStates.includes(packageItem.state)
+          ) {
+            setIsManualStateEntry(true);
+          }
+        } else {
+          const staticStates = LOCATION_DATA[packageItem.country];
+          if (staticStates && staticStates.length > 0) {
+            setStatesList(staticStates);
+            if (
+              packageItem.state &&
+              !staticStates.includes(packageItem.state)
+            ) {
+              setIsManualStateEntry(true);
+            }
+          } else if (packageItem.state) {
+            setIsManualStateEntry(true);
+          }
+        }
       });
+    } else {
+      const staticStates = LOCATION_DATA[packageItem.country];
+      if (staticStates && staticStates.length > 0) {
+        setStatesList(staticStates);
+        if (packageItem.state && !staticStates.includes(packageItem.state)) {
+          setIsManualStateEntry(true);
+        }
+      } else if (packageItem.state) {
+        setIsManualStateEntry(true);
+      }
     }
   };
 
@@ -519,17 +635,25 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
     if (
       !window.confirm(
-        `Are you sure you want to change the status of "${pkg.name}" to ${
-          newStatus === "active" ? "Active" : "Inactive"
+        `Are you sure you want to change the status of "${pkg.name}" to ${newStatus === "active" ? "Active" : "Inactive"
         }?`
       )
     )
       return;
 
     try {
-      const updated = await api.updatePackage(pkg.id, { ...pkg, status: newStatus });
-      setPackages((prev) => prev.map((p) => (p.id === pkg.id ? updated : p)));
-      notify("success", `"${pkg.name}" marked as ${newStatus === "active" ? "Active" : "Inactive"}`);
+      const updated = await api.updatePackage(pkg.id, {
+        ...pkg,
+        status: newStatus,
+      });
+      setPackages((prev) =>
+        prev.map((p) => (p.id === pkg.id ? updated : p))
+      );
+      notify(
+        "success",
+        `"${pkg.name}" marked as ${newStatus === "active" ? "Active" : "Inactive"
+        }`
+      );
     } catch (err) {
       notify("danger", err.message || "Failed to update status");
     }
@@ -616,7 +740,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
     }
 
     if (selectedStatusFilter !== "ALL") {
-      result = result.filter((p) => (p.status || "active") === selectedStatusFilter);
+      result = result.filter(
+        (p) => (p.status || "active") === selectedStatusFilter
+      );
     }
 
     return result.sort((a, b) => {
@@ -635,9 +761,18 @@ export default function PackagesPage({ packages, setPackages, notify }) {
       if (aVal > bVal) return sortOrder === "asc" ? 1 : -1;
       return 0;
     });
-  }, [packages, sortField, sortOrder, searchTerm, selectedStatusFilter, showExpired, today]);
+  }, [
+    packages,
+    sortField,
+    sortOrder,
+    searchTerm,
+    selectedStatusFilter,
+    showExpired,
+    today,
+  ]);
 
-  const totalPages = Math.ceil(filteredAndSortedPackages.length / itemsPerPage) || 1;
+  const totalPages =
+    Math.ceil(filteredAndSortedPackages.length / itemsPerPage) || 1;
 
   const paginatedPackages = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -646,17 +781,25 @@ export default function PackagesPage({ packages, setPackages, notify }) {
 
   const expiredCount = packages.filter(isExpired).length;
 
+  // Available states for current country (either live or static)
+  const availableStates =
+    statesList.length > 0
+      ? statesList
+      : LOCATION_DATA[packageForm.country] || [];
+
   return (
     <div>
-      {/* Top Header with Rounded & Enhanced Add Package Button */}
+      {/* Top Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h3 className="fw-bold text-trip-navy mb-0">Tour Packages</h3>
-          <small className="text-muted">Manage your available package catalog</small>
+          <small className="text-muted">
+            Manage your available package catalog
+          </small>
         </div>
 
-        <button 
-          className="btn btn-trip-gold px-4 btn-sm rounded shadow-sm fw-semibold d-flex align-items-center gap-1" 
+        <button
+          className="btn btn-trip-gold px-4 btn-sm rounded shadow-sm fw-semibold d-flex align-items-center gap-1"
           onClick={handleOpenAddModal}
         >
           <i className="bi bi-plus-lg"></i> Add Package
@@ -668,21 +811,37 @@ export default function PackagesPage({ packages, setPackages, notify }) {
         <div
           className="modal fade show d-block"
           tabIndex="-1"
-          style={{ backgroundColor: "rgba(5, 20, 40, 0.65)", backdropFilter: "blur(4px)", zIndex: 1060 }}
+          style={{
+            backgroundColor: "rgba(5, 20, 40, 0.65)",
+            backdropFilter: "blur(4px)",
+            zIndex: 1060,
+          }}
         >
           <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content shadow-lg border-0 package-modal-content">
               <div className="modal-header bg-white border-bottom py-3">
                 <div className="d-flex align-items-center gap-3">
                   <img
-                    src={viewingPackage.image || "https://via.placeholder.com/150?text=No+Image"}
+                    src={
+                      viewingPackage.image ||
+                      "https://via.placeholder.com/150?text=No+Image"
+                    }
                     alt={viewingPackage.name}
-                    style={{ width: "50px", height: "40px", objectFit: "cover", borderRadius: "6px" }}
+                    style={{
+                      width: "50px",
+                      height: "40px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                    }}
                   />
                   <div>
-                    <h5 className="modal-title fw-bold text-trip-navy mb-0">{viewingPackage.name}</h5>
+                    <h5 className="modal-title fw-bold text-trip-navy mb-0">
+                      {viewingPackage.name}
+                    </h5>
                     <small className="text-warning">
-                      {[viewingPackage.country, viewingPackage.state].filter(Boolean).join(", ")}
+                      {[viewingPackage.country, viewingPackage.state]
+                        .filter(Boolean)
+                        .join(", ")}
                     </small>
                   </div>
                 </div>
@@ -694,26 +853,40 @@ export default function PackagesPage({ packages, setPackages, notify }) {
               </div>
 
               <div className="modal-body p-4 package-modal-body">
-                {/* Modal content details */}
                 <div className="row g-3">
                   <div className="col-md-6">
                     <span className="text-muted small d-block">Category</span>
-                    <strong className="text-dark">{viewingPackage.category || "General"}</strong>
+                    <strong className="text-dark">
+                      {viewingPackage.category || "General"}
+                    </strong>
                   </div>
                   <div className="col-md-6">
                     <span className="text-muted small d-block">Price</span>
-                    <strong className="text-trip-gold">₹{viewingPackage.price}</strong>
+                    <strong className="text-trip-gold">
+                      ₹{viewingPackage.price}
+                    </strong>
                   </div>
                   <div className="col-md-6">
                     <span className="text-muted small d-block">Duration</span>
                     <strong className="text-dark">
-                      {viewingPackage.durationDays || viewingPackage.duration_days || "-"} Days /{" "}
-                      {viewingPackage.durationNights || viewingPackage.duration_nights || "-"} Nights
+                      {viewingPackage.durationDays ||
+                        viewingPackage.duration_days ||
+                        "-"}{" "}
+                      Days /{" "}
+                      {viewingPackage.durationNights ||
+                        viewingPackage.duration_nights ||
+                        "-"}{" "}
+                      Nights
                     </strong>
                   </div>
                   <div className="col-md-6">
                     <span className="text-muted small d-block">Status</span>
-                    <span className={`badge ${ (viewingPackage.status || "active") === "active" ? "bg-success" : "bg-danger" }`}>
+                    <span
+                      className={`badge ${(viewingPackage.status || "active") === "active"
+                        ? "bg-success"
+                        : "bg-danger"
+                        }`}
+                    >
                       {viewingPackage.status || "active"}
                     </span>
                   </div>
@@ -721,14 +894,20 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                   {viewingPackage.shortDescription && (
                     <div className="col-12">
                       <span className="text-muted small d-block">Highlight</span>
-                      <p className="mb-0 text-dark">{viewingPackage.shortDescription}</p>
+                      <p className="mb-0 text-dark">
+                        {viewingPackage.shortDescription}
+                      </p>
                     </div>
                   )}
 
                   {viewingPackage.longDescription && (
                     <div className="col-12">
-                      <span className="text-muted small d-block">Description</span>
-                      <p className="mb-0 text-dark">{viewingPackage.longDescription}</p>
+                      <span className="text-muted small d-block">
+                        Description
+                      </span>
+                      <p className="mb-0 text-dark">
+                        {viewingPackage.longDescription}
+                      </p>
                     </div>
                   )}
 
@@ -767,15 +946,35 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                   <div className="col-12 mt-2">
                     <h6 className="fw-bold text-trip-navy mb-2">Amenities</h6>
                     <div className="d-flex flex-wrap gap-2">
-                      {Array.isArray(viewingPackage.amenities) && viewingPackage.amenities.length > 0 ? (
-                        viewingPackage.amenities.map((amenity, i) => (
-                          <span key={i} className="badge bg-primary-subtle text-primary border px-2 py-2">
-                            <i className="bi bi-check-circle me-1"></i>
-                            {typeof amenity === "string" ? amenity : amenity?.name}
-                          </span>
-                        ))
+                      {Array.isArray(viewingPackage.amenities) &&
+                        viewingPackage.amenities.length > 0 ? (
+                        viewingPackage.amenities.map((amenity, i) => {
+                          const name =
+                            typeof amenity === "string"
+                              ? amenity
+                              : amenity?.name;
+                          const icon =
+                            typeof amenity === "string"
+                              ? "check"
+                              : amenity?.icon || "check";
+                          return (
+                            <span
+                              key={i}
+                              className="badge bg-primary-subtle text-primary border px-2 py-2 d-inline-flex align-items-center"
+                            >
+                              <i
+                                className={`bi ${getAmenityIcon(
+                                  icon
+                                )} me-1`}
+                              ></i>
+                              {name}
+                            </span>
+                          );
+                        })
                       ) : (
-                        <span className="text-muted small">No amenities listed</span>
+                        <span className="text-muted small">
+                          No amenities listed
+                        </span>
                       )}
                     </div>
                   </div>
@@ -801,7 +1000,11 @@ export default function PackagesPage({ packages, setPackages, notify }) {
         <div
           className="modal fade show d-block"
           tabIndex="-1"
-          style={{ backgroundColor: "rgba(5, 20, 40, 0.65)", backdropFilter: "blur(4px)", zIndex: 1050 }}
+          style={{
+            backgroundColor: "rgba(5, 20, 40, 0.65)",
+            backdropFilter: "blur(4px)",
+            zIndex: 1050,
+          }}
         >
           <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div className="modal-content shadow-lg border-0 package-modal-content">
@@ -811,7 +1014,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                     {packageForm.id ? "Edit Package" : "Add Package"}
                   </h5>
                   <small className="text-white">
-                    {packageForm.id ? "Update tour package details" : "Create a new tour package"}
+                    {packageForm.id
+                      ? "Update tour package details"
+                      : "Create a new tour package"}
                   </small>
                 </div>
                 <button
@@ -825,17 +1030,32 @@ export default function PackagesPage({ packages, setPackages, notify }) {
               {/* Step Navigation Bar */}
               <div className="destination-step-header bg-light border-bottom">
                 <div className="destination-step-items">
-                  <div className={`destination-step ${currentStep >= 1 ? "active" : ""}`}>
+                  <div
+                    className={`destination-step ${currentStep >= 1 ? "active" : ""
+                      }`}
+                  >
                     <span className="destination-step-number">1</span>
-                    <div><strong>Basics</strong></div>
+                    <div>
+                      <strong>Basics</strong>
+                    </div>
                   </div>
-                  <div className={`destination-step ${currentStep >= 2 ? "active" : ""}`}>
+                  <div
+                    className={`destination-step ${currentStep >= 2 ? "active" : ""
+                      }`}
+                  >
                     <span className="destination-step-number">2</span>
-                    <div><strong>Itinerary</strong></div>
+                    <div>
+                      <strong>Itinerary</strong>
+                    </div>
                   </div>
-                  <div className={`destination-step ${currentStep >= 3 ? "active" : ""}`}>
+                  <div
+                    className={`destination-step ${currentStep >= 3 ? "active" : ""
+                      }`}
+                  >
                     <span className="destination-step-number">3</span>
-                    <div><strong>FAQs</strong></div>
+                    <div>
+                      <strong>FAQs</strong>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -844,12 +1064,19 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                 {currentStep === 1 && (
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label fw-semibold">Package Name *</label>
+                      <label className="form-label fw-semibold">
+                        Package Name *
+                      </label>
                       <input
                         type="text"
                         className="form-control"
                         value={packageForm.name}
-                        onChange={(e) => setPackageForm({ ...packageForm, name: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            name: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -860,7 +1087,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         <button
                           type="button"
                           className="btn btn-link p-0 small text-decoration-none"
-                          onClick={() => setIsAddingCategory(!isAddingCategory)}
+                          onClick={() =>
+                            setIsAddingCategory(!isAddingCategory)
+                          }
                         >
                           {isAddingCategory ? "Cancel" : "+ Add New Category"}
                         </button>
@@ -872,9 +1101,15 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                             className="form-control"
                             placeholder="New category..."
                             value={newCategoryInput}
-                            onChange={(e) => setNewCategoryInput(e.target.value)}
+                            onChange={(e) =>
+                              setNewCategoryInput(e.target.value)
+                            }
                           />
-                          <button className="btn btn-outline-primary" type="button" onClick={handleAddCategory}>
+                          <button
+                            className="btn btn-outline-primary"
+                            type="button"
+                            onClick={handleAddCategory}
+                          >
                             Save
                           </button>
                         </div>
@@ -882,10 +1117,17 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         <select
                           className="form-select"
                           value={packageForm.category}
-                          onChange={(e) => setPackageForm({ ...packageForm, category: e.target.value })}
+                          onChange={(e) =>
+                            setPackageForm({
+                              ...packageForm,
+                              category: e.target.value,
+                            })
+                          }
                         >
                           {categoriesList.map((cat) => (
-                            <option key={cat} value={cat}>{cat}</option>
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
                           ))}
                         </select>
                       )}
@@ -893,21 +1135,33 @@ export default function PackagesPage({ packages, setPackages, notify }) {
 
                     <div className="col-md-6">
                       <label className="form-label fw-semibold">
-                        Destination * {isDestinationsLoading && <small className="text-muted">(Loading...)</small>}
+                        Destination *{" "}
+                        {isDestinationsLoading && (
+                          <small className="text-muted">(Loading...)</small>
+                        )}
                       </label>
                       <select
                         className="form-select"
                         value={packageForm.destinationId}
-                        onChange={(e) => setPackageForm({ ...packageForm, destinationId: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            destinationId: e.target.value,
+                          })
+                        }
                         disabled={isDestinationsLoading}
                         required
                       >
                         <option value="">-- Select Destination --</option>
-                        {destinationsList.map((dest) => (
-                          <option key={dest.id} value={dest.id}>
-                            {dest.name}
-                          </option>
-                        ))}
+                        {[...destinationsList]
+                          .sort((a, b) =>
+                            String(a.name || "").toLowerCase().localeCompare(String(b.name || "").toLowerCase())
+                          )
+                          .map((dest) => (
+                            <option key={dest.id} value={dest.id}>
+                              {dest.name}
+                            </option>
+                          ))}
                       </select>
                     </div>
 
@@ -916,33 +1170,54 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                       <select
                         className="form-select"
                         value={packageForm.status}
-                        onChange={(e) => setPackageForm({ ...packageForm, status: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            status: e.target.value,
+                          })
+                        }
                       >
                         {PACKAGE_STATUSES.map((s) => (
-                          <option key={s.value} value={s.value}>{s.label}</option>
+                          <option key={s.value} value={s.value}>
+                            {s.label}
+                          </option>
                         ))}
                       </select>
                     </div>
 
                     <div className="col-md-3">
-                      <label className="form-label fw-semibold">Duration (Days)</label>
+                      <label className="form-label fw-semibold">
+                        Duration (Days)
+                      </label>
                       <input
                         type="number"
                         min="1"
                         className="form-control"
                         value={packageForm.durationDays}
-                        onChange={(e) => setPackageForm({ ...packageForm, durationDays: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            durationDays: e.target.value,
+                          })
+                        }
                       />
                     </div>
 
                     <div className="col-md-3">
-                      <label className="form-label fw-semibold">Duration (Nights)</label>
+                      <label className="form-label fw-semibold">
+                        Duration (Nights)
+                      </label>
                       <input
                         type="number"
                         min="0"
                         className="form-control"
                         value={packageForm.durationNights}
-                        onChange={(e) => setPackageForm({ ...packageForm, durationNights: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            durationNights: e.target.value,
+                          })
+                        }
                       />
                     </div>
 
@@ -953,33 +1228,48 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         className="form-control"
                         placeholder="₹20,000"
                         value={packageForm.price}
-                        onChange={(e) => setPackageForm({ ...packageForm, price: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            price: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
 
-                    {/* Valid Until Date Field with DD/MM/YYYY display styling context */}
                     <div className="col-md-3">
-                      <label className="form-label fw-semibold">Valid Until (DD/MM/YYYY)</label>
+                      <label className="form-label fw-semibold">
+                        Valid Until (DD/MM/YYYY)
+                      </label>
                       <div className="input-group">
                         <input
                           type="date"
                           className="form-control"
                           min={today}
                           value={packageForm.validUntil}
-                          onChange={(e) => setPackageForm({ ...packageForm, validUntil: e.target.value })}
+                          onChange={(e) =>
+                            setPackageForm({
+                              ...packageForm,
+                              validUntil: e.target.value,
+                            })
+                          }
                         />
                       </div>
                       {packageForm.validUntil && (
                         <small className="text-muted d-block mt-1 font-monospace">
-                          Formatted: {formatToDDMMYYYY(packageForm.validUntil)}
+                          Formatted:{" "}
+                          {formatToDDMMYYYY(packageForm.validUntil)}
                         </small>
                       )}
                     </div>
 
                     <div className="col-md-6">
                       <label className="form-label fw-semibold">
-                        Country {isCountriesLoading && <small className="text-muted">(Loading...)</small>}
+                        Country{" "}
+                        {isCountriesLoading && (
+                          <small className="text-muted">(Loading...)</small>
+                        )}
                       </label>
                       <select
                         className="form-select"
@@ -989,35 +1279,88 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                       >
                         <option value="">Select Country</option>
                         {countriesList.map((c) => (
-                          <option key={c.name} value={c.name}>{c.name}</option>
+                          <option key={c.name} value={c.name}>
+                            {c.name}
+                          </option>
                         ))}
                       </select>
                     </div>
 
+                    {/* ============================================================
+                        STATE / REGION — Smart Combo (Dropdown + Manual Entry)
+                    ============================================================ */}
                     <div className="col-md-6">
-                      <label className="form-label fw-semibold">
-                        State / Region {isStatesLoading && <small className="text-muted">(Loading...)</small>}
+                      <label className="form-label fw-semibold d-flex justify-content-between align-items-center">
+                        <span>
+                          State / Region{" "}
+                          {isStatesLoading && (
+                            <small className="text-muted">(Loading...)</small>
+                          )}
+                        </span>
+                        {availableStates.length > 0 && (
+                          <button
+                            type="button"
+                            className="btn btn-link p-0 small text-decoration-none"
+                            onClick={() => {
+                              setIsManualStateEntry(!isManualStateEntry);
+                              if (!isManualStateEntry) {
+                                // switching TO manual — clear current value
+                                setPackageForm((prev) => ({
+                                  ...prev,
+                                  state: "",
+                                }));
+                              } else {
+                                // switching back to dropdown — pick first
+                                setPackageForm((prev) => ({
+                                  ...prev,
+                                  state: availableStates[0] || "",
+                                }));
+                              }
+                            }}
+                          >
+                            {isManualStateEntry
+                              ? "← Pick from list"
+                              : "✎ Type manually"}
+                          </button>
+                        )}
                       </label>
-                      {statesList.length > 0 || LOCATION_DATA[packageForm.country] ? (
-                        <select
-                          className="form-select"
-                          value={packageForm.state}
-                          onChange={(e) => setPackageForm({ ...packageForm, state: e.target.value })}
-                          disabled={isStatesLoading}
-                        >
-                          {(statesList.length > 0 ? statesList : LOCATION_DATA[packageForm.country]).map((st) => (
-                            <option key={st} value={st}>{st}</option>
-                          ))}
-                        </select>
-                      ) : (
+
+                      {isManualStateEntry || availableStates.length === 0 ? (
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Enter state / region"
+                          placeholder={
+                            availableStates.length === 0
+                              ? "Enter state / region (no list available)"
+                              : "Type your state / region"
+                          }
                           value={packageForm.state}
-                          onChange={(e) => setPackageForm({ ...packageForm, state: e.target.value })}
+                          onChange={(e) =>
+                            setPackageForm({
+                              ...packageForm,
+                              state: e.target.value,
+                            })
+                          }
                           disabled={isStatesLoading}
                         />
+                      ) : (
+                        <select
+                          className="form-select"
+                          value={packageForm.state}
+                          onChange={(e) =>
+                            setPackageForm({
+                              ...packageForm,
+                              state: e.target.value,
+                            })
+                          }
+                          disabled={isStatesLoading}
+                        >
+                          {availableStates.map((st) => (
+                            <option key={st} value={st}>
+                              {st}
+                            </option>
+                          ))}
+                        </select>
                       )}
                     </div>
 
@@ -1036,12 +1379,19 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label fw-semibold">Image URL</label>
+                      <label className="form-label fw-semibold">
+                        Image URL
+                      </label>
                       <input
                         type="url"
                         className="form-control"
                         value={packageForm.image}
-                        onChange={(e) => setPackageForm({ ...packageForm, image: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            image: e.target.value,
+                          })
+                        }
                       />
                     </div>
 
@@ -1053,29 +1403,45 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         <ImageThumb
                           src={packageForm.image}
                           size={160}
-                          onRemove={() => setPackageForm((f) => ({ ...f, image: "" }))}
+                          onRemove={() =>
+                            setPackageForm((f) => ({ ...f, image: "" }))
+                          }
                         />
                       </div>
                     )}
 
                     <div className="col-12">
-                      <label className="form-label fw-semibold">Package Highlight</label>
+                      <label className="form-label fw-semibold">
+                        Package Highlight
+                      </label>
                       <textarea
                         className="form-control"
                         rows={2}
                         value={packageForm.shortDescription}
-                        onChange={(e) => setPackageForm({ ...packageForm, shortDescription: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            shortDescription: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label fw-semibold">About Package</label>
+                      <label className="form-label fw-semibold">
+                        About Package
+                      </label>
                       <textarea
                         className="form-control"
                         rows={3}
                         value={packageForm.longDescription}
-                        onChange={(e) => setPackageForm({ ...packageForm, longDescription: e.target.value })}
+                        onChange={(e) =>
+                          setPackageForm({
+                            ...packageForm,
+                            longDescription: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -1085,21 +1451,28 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                   <div>
                     <div className="row g-3 mb-4">
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold">Inclusions</label>
+                        <label className="form-label fw-semibold">
+                          Inclusions
+                        </label>
                         <div className="p-2 border rounded bg-white">
                           <div className="d-flex flex-wrap gap-1 mb-2">
-                            {(packageForm.inclusions || []).map((item, idx) => (
-                              <span key={idx} className="badge bg-success-subtle text-success border px-2 py-1 me-1">
-                                <i className="bi bi-check-circle me-1"></i>
-                                {item}
-                                <button
-                                  type="button"
-                                  className="btn-close ms-2"
-                                  style={{ fontSize: "10px" }}
-                                  onClick={() => handleRemoveInclusion(idx)}
-                                ></button>
-                              </span>
-                            ))}
+                            {(packageForm.inclusions || []).map(
+                              (item, idx) => (
+                                <span
+                                  key={idx}
+                                  className="badge bg-success-subtle text-success border px-2 py-1 me-1"
+                                >
+                                  <i className="bi bi-check-circle me-1"></i>
+                                  {item}
+                                  <button
+                                    type="button"
+                                    className="btn-close ms-2"
+                                    style={{ fontSize: "10px" }}
+                                    onClick={() => handleRemoveInclusion(idx)}
+                                  ></button>
+                                </span>
+                              )
+                            )}
                           </div>
                           <div className="d-flex align-items-center gap-2">
                             <input
@@ -1108,7 +1481,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                               placeholder="Type and press Enter..."
                               value={incInput}
                               onChange={(e) => setIncInput(e.target.value)}
-                              onKeyDown={(e) => e.key === "Enter" && handleAddInclusion(e)}
+                              onKeyDown={(e) =>
+                                e.key === "Enter" && handleAddInclusion(e)
+                              }
                             />
                             <button
                               type="button"
@@ -1122,21 +1497,28 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label fw-semibold">Exclusions</label>
+                        <label className="form-label fw-semibold">
+                          Exclusions
+                        </label>
                         <div className="p-2 border rounded bg-white">
                           <div className="d-flex flex-wrap gap-1 mb-2">
-                            {(packageForm.exclusions || []).map((item, idx) => (
-                              <span key={idx} className="badge bg-danger-subtle text-danger border px-2 py-1 me-1">
-                                <i className="bi bi-x-circle me-1"></i>
-                                {item}
-                                <button
-                                  type="button"
-                                  className="btn-close ms-2"
-                                  style={{ fontSize: "10px" }}
-                                  onClick={() => handleRemoveExclusion(idx)}
-                                ></button>
-                              </span>
-                            ))}
+                            {(packageForm.exclusions || []).map(
+                              (item, idx) => (
+                                <span
+                                  key={idx}
+                                  className="badge bg-danger-subtle text-danger border px-2 py-1 me-1"
+                                >
+                                  <i className="bi bi-x-circle me-1"></i>
+                                  {item}
+                                  <button
+                                    type="button"
+                                    className="btn-close ms-2"
+                                    style={{ fontSize: "10px" }}
+                                    onClick={() => handleRemoveExclusion(idx)}
+                                  ></button>
+                                </span>
+                              )
+                            )}
                           </div>
                           <div className="d-flex align-items-center gap-2">
                             <input
@@ -1145,7 +1527,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                               placeholder="Type and press Enter..."
                               value={excInput}
                               onChange={(e) => setExcInput(e.target.value)}
-                              onKeyDown={(e) => e.key === "Enter" && handleAddExclusion(e)}
+                              onKeyDown={(e) =>
+                                e.key === "Enter" && handleAddExclusion(e)
+                              }
                             />
                             <button
                               type="button"
@@ -1159,8 +1543,186 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                       </div>
                     </div>
 
+                    {/* =========================================================
+                        AMENITIES SECTION — Dropdown + Add New
+                    ========================================================= */}
+                    <div className="mb-4 p-3 border rounded bg-white">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <label className="form-label fw-semibold mb-0">
+                          Amenities
+                        </label>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-primary rounded"
+                          onClick={() =>
+                            setIsAddingAmenity(!isAddingAmenity)
+                          }
+                        >
+                          <i className="bi bi-plus-lg me-1"></i>
+                          {isAddingAmenity ? "Cancel" : "Add New Amenity"}
+                        </button>
+                      </div>
+
+                      {/* Add New Amenity Inline Form */}
+                      {isAddingAmenity && (
+                        <div className="p-3 mb-3 border rounded bg-light">
+                          <div className="row g-2 align-items-end">
+                            <div className="col-md-5">
+                              <label className="form-label small fw-semibold mb-1">
+                                Amenity Name
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control form-control-sm"
+                                placeholder="e.g. Free Parking, Laundry..."
+                                value={newAmenityName}
+                                onChange={(e) =>
+                                  setNewAmenityName(e.target.value)
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddCustomAmenity();
+                                  }
+                                }}
+                              />
+                            </div>
+                            <div className="col-md-4">
+                              <label className="form-label small fw-semibold mb-1">
+                                Icon
+                              </label>
+                              <select
+                                className="form-select form-select-sm"
+                                value={newAmenityIcon}
+                                onChange={(e) =>
+                                  setNewAmenityIcon(e.target.value)
+                                }
+                              >
+                                <option value="check">✓ Check</option>
+                                <option value="hotel">🏨 Hotel</option>
+                                <option value="utensils">🍽 Utensils</option>
+                                <option value="car">🚗 Car</option>
+                                <option value="camera">📷 Camera</option>
+                                <option value="support">🎧 Support</option>
+                                <option value="wifi">📶 WiFi</option>
+                                <option value="pool">🏊 Pool</option>
+                                <option value="spa">💆 Spa</option>
+                                <option value="gym">🏋 Gym</option>
+                                <option value="flight">✈ Flight</option>
+                                <option value="bus">🚌 Bus</option>
+                                <option value="train">🚆 Train</option>
+                                <option value="beach">🏖 Beach</option>
+                                <option value="mountain">🏔 Mountain</option>
+                                <option value="shopping">🛍 Shopping</option>
+                                <option value="food">🍳 Food</option>
+                                <option value="medical">🩺 Medical</option>
+                              </select>
+                            </div>
+                            <div className="col-md-3">
+                              <button
+                                type="button"
+                                className="btn btn-primary btn-sm w-100"
+                                onClick={handleAddCustomAmenity}
+                              >
+                                Add Amenity
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Dropdown to add existing amenities */}
+                      <div className="row g-2 align-items-end">
+                        <div className="col-md-10">
+                          <label className="form-label small fw-semibold mb-1">
+                            Select Amenity to Add
+                          </label>
+                          <select
+                            className="form-select"
+                            value=""
+                            onChange={(e) => {
+                              const selectedName = e.target.value;
+                              if (!selectedName) return;
+                              const amenity = amenityOptions.find(
+                                (a) => a.name === selectedName
+                              );
+                              if (amenity) handleAddAmenity(amenity);
+                            }}
+                          >
+                            <option value="">
+                              -- Choose an amenity --
+                            </option>
+                            {amenityOptions
+                              .filter(
+                                (opt) =>
+                                  !(packageForm.amenities || []).some(
+                                    (a) =>
+                                      (typeof a === "string"
+                                        ? a
+                                        : a?.name) === opt.name
+                                  )
+                              )
+                              .map((amenity) => (
+                                <option
+                                  key={amenity.name}
+                                  value={amenity.name}
+                                >
+                                  {amenity.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Selected Amenities Display */}
+                      {Array.isArray(packageForm.amenities) &&
+                        packageForm.amenities.length > 0 && (
+                          <div className="mt-3 pt-3 border-top">
+                            <small className="text-muted d-block mb-2 fw-semibold">
+                              Selected Amenities (
+                              {packageForm.amenities.length})
+                            </small>
+                            <div className="d-flex flex-wrap gap-2">
+                              {packageForm.amenities.map((amenity, idx) => {
+                                const name =
+                                  typeof amenity === "string"
+                                    ? amenity
+                                    : amenity?.name;
+                                const icon =
+                                  typeof amenity === "string"
+                                    ? "check"
+                                    : amenity?.icon || "check";
+                                return (
+                                  <span
+                                    key={idx}
+                                    className="badge bg-primary-subtle text-primary border px-2 py-2 d-inline-flex align-items-center"
+                                  >
+                                    <i
+                                      className={`bi ${getAmenityIcon(
+                                        icon
+                                      )} me-1`}
+                                    ></i>
+                                    {name}
+                                    <button
+                                      type="button"
+                                      className="btn-close ms-2"
+                                      style={{ fontSize: "10px" }}
+                                      onClick={() =>
+                                        handleRemoveAmenity(idx)
+                                      }
+                                    ></button>
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                    </div>
+
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h6 className="fw-bold text-trip-navy mb-0">Day-by-Day Itinerary</h6>
+                      <h6 className="fw-bold text-trip-navy mb-0">
+                        Day-by-Day Itinerary
+                      </h6>
                       <button
                         type="button"
                         className="btn btn-outline-secondary btn-sm rounded px-3"
@@ -1181,14 +1743,26 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                                 className="form-control mb-2"
                                 placeholder="Day Title"
                                 value={day.title}
-                                onChange={(e) => handleItineraryChange(idx, "title", e.target.value)}
+                                onChange={(e) =>
+                                  handleItineraryChange(
+                                    idx,
+                                    "title",
+                                    e.target.value
+                                  )
+                                }
                               />
                               <textarea
                                 className="form-control"
                                 rows={2}
                                 placeholder="Day Activities..."
                                 value={day.activities}
-                                onChange={(e) => handleItineraryChange(idx, "activities", e.target.value)}
+                                onChange={(e) =>
+                                  handleItineraryChange(
+                                    idx,
+                                    "activities",
+                                    e.target.value
+                                  )
+                                }
                               />
                             </div>
                             {packageForm.itinerary.length > 1 && (
@@ -1210,7 +1784,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                 {currentStep === 3 && (
                   <div>
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h6 className="fw-bold text-trip-navy mb-0">Frequently Asked Questions</h6>
+                      <h6 className="fw-bold text-trip-navy mb-0">
+                        Frequently Asked Questions
+                      </h6>
                       <button
                         type="button"
                         className="btn btn-outline-secondary btn-sm rounded px-3"
@@ -1224,21 +1800,35 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                       {packageForm.faqs.map((faq, idx) => (
                         <div className="col-12" key={idx}>
                           <div className="attraction-admin-card">
-                            <div className="attraction-number">Q{idx + 1}</div>
+                            <div className="attraction-number">
+                              Q{idx + 1}
+                            </div>
                             <div className="flex-grow-1">
                               <input
                                 type="text"
                                 className="form-control mb-2"
                                 placeholder="Question"
                                 value={faq.question}
-                                onChange={(e) => handleFaqChange(idx, "question", e.target.value)}
+                                onChange={(e) =>
+                                  handleFaqChange(
+                                    idx,
+                                    "question",
+                                    e.target.value
+                                  )
+                                }
                               />
                               <textarea
                                 className="form-control"
                                 rows={2}
                                 placeholder="Answer"
                                 value={faq.answer}
-                                onChange={(e) => handleFaqChange(idx, "answer", e.target.value)}
+                                onChange={(e) =>
+                                  handleFaqChange(
+                                    idx,
+                                    "answer",
+                                    e.target.value
+                                  )
+                                }
                               />
                             </div>
                             {packageForm.faqs.length > 1 && (
@@ -1294,7 +1884,11 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         disabled={isSubmitting}
                         onClick={handleSavePackage}
                       >
-                        {isSubmitting ? "Saving..." : packageForm.id ? "Update Package" : "Save Package"}
+                        {isSubmitting
+                          ? "Saving..."
+                          : packageForm.id
+                            ? "Update Package"
+                            : "Save Package"}
                       </button>
                     )}
                   </div>
@@ -1305,7 +1899,7 @@ export default function PackagesPage({ packages, setPackages, notify }) {
         </div>
       )}
 
-      {/* Main Table-Based Directory View with Enhanced Rounded Filters */}
+      {/* Main Table-Based Directory View */}
       <div className="card shadow-sm border-0 rounded-4 overflow-hidden">
         <div className="card-header bg-white py-3 px-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
           <span className="fw-bold text-trip-navy small">
@@ -1336,7 +1930,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
             >
               <option value="ALL">All Statuses</option>
               {PACKAGE_STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
               ))}
             </select>
 
@@ -1351,36 +1947,47 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                   setCurrentPage(1);
                 }}
               />
-              <label className="form-check-label text-muted ms-4 cursor-pointer" htmlFor="showExpiredSwitch">
+              <label
+                className="form-check-label text-muted ms-4 cursor-pointer"
+                htmlFor="showExpiredSwitch"
+              >
                 Expired ({expiredCount})
               </label>
             </div>
 
-            {/* Rounded Sort Button Group */}
             <div className="btn-group rounded overflow-hidden border shadow-sm">
               <button
-                className={`btn btn-xs px-3 ${sortField === "name" ? "btn-trip-gold" : "btn-light text-dark"}`}
+                className={`btn btn-xs px-3 ${sortField === "name" ? "btn-trip-gold" : "btn-light text-dark"
+                  }`}
                 onClick={() => handleSort("name")}
               >
-                Name {sortField === "name" && (sortOrder === "asc" ? "↑" : "↓")}
+                Name{" "}
+                {sortField === "name" && (sortOrder === "asc" ? "↑" : "↓")}
               </button>
               <button
-                className={`btn btn-xs px-3 ${sortField === "country" ? "btn-trip-gold" : "btn-light text-dark"}`}
+                className={`btn btn-xs px-3 ${sortField === "country"
+                  ? "btn-trip-gold"
+                  : "btn-light text-dark"
+                  }`}
                 onClick={() => handleSort("country")}
               >
-                Country {sortField === "country" && (sortOrder === "asc" ? "↑" : "↓")}
+                Country{" "}
+                {sortField === "country" && (sortOrder === "asc" ? "↑" : "↓")}
               </button>
               <button
-                className={`btn btn-xs px-3 ${sortField === "price" ? "btn-trip-gold" : "btn-light text-dark"}`}
+                className={`btn btn-xs px-3 ${sortField === "price"
+                  ? "btn-trip-gold"
+                  : "btn-light text-dark"
+                  }`}
                 onClick={() => handleSort("price")}
               >
-                Price {sortField === "price" && (sortOrder === "asc" ? "↑" : "↓")}
+                Price{" "}
+                {sortField === "price" && (sortOrder === "asc" ? "↑" : "↓")}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Directory Table View */}
         <div className="card-body p-0">
           <div className="table-responsive packages-table-scroll-container">
             <table className="table table-hover align-middle mb-0">
@@ -1392,7 +1999,12 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                   <th>Price</th>
                   <th>Valid Until (DD/MM/YYYY)</th>
                   <th>Status</th>
-                  <th className="text-end pe-4" style={{ minWidth: "150px" }}>Actions</th>
+                  <th
+                    className="text-end pe-4"
+                    style={{ minWidth: "150px" }}
+                  >
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1408,27 +2020,41 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                     const isActive = status === "active";
                     const expired = isExpired(p);
                     const days = p.durationDays || p.duration_days || "-";
-                    const nights = p.durationNights || p.duration_nights || "-";
-                    const locationText = [p.country, p.state].filter(Boolean).join(", ");
+                    const nights =
+                      p.durationNights || p.duration_nights || "-";
+                    const locationText = [p.country, p.state]
+                      .filter(Boolean)
+                      .join(", ");
 
                     return (
                       <tr key={p.id} className={expired ? "opacity-75" : ""}>
                         <td className="ps-4">
                           <div className="d-flex align-items-center gap-2">
                             <div
-                              className={`insta-avatar-container ${isActive ? "insta-avatar-active" : "insta-avatar-inactive"}`}
+                              className={`insta-avatar-container ${isActive
+                                ? "insta-avatar-active"
+                                : "insta-avatar-inactive"
+                                }`}
                               style={{ width: "42px", height: "42px" }}
                             >
                               <img
-                                src={p.image || "https://via.placeholder.com/150?text=No+Image"}
+                                src={
+                                  p.image ||
+                                  "https://via.placeholder.com/150?text=No+Image"
+                                }
                                 alt={p.name}
                                 className="insta-avatar-img"
                               />
-                              <span className={`insta-pulse-dot ${isActive ? "dot-active" : "dot-inactive"}`}></span>
+                              <span
+                                className={`insta-pulse-dot ${isActive ? "dot-active" : "dot-inactive"
+                                  }`}
+                              ></span>
                             </div>
                             <div>
                               <div className="pkg-title">{p.name}</div>
-                              <div className="pkg-sub">{days}D / {nights}N</div>
+                              <div className="pkg-sub">
+                                {days}D / {nights}N
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -1451,19 +2077,28 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                         </td>
 
                         <td>
-                          <span className="fw-bold text-trip-gold">₹{p.price}</span>
+                          <span className="fw-bold text-trip-gold">
+                            ₹{p.price}
+                          </span>
                         </td>
 
-                        {/* Displaying Expiry Date formatted strictly as DD/MM/YYYY and red if expired */}
                         <td className="text-center">
-                          <span className={`font-monospace  small ${expired ? "text-danger fw-bold" : "text-secondary"}`}>
+                          <span
+                            className={`font-monospace  small ${expired
+                              ? "text-danger fw-bold"
+                              : "text-secondary"
+                              }`}
+                          >
                             {formatToDDMMYYYY(p.validUntil || p.valid_until)}
                           </span>
                         </td>
 
                         <td>
                           <button
-                            className={`btn-status-pill ${isActive ? "status-pill-active" : "status-pill-inactive"}`}
+                            className={`btn-status-pill ${isActive
+                              ? "status-pill-active"
+                              : "status-pill-inactive"
+                              }`}
                             onClick={() => handleToggleStatusWithConfirm(p)}
                           >
                             {isActive ? "Active" : "Inactive"}
@@ -1503,13 +2138,19 @@ export default function PackagesPage({ packages, setPackages, notify }) {
             </table>
           </div>
 
-          {/* Pagination Footer with Collapsed Sleek Select Button and Restructured Controls */}
           <div className="d-flex flex-wrap justify-content-between align-items-center p-3 px-4 bg-white border-top small gap-3">
             <div className="d-flex align-items-center gap-2">
               <span className="text-muted">
-                Showing {filteredAndSortedPackages.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1} to{" "}
-                {Math.min(currentPage * itemsPerPage, filteredAndSortedPackages.length)} of{" "}
-                {filteredAndSortedPackages.length} entries
+                Showing{" "}
+                {filteredAndSortedPackages.length === 0
+                  ? 0
+                  : (currentPage - 1) * itemsPerPage + 1}{" "}
+                to{" "}
+                {Math.min(
+                  currentPage * itemsPerPage,
+                  filteredAndSortedPackages.length
+                )}{" "}
+                of {filteredAndSortedPackages.length} entries
               </span>
               <div className="d-flex align-items-center gap-1 ms-3">
                 <span className="text-muted">Per Page:</span>
@@ -1531,23 +2172,29 @@ export default function PackagesPage({ packages, setPackages, notify }) {
               </div>
             </div>
 
-            {/* Custom Previous / Active Page / Next Layout */}
             <div className="d-flex align-items-center gap-2">
               <button
-                className={`btn btn-outline-secondary btn-sm px-3 rounded ${currentPage === 1 ? "disabled opacity-50" : ""}`}
+                className={`btn btn-outline-secondary btn-sm px-3 rounded ${currentPage === 1 ? "disabled opacity-50" : ""
+                  }`}
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
               >
                 Previous
               </button>
 
-              <div className="btn btn-primary btn-sm px-3 rounded shadow-sm fw-semibold disabled" style={{ cursor: "default" }}>
+              <div
+                className="btn btn-primary btn-sm px-3 rounded shadow-sm fw-semibold disabled"
+                style={{ cursor: "default" }}
+              >
                 {currentPage}
               </div>
 
               <button
-                className={`btn btn-outline-secondary btn-sm px-3 rounded ${currentPage >= totalPages ? "disabled opacity-50" : ""}`}
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                className={`btn btn-outline-secondary btn-sm px-3 rounded ${currentPage >= totalPages ? "disabled opacity-50" : ""
+                  }`}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
                 disabled={currentPage >= totalPages}
               >
                 Next

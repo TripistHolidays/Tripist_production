@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import "./Contact.css";
 
 import {
@@ -24,6 +24,10 @@ import banner from "../assets/hero2.jpg";
 
 const Contact = () => {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+
+  // Data passed from DestinationDetails via React Router state
+  const destinationData = location.state?.destinationData;
 
   const officeLatitude = 13.094364494112748;
   const officeLongitude = 80.20596646854486;
@@ -33,19 +37,29 @@ const Contact = () => {
   const googleDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${officeLatitude},${officeLongitude}`;
 
   const formRef = useRef(null);
-  const dateInputRef = useRef(null); // <-- Added here to fix the ReferenceError
+  const dateInputRef = useRef(null);
 
-  // Read URL query parameters from the ExplorePackages redirect
+  // Read URL query parameters
   const queryPackageId = searchParams.get("packageId");
   const queryPackageName = searchParams.get("packageName");
   const queryDays = searchParams.get("days") || "";
   const queryNights = searchParams.get("nights") || "";
-
-
-
+  const queryTravelType = searchParams.get("travelType") || "";
 
   const parsedDays = queryDays ? parseInt(queryDays, 10) : "";
   const parsedNights = queryNights ? parseInt(queryNights, 10) : "";
+
+  // Determine default destination (from package OR from destination details)
+  const defaultDestination =
+    queryPackageName || destinationData?.name || "";
+
+  const defaultTravelType =
+    queryTravelType ||
+    (destinationData?.category
+      ? destinationData.category.toLowerCase().includes("domestic")
+        ? "Domestic"
+        : "International"
+      : "");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -53,68 +67,95 @@ const Contact = () => {
     mobile: "",
     country: "",
     city: "",
-    destination: queryPackageName || "",
-    travelType: "",
+    destination: defaultDestination,
+    travelType: defaultTravelType,
     travelDate: "",
     adults: 1,
     children: 0,
     budget: "",
     durationDays: parsedDays,
     durationNights: parsedNights,
-    services: queryPackageName ? ["Holiday Package"] : [],
-    message: queryPackageName
-      ? `I am interested in booking the "${queryPackageName}" package (${queryDays} Days / ${queryNights} Nights). Please provide more details.`
-      : "",
+    services:
+      queryPackageName || destinationData?.name ? ["Holiday Package"] : [],
+    message: "", // <-- Always empty; user types their own
   });
 
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Dynamic contact info matching database schema
+  // Dynamic contact info (fetched from DB)
   const [contactInfo, setContactInfo] = useState({
-    phone: "+91 96555 96867",
-    email: "info@tripistholidays.com",
-    website: "www.tripistholidays.com",
-    address:
-      "Flat No. 2, Plot No. 1051, I Block 35th Street,\nAnna Nagar, Chennai,\nTamil Nadu – 600040\nIndia",
+    phone: "",
+    email: "",
+    website: "",
+    address: "",
   });
 
+  // =========================================================
+  // FETCH CONTACT INFO FROM DB
+  // =========================================================
+  useEffect(() => {
+    api
+      .getContact()
+      .then((data) => {
+        if (data) {
+          setContactInfo({
+            phone: data.phone || "+91 96555 96867",
+            email: data.email || "info@tripistholidays.com",
+            website: data.website || "www.tripistholidays.com",
+            address:
+              data.address ||
+              "Flat No. 2, Plot No. 1051, I Block 35th Street,\nAnna Nagar, Chennai,\nTamil Nadu – 600040\nIndia",
+          });
+        }
+      })
+      .catch((err) =>
+        console.error("Error fetching contact info from DB:", err)
+      );
+  }, []);
+
+  // =========================================================
+  // PREFILL FORM WHEN COMING FROM PACKAGE OR DESTINATION
+  // (Message stays empty so user can type their own)
+  // =========================================================
   useEffect(() => {
     if (queryPackageName) {
       setFormData((prev) => ({
         ...prev,
         destination: queryPackageName,
-        durationDays: queryDays ? parseInt(queryDays, 10) : prev.durationDays,
-        durationNights: queryNights ? parseInt(queryNights, 10) : prev.durationNights,
+        durationDays: queryDays
+          ? parseInt(queryDays, 10)
+          : prev.durationDays,
+        durationNights: queryNights
+          ? parseInt(queryNights, 10)
+          : prev.durationNights,
         services: prev.services.includes("Holiday Package")
           ? prev.services
           : [...prev.services, "Holiday Package"],
-        message: `I am interested in booking the "${queryPackageName}" package (${queryDays || prev.durationDays} Days / ${queryNights || prev.durationNights} Nights). Please provide more details.`,
       }));
-    }
-  }, [queryPackageName, queryPackageId, queryDays, queryNights]);
-
-  // Update form & auto-scroll to the form when redirected from "Book Now"
-  useEffect(() => {
-    if (queryPackageName) {
+    } else if (destinationData?.name) {
       setFormData((prev) => ({
         ...prev,
-        destination: queryPackageName,
+        destination: destinationData.name,
+        travelType: defaultTravelType || prev.travelType,
         services: prev.services.includes("Holiday Package")
           ? prev.services
           : [...prev.services, "Holiday Package"],
-        message: `I am interested in booking the "${queryPackageName}" package (Package ID: ${queryPackageId || "N/A"}). Please provide more details and the best quotation.`,
       }));
-
-      // Smooth scroll directly to the booking form
-      if (formRef.current) {
-        setTimeout(() => {
-          formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 150);
-      }
     }
-  }, [queryPackageName, queryPackageId]);
+
+    // Auto-scroll to form
+    if ((queryPackageName || destinationData?.name) && formRef.current) {
+      setTimeout(() => {
+        formRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 150);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryPackageName, queryPackageId, queryDays, queryNights, destinationData]);
 
   const servicesList = [
     "Holiday Package",
@@ -225,13 +266,17 @@ const Contact = () => {
   };
 
   const businessHours = [
-    { day: "Monday", hours: "9:00 AM – 6:00 PM" },
-    { day: "Tuesday", hours: "9:00 AM – 6:00 PM" },
-    { day: "Wednesday", hours: "9:00 AM – 6:00 PM" },
-    { day: "Thursday", hours: "9:00 AM – 6:00 PM" },
-    { day: "Friday", hours: "9:00 AM – 6:00 PM" },
-    { day: "Saturday", hours: "9:00 AM – 4:00 PM" },
-    { day: "Sunday", hours: "Closed (Online enquiries accepted)", isSpecial: true },
+    { day: "Monday", hours: "9:00 AM – 7:00 PM" },
+    { day: "Tuesday", hours: "9:00 AM – 7:00 PM" },
+    { day: "Wednesday", hours: "9:00 AM – 7:00 PM" },
+    { day: "Thursday", hours: "9:00 AM – 7:00 PM" },
+    { day: "Friday", hours: "9:00 AM – 7:00 PM" },
+    { day: "Saturday", hours: "9:00 AM – 7:00 PM" },
+    {
+      day: "Sunday",
+      hours: "Holiday",
+      isSpecial: true,
+    },
   ];
 
   const highlights = [
@@ -255,13 +300,14 @@ const Contact = () => {
             <p className="section-tag">TRIPIST HOLIDAYS</p>
             <h1>We'd Love to Hear From You</h1>
             <p className="hero-desc">
-              Whether you're planning your next holiday, looking for a customized
-              travel package, seeking corporate travel solutions, or interested in
-              partnering with us, our team is here to assist you.
+              Whether you're planning your next holiday, looking for a
+              customized travel package, seeking corporate travel solutions, or
+              interested in partnering with us, our team is here to assist you.
             </p>
             <p className="hero-subdesc">
-              At Tripist Holidays, we are committed to providing prompt, reliable, and
-              personalized support to ensure every journey begins with confidence.
+              At Tripist Holidays, we are committed to providing prompt,
+              reliable, and personalized support to ensure every journey begins
+              with confidence.
             </p>
           </div>
         </div>
@@ -276,7 +322,10 @@ const Contact = () => {
               <div className="contact-info-column d-flex flex-column gap-4">
                 <div className="info-card shadow-sm p-4 rounded-4 bg-white">
                   <h3 className="card-heading-gold border-bottom pb-3 mb-4">
-                    <Compass className="icon-title-gold me-2 inline-block" size={24} />
+                    <Compass
+                      className="icon-title-gold me-2 inline-block"
+                      size={24}
+                    />
                     Get in Touch
                   </h3>
 
@@ -286,7 +335,9 @@ const Contact = () => {
                         <MapPin size={20} className="text-gold" />
                       </div>
                       <div>
-                        <h5 className="font-semibold text-trip mb-1">Registered Office</h5>
+                        <h5 className="font-semibold text-trip mb-1">
+                          Registered Office
+                        </h5>
                         <p className="office-title text-navy font-bold m-0">
                           Tripist Holidays Private Limited
                         </p>
@@ -312,7 +363,9 @@ const Contact = () => {
                       </div>
                       <div>
                         <span className="small text-muted d-block">Phone</span>
-                        <span className="link-value font-bold text-trip">{contactInfo.phone}</span>
+                        <span className="link-value font-bold text-trip">
+                          {contactInfo.phone}
+                        </span>
                       </div>
                     </a>
 
@@ -325,13 +378,15 @@ const Contact = () => {
                       </div>
                       <div>
                         <span className="small text-muted d-block">Email</span>
-                        <span className="link-value font-bold text-trip">{contactInfo.email}</span>
+                        <span className="link-value font-bold text-trip">
+                          {contactInfo.email}
+                        </span>
                       </div>
                     </a>
 
                     <a
                       href={
-                        contactInfo.website.startsWith("http")
+                        contactInfo.website?.startsWith("http")
                           ? contactInfo.website
                           : `https://${contactInfo.website}`
                       }
@@ -344,7 +399,9 @@ const Contact = () => {
                       </div>
                       <div>
                         <span className="small text-muted d-block">Website</span>
-                        <span className="link-value font-bold text-trip">{contactInfo.website}</span>
+                        <span className="link-value font-bold text-trip">
+                          {contactInfo.website}
+                        </span>
                       </div>
                     </a>
                   </div>
@@ -353,16 +410,32 @@ const Contact = () => {
                 {/* Business Hours */}
                 <div className="info-card shadow-sm p-4 rounded-4 bg-white">
                   <h3 className="card-heading-gold border-bottom pb-3 mb-4">
-                    <Clock className="icon-title-gold me-2 inline-block" size={24} />
+                    <Clock
+                      className="icon-title-gold me-2 inline-block"
+                      size={24}
+                    />
                     Business Hours
                   </h3>
                   <div className="table-responsive">
                     <table className="table table-borderless business-hours-table m-0">
                       <tbody>
                         {businessHours.map((item, index) => (
-                          <tr key={index} className={item.isSpecial ? "table-row-special" : ""}>
-                            <td className="day-name font-semibold text-trip py-2">{item.day}</td>
-                            <td className={`day-hours py-2 text-end ${item.isSpecial ? "text-gold font-bold" : "text-muted"}`}>
+                          <tr
+                            key={index}
+                            className={
+                              item.isSpecial ? "table-row-special" : ""
+                            }
+                          >
+                            <td className="day-name font-semibold text-trip py-2">
+                              {item.day}
+                            </td>
+                            <td
+                              className={`day-hours py-2 text-end ${
+                                item.isSpecial
+                                  ? "text-gold font-bold"
+                                  : "text-muted"
+                              }`}
+                            >
                               {item.hours}
                             </td>
                           </tr>
@@ -402,12 +475,47 @@ const Contact = () => {
               <div className="form-card shadow p-4 p-md-5 rounded-4 bg-white position-relative overflow-hidden">
                 <div className="form-accent-stripe"></div>
 
-                {/* Notification Banner when package is selected */}
-                {queryPackageName && !submitted && (
-                  <div className="alert alert-warning border-0 d-flex align-items-center gap-2 mb-4 p-3 rounded-3 shadow-sm" style={{ background: "#fef9c3", color: "#854d0e" }}>
-                    <BookmarkCheck size={20} className="text-warning flex-shrink-0" />
+                {/* Notification Banner when package OR destination is selected */}
+                {(queryPackageName || destinationData?.name) && !submitted && (
+                  <div
+                    className="alert alert-warning border-0 d-flex align-items-center gap-3 mb-4 p-3 rounded-3 shadow-sm"
+                    style={{ background: "#fef9c3", color: "#854d0e" }}
+                  >
+                    {destinationData?.heroImage ? (
+                      <img
+                        src={destinationData.heroImage}
+                        alt={destinationData.name}
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          flexShrink: 0,
+                        }}
+                      />
+                    ) : (
+                      <BookmarkCheck
+                        size={20}
+                        className="text-warning flex-shrink-0"
+                      />
+                    )}
                     <div>
-                      Booking enquiry for package: <strong>{queryPackageName}</strong>
+                      {queryPackageName ? (
+                        <>
+                          Booking enquiry for package:{" "}
+                          <strong>{queryPackageName}</strong>
+                        </>
+                      ) : (
+                        <>
+                          Enquiry for destination:{" "}
+                          <strong>{destinationData.name}</strong>
+                          {destinationData?.capital && (
+                            <div className="small opacity-75">
+                              {destinationData.capital}
+                            </div>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                 )}
@@ -415,10 +523,12 @@ const Contact = () => {
                 {!submitted ? (
                   <>
                     <h2 className="text-trip mb-2">
-                      {queryPackageName ? "Complete Your Package Booking" : "Send Us an Enquiry"}
+                      {queryPackageName || destinationData?.name
+                        ? "Complete Your Enquiry"
+                        : "Send Us an Enquiry"}
                     </h2>
                     <p className="text-muted mb-4">
-                      {queryPackageName
+                      {queryPackageName || destinationData?.name
                         ? "Please fill in your details below to confirm dates and receive a tailored quotation."
                         : "Whether you're planning a vacation or need travel assistance, simply fill out the enquiry form and we'll get back to you as soon as possible."}
                     </p>
@@ -432,43 +542,61 @@ const Contact = () => {
                       <div className="row g-4 mb-5">
                         <div className="col-12">
                           <div className="form-group-custom">
-                            <label htmlFor="fullName" className="required-label">Full Name</label>
+                            <label htmlFor="fullName" className="required-label">
+                              Full Name
+                            </label>
                             <input
                               type="text"
                               id="fullName"
                               name="fullName"
                               value={formData.fullName}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${errors.fullName ? "is-invalid" : ""}`}
+                              className={`form-control-custom ${
+                                errors.fullName ? "is-invalid" : ""
+                              }`}
                               placeholder="e.g. Nithesh Kumar"
                               autoComplete="name"
                               required
                             />
-                            {errors.fullName && <div className="invalid-feedback-custom">{errors.fullName}</div>}
+                            {errors.fullName && (
+                              <div className="invalid-feedback-custom">
+                                {errors.fullName}
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="email" className="required-label">Email Address</label>
+                            <label htmlFor="email" className="required-label">
+                              Email Address
+                            </label>
                             <input
                               type="email"
                               id="email"
                               name="email"
                               value={formData.email}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${errors.email ? "is-invalid" : ""}`}
+                              className={`form-control-custom ${
+                                errors.email ? "is-invalid" : ""
+                              }`}
                               placeholder="name@example.com"
                               autoComplete="email"
                               required
                             />
-                            {errors.email && <div className="invalid-feedback-custom">{errors.email}</div>}
+                            {errors.email && (
+                              <div className="invalid-feedback-custom">
+                                {errors.email}
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="mobile" className="required-label">Mobile Number</label>
+                            <label htmlFor="mobile" className="required-label">
+                              Mobile Number
+                            </label>
                             <input
                               type="text"
                               inputMode="numeric"
@@ -477,12 +605,18 @@ const Contact = () => {
                               name="mobile"
                               value={formData.mobile}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${errors.mobile ? "is-invalid" : ""}`}
+                              className={`form-control-custom ${
+                                errors.mobile ? "is-invalid" : ""
+                              }`}
                               placeholder="10-digit mobile number"
                               autoComplete="tel"
                               required
                             />
-                            {errors.mobile && <div className="invalid-feedback-custom">{errors.mobile}</div>}
+                            {errors.mobile && (
+                              <div className="invalid-feedback-custom">
+                                {errors.mobile}
+                              </div>
+                            )}
                           </div>
                         </div>
 
@@ -527,7 +661,9 @@ const Contact = () => {
                       <div className="row g-4 mb-4">
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="destination">Destination / Package</label>
+                            <label htmlFor="destination">
+                              Destination / Package
+                            </label>
                             <input
                               type="text"
                               id="destination"
@@ -542,25 +678,42 @@ const Contact = () => {
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="travelType" className="required-label">Travel Type</label>
+                            <label
+                              htmlFor="travelType"
+                              className="required-label"
+                            >
+                              Travel Type
+                            </label>
                             <select
                               id="travelType"
                               name="travelType"
                               value={formData.travelType}
                               onChange={handleInputChange}
-                              className={`form-select-custom ${errors.travelType ? "is-invalid" : ""}`}
+                              className={`form-select-custom ${
+                                errors.travelType ? "is-invalid" : ""
+                              }`}
                             >
-                              <option value="" disabled>Select Type</option>
+                              <option value="" disabled>
+                                Select Type
+                              </option>
                               <option value="Domestic">Domestic</option>
-                              <option value="International">International</option>
+                              <option value="International">
+                                International
+                              </option>
                             </select>
-                            {errors.travelType && <div className="invalid-feedback-custom">{errors.travelType}</div>}
+                            {errors.travelType && (
+                              <div className="invalid-feedback-custom">
+                                {errors.travelType}
+                              </div>
+                            )}
                           </div>
                         </div>
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="durationDays">Duration (Days)</label>
+                            <label htmlFor="durationDays">
+                              Duration (Days)
+                            </label>
                             <input
                               type="number"
                               id="durationDays"
@@ -576,7 +729,9 @@ const Contact = () => {
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="durationNights">Duration (Nights)</label>
+                            <label htmlFor="durationNights">
+                              Duration (Nights)
+                            </label>
                             <input
                               type="number"
                               id="durationNights"
@@ -592,12 +747,17 @@ const Contact = () => {
 
                         <div className="col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="travelDate">Tentative Travel Date</label>
+                            <label htmlFor="travelDate">
+                              Tentative Travel Date
+                            </label>
                             <div
                               className="date-picker-container"
                               onClick={() => {
                                 if (dateInputRef.current) {
-                                  if (typeof dateInputRef.current.showPicker === "function") {
+                                  if (
+                                    typeof dateInputRef.current.showPicker ===
+                                    "function"
+                                  ) {
                                     dateInputRef.current.showPicker();
                                   } else {
                                     dateInputRef.current.focus();
@@ -612,8 +772,12 @@ const Contact = () => {
                                 readOnly
                                 placeholder="dd/mm/yyyy"
                                 value={
-                                  typeof formData?.travelDate === "string" && formData.travelDate.includes("-")
-                                    ? formData.travelDate.split("-").reverse().join("/")
+                                  typeof formData?.travelDate === "string" &&
+                                  formData.travelDate.includes("-")
+                                    ? formData.travelDate
+                                        .split("-")
+                                        .reverse()
+                                        .join("/")
                                     : ""
                                 }
                                 className="form-control-custom date-display-input"
@@ -649,10 +813,32 @@ const Contact = () => {
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                 >
-                                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                                  <rect
+                                    x="3"
+                                    y="4"
+                                    width="18"
+                                    height="18"
+                                    rx="2"
+                                    ry="2"
+                                  ></rect>
+                                  <line
+                                    x1="16"
+                                    y1="2"
+                                    x2="16"
+                                    y2="6"
+                                  ></line>
+                                  <line
+                                    x1="8"
+                                    y1="2"
+                                    x2="8"
+                                    y2="6"
+                                  ></line>
+                                  <line
+                                    x1="3"
+                                    y1="10"
+                                    x2="21"
+                                    y2="10"
+                                  ></line>
                                 </svg>
                               </button>
                             </div>
@@ -691,7 +877,9 @@ const Contact = () => {
 
                         <div className="col-6 col-md-6">
                           <div className="form-group-custom">
-                            <label htmlFor="children">Number of Children </label>
+                            <label htmlFor="children">
+                              Number of Children{" "}
+                            </label>
                             <input
                               type="number"
                               id="children"
@@ -706,18 +894,30 @@ const Contact = () => {
 
                         <div className="col-12 mt-4">
                           <div className="form-group-custom">
-                            <label className="mb-2">Services Required (Select all that apply)</label>
+                            <label className="mb-2">
+                              Services Required (Select all that apply)
+                            </label>
                             <div className="services-chips-grid">
                               {servicesList.map((service, index) => {
-                                const isSelected = formData.services.includes(service);
+                                const isSelected =
+                                  formData.services.includes(service);
                                 return (
                                   <button
                                     type="button"
                                     key={index}
-                                    className={`service-chip-btn ${isSelected ? "active" : ""}`}
-                                    onClick={() => handleServiceChange(service)}
+                                    className={`service-chip-btn ${
+                                      isSelected ? "active" : ""
+                                    }`}
+                                    onClick={() =>
+                                      handleServiceChange(service)
+                                    }
                                   >
-                                    {isSelected && <Check size={14} className="me-1 stroke-3" />}
+                                    {isSelected && (
+                                      <Check
+                                        size={14}
+                                        className="me-1 stroke-3"
+                                      />
+                                    )}
                                     {service}
                                   </button>
                                 );
@@ -750,12 +950,21 @@ const Contact = () => {
                         >
                           {loading ? (
                             <>
-                              <Loader2 className="animate-spin me-2" size={18} /> Submitting...
+                              <Loader2
+                                className="animate-spin me-2"
+                                size={18}
+                              />{" "}
+                              Submitting...
                             </>
                           ) : (
                             <>
-                              {queryPackageName ? "Confirm Booking Enquiry" : "Get My Free Quote"}
-                              <ArrowRight className="ms-2 inline-block" size={18} />
+                              {queryPackageName || destinationData?.name
+                                ? "Confirm Enquiry"
+                                : "Get My Free Quote"}
+                              <ArrowRight
+                                className="ms-2 inline-block"
+                                size={18}
+                              />
                             </>
                           )}
                         </button>
@@ -765,24 +974,60 @@ const Contact = () => {
                 ) : (
                   <div className="enquiry-success-container text-center py-5">
                     <div className="success-icon-wrapper mb-4">
-                      <CheckCircle2 size={80} className="text-gold stroke-2" style={{ color: "var(--trip-gold)" }} />
+                      <CheckCircle2
+                        size={80}
+                        className="text-gold stroke-2"
+                        style={{ color: "var(--trip-gold)" }}
+                      />
                     </div>
-                    <h2 className="text-trip mb-3">Enquiry Submitted Successfully!</h2>
+                    <h2 className="text-trip mb-3">
+                      Enquiry Submitted Successfully!
+                    </h2>
                     <p className="text-muted mb-4 max-w-lg mx-auto">
-                      Thank you, <strong className="text-trip">{formData.fullName}</strong>! We have received your enquiry for{" "}
-                      <strong className="text-trip">{formData.destination || "your destination"}</strong>. Our travel specialist team will review your requirements and reach out to you within 24 hours.
+                      Thank you,{" "}
+                      <strong className="text-trip">
+                        {formData.fullName}
+                      </strong>
+                      ! We have received your enquiry for{" "}
+                      <strong className="text-trip">
+                        {formData.destination || "your destination"}
+                      </strong>
+                      . Our travel specialist team will review your requirements
+                      and reach out to you within 24 hours.
                     </p>
 
                     <div className="summary-box p-4 rounded-4 bg-light text-start mb-4 border border-light-subtle">
-                      <h5 className="font-semibold text-trip mb-3 border-bottom pb-2">Enquiry Summary</h5>
+                      <h5 className="font-semibold text-trip mb-3 border-bottom pb-2">
+                        Enquiry Summary
+                      </h5>
                       <ul className="list-unstyled d-flex flex-column gap-2 small text-muted">
-                        <li><strong>Contact:</strong> {formData.mobile} | {formData.email}</li>
-                        <li><strong>Trip Type:</strong> {formData.travelType}</li>
-                        {formData.travelDate && <li><strong>Travel Date:</strong> {formData.travelDate}</li>}
-                        <li><strong>Travellers:</strong> {formData.adults} Adults {formData.children > 0 && `, ${formData.children} Children`}</li>
-                        {formData.budget && <li><strong>Budget:</strong> {formData.budget}</li>}
+                        <li>
+                          <strong>Contact:</strong> {formData.mobile} |{" "}
+                          {formData.email}
+                        </li>
+                        <li>
+                          <strong>Trip Type:</strong> {formData.travelType}
+                        </li>
+                        {formData.travelDate && (
+                          <li>
+                            <strong>Travel Date:</strong> {formData.travelDate}
+                          </li>
+                        )}
+                        <li>
+                          <strong>Travellers:</strong> {formData.adults} Adults{" "}
+                          {formData.children > 0 &&
+                            `, ${formData.children} Children`}
+                        </li>
+                        {formData.budget && (
+                          <li>
+                            <strong>Budget:</strong> {formData.budget}
+                          </li>
+                        )}
                         {formData.services.length > 0 && (
-                          <li><strong>Services:</strong> {formData.services.join(", ")}</li>
+                          <li>
+                            <strong>Services:</strong>{" "}
+                            {formData.services.join(", ")}
+                          </li>
                         )}
                       </ul>
                     </div>
@@ -792,7 +1037,10 @@ const Contact = () => {
                       onClick={handleReset}
                       className="btn-trip-outline-reset px-4 py-2 mt-2"
                     >
-                      <RefreshCw size={16} className="me-2 inline-block align-middle" />
+                      <RefreshCw
+                        size={16}
+                        className="me-2 inline-block align-middle"
+                      />
                       Send Another Enquiry
                     </button>
                   </div>
@@ -815,7 +1063,6 @@ const Contact = () => {
             className="map-card-wrapper position-relative shadow rounded-4 overflow-hidden bg-white border border-light-subtle"
             style={{ minHeight: "480px" }}
           >
-            {/* Custom Overlay Card - Placed at (0,0) with a curved bottom-right corner to hide Google's default 'Open in Maps' link */}
             <div
               className="map-floating-overlay-card position-absolute p-3 shadow-lg bg-white"
               style={{
@@ -862,7 +1109,6 @@ const Contact = () => {
               </a>
             </div>
 
-            {/* Embedded Google Map with pure coordinates to trigger the red pin */}
             <iframe
               src={`https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3886.0822606013686!2d${officeLongitude}!3d${officeLatitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA1JzM5LjciTiA4MMKwMTInMjEuNSJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin`}
               width="100%"

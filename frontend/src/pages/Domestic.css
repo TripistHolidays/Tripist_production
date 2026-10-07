@@ -175,6 +175,21 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(204, 160, 55, 0.3);
 }
+@media (max-width: 768px) {
+  .domestic-hero-banner {
+    height: 55vh;
+    min-height: 400px !important;
+  }
+
+  .domestic-hero-title {
+    font-size: 29px !important;
+  }
+
+  .domestic-hero-description {
+    font-size: 1rem;
+    max-width: 90%;
+  }
+}
 @media (max-width: 480px) {
   .domestic-hero-banner {
     height: 50vh;

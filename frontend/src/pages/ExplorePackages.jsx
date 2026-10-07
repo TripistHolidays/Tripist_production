@@ -1030,7 +1030,7 @@ export default function ExplorePackages() {
 
                         <div
                           key={`${amenity.name}-${index}`}
-                          className="col-12 col-sm-6"
+                          className="col-12 col-sm-4"
                         >
 
                           <div className="d-flex align-items-center gap-3 p-3 rounded-3 shadow-sm border bg-white amenity-card h-100">

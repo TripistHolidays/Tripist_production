@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -35,7 +34,6 @@ export default function HandpickedPackages() {
 
         const response = await api.listPackages();
 
-        console.log("FULL PACKAGE RESPONSE:", response);
 
         // ------------------------------------------------------
         // Handle different API response structures
@@ -53,7 +51,7 @@ export default function HandpickedPackages() {
           packageList = response.data.packages;
         }
 
-        console.log("PACKAGE LIST:", packageList);
+
         setPackages(packageList);
 
       } catch (err) {
@@ -68,21 +66,29 @@ export default function HandpickedPackages() {
   }, []);
 
   // ============================================================
-  // FILTER PACKAGES (Domestic vs International based on Country)
+  // FILTER PACKAGES (Domestic vs International)
+  // SORTED ALPHABETICALLY BY NAME
   // ============================================================
 
-  const filteredPackages = packages.filter((pkg) => {
-    const country = String(pkg.country || "").trim().toLowerCase();
-    
-    // Assuming domestic packages are in India. Adjust if your domestic keyword differs.
-    const isDomestic = country === "india" || country === "local";
+  const filteredPackages = packages
+    .filter((pkg) => {
+      const country = String(pkg.country || "").trim().toLowerCase();
 
-    if (activeTab === "domestic") {
-      return isDomestic;
-    } else {
-      return !isDomestic; // International
-    }
-  });
+      // Assuming domestic packages are in India. Adjust if your domestic keyword differs.
+      const isDomestic = country === "india" || country === "local";
+
+      if (activeTab === "domestic") {
+        return isDomestic;
+      } else {
+        return !isDomestic; // International
+      }
+    })
+    // ✅ SORT ALPHABETICALLY BY NAME
+    .sort((a, b) => {
+      const nameA = String(a.name || a.title || "").toLowerCase();
+      const nameB = String(b.name || b.title || "").toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
 
   // ============================================================
   // IMAGE

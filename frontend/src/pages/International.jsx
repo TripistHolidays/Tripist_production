@@ -5,7 +5,6 @@ import "./International.css";
 const International = () => {
   const [internationalData, setInternationalData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
     const loadInternationalDestinations = async () => {
@@ -48,10 +47,6 @@ const International = () => {
     loadInternationalDestinations();
   }, []);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 4);
-  };
-
   return (
     <div className="intl-page-wrapper">
       <section className="intl-hero-banner">
@@ -91,7 +86,7 @@ const International = () => {
             <div className="text-center py-5">Loading destinations...</div>
           ) : (
             <div className="row g-4">
-              {internationalData.slice(0, visibleCount).map((item) => (
+              {internationalData.map((item) => (
                 <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
                   <div className="card custom-dest-card border-0 h-100 shadow-sm">
                     <div className="card-img-container">
@@ -136,7 +131,7 @@ const International = () => {
                             href={`/destination-details?id=${item.id}`}
                             className="explore-link justify-content-between d-flex text-decoration-none "
                           >
-                            <span>View More</span>
+                            <span>Explore Destination</span>
                             <svg
                               width="16"
                               height="16"
@@ -155,14 +150,6 @@ const International = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          )}
-
-          {visibleCount < internationalData.length && (
-            <div className="text-center mt-5">
-              <button onClick={handleLoadMore} className="btn-load-more">
-                Load More Destinations
-              </button>
             </div>
           )}
         </div>

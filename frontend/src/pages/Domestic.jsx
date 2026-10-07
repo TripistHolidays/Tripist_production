@@ -6,7 +6,6 @@ import "./Domestic.css";
 const Domestic = () => {
   const [domesticData, setDomesticData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(8);
 
   useEffect(() => {
     const loadDomesticDestinations = async () => {
@@ -48,10 +47,6 @@ const Domestic = () => {
     loadDomesticDestinations();
   }, []);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 4);
-  };
-
   return (
     <div className="domestic-page-wrapper">
       <section className="domestic-hero-banner">
@@ -91,7 +86,8 @@ const Domestic = () => {
             <div className="text-center py-5">Loading destinations...</div>
           ) : (
             <div className="row g-4">
-              {domesticData.slice(0, visibleCount).map((item) => {
+              {/* Removed .slice(0, visibleCount) so all destinations render */}
+              {domesticData.map((item) => {
                 const imageArray = item.hero_slider_images;
                 const imageUrl = Array.isArray(imageArray)
                   ? imageArray[0]
@@ -155,7 +151,7 @@ const Domestic = () => {
                             href={`/destination-details?id=${item.id}`}
                             className="explore-link text-decoration-none d-flex align-items-center justify-content-between"
                           >
-                            <span>View More</span>
+                            <span>Explore Destination</span>
                             <svg
                               width="16"
                               height="16"
@@ -176,13 +172,6 @@ const Domestic = () => {
             </div>
           )}
 
-          {visibleCount < domesticData.length && (
-            <div className="text-center mt-5">
-              <button onClick={handleLoadMore} className="btn-load-more">
-                Load More Destinations
-              </button>
-            </div>
-          )}
         </div>
       </section>
     </div>

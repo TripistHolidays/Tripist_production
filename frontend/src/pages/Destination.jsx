@@ -64,23 +64,11 @@ const Destinations = () => {
         setLoading(true);
         setError("");
 
-        console.log(
-          "================================="
-        );
-        console.log(
-          "FETCHING DESTINATIONS..."
-        );
-        console.log(
-          "================================="
-        );
 
         const response =
           await api.listDestinations();
 
-        console.log(
-          "DESTINATION API RESPONSE:",
-          response
-        );
+      
 
         let destinationList = [];
 
@@ -114,10 +102,7 @@ const Destinations = () => {
           return nameA.localeCompare(nameB);
         });
 
-        console.log(
-          "FINAL DESTINATION LIST:",
-          destinationList
-        );
+        
 
         setDestinations(
           destinationList

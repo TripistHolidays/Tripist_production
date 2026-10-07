@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import "./App.css";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import Header from "./Components/Header";
 import Footer from "./Components/footer";
@@ -25,8 +26,21 @@ import DestinationDetails from "./Components/DestinationDetails";
 function App() {
   const location = useLocation();
 
-  // Case-insensitive check to hide Header and Footer on any admin route
   const hideLayout = location.pathname.toLowerCase().startsWith("/admin");
+
+  useEffect(() => {
+    const handleDragStart = (e) => {
+      if (e.target.tagName && e.target.tagName.toLowerCase() === "img") {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("dragstart", handleDragStart);
+
+    return () => {
+      document.removeEventListener("dragstart", handleDragStart);
+    };
+  }, []);
 
   return (
     <>
@@ -35,22 +49,36 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about-us" element={<About />} />
-        <Route path="/AboutTripist" element={<AboutTripist />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/visionandmission" element={<AboutTripist />} />
         <Route path="/destinations" element={<Destinations />} />
-        <Route path="/becamepartner" element={<BecamePartner />} />
+        <Route path="/partner" element={<BecamePartner />} />
+        <Route path="/creator" element={<CreatorProgram />} />
         <Route path="/domestic" element={<Domestic />} />
         <Route path="/international" element={<International />} />
-        <Route path="/contact-us" element={<Contact />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/destination-specialists" element={<DestinationSpecialists />} />
-        <Route path="/terms" element={<TermsConditions />} />
-        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-        <Route path="/CancellationRefundPolicy" element={<CancellationRefundPolicy />} />
-        <Route path="/CreatorPorgram" element={<CreatorProgram />} />
+        <Route path="/termsandconditions" element={<TermsConditions />} />
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/cancellationandrefundpolicy" element={<CancellationRefundPolicy />} />
         <Route path="/ExplorePackages" element={<ExplorePackages />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/Admin" element={<AdminPanel />} />
         <Route path="/destination-details" element={<DestinationDetails />} />
+
+        <Route path="/about-us" element={<Navigate to="/about" replace />} />
+        <Route path="/AboutTripist" element={<Navigate to="/visionandmission" replace />} />
+        <Route path="/becamepartner" element={<Navigate to="/partner" replace />} />
+        <Route path="/CreatorPorgram" element={<Navigate to="/creator" replace />} />
+        <Route path="/contact-us" element={<Navigate to="/contact" replace />} />
+        <Route path="/terms" element={<Navigate to="/termsandconditions" replace />} />
+        <Route path="/PrivacyPolicy" element={<Navigate to="/privacypolicy" replace />} />
+        <Route path="/CancellationRefundPolicy" element={<Navigate to="/cancellationandrefundpolicy" replace />} />
+
+
+        <Route path="/:stateName" element={<Destinations />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       {!hideLayout && <Footer />}

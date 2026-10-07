@@ -29,7 +29,6 @@ export default function DestinationSlider() {
          */
         const data = await api.listTopDestinations();
 
-        console.log("Top destinations API response:", data);
 
         const list = Array.isArray(data?.destinations)
           ? data.destinations
@@ -39,22 +38,30 @@ export default function DestinationSlider() {
 
         /*
          * Convert database data into the format
-         * required by the destination cards.
+         * required by the destination cards,
+         * then sort alphabetically by title.
          */
-        const fetchedDestinations = list.map((item) => ({
-          id: item.id,
-          title: item.name,
+        const fetchedDestinations = list
+          .map((item) => ({
+            id: item.id,
+            title: item.name,
 
-          image:
-            Array.isArray(item.hero_slider_images) &&
-            item.hero_slider_images.length > 0
-              ? item.hero_slider_images[0]
-              : item.image ||
-                "https://placehold.co/600x400?text=Destination",
+            image:
+              Array.isArray(item.hero_slider_images) &&
+              item.hero_slider_images.length > 0
+                ? item.hero_slider_images[0]
+                : item.image ||
+                  "https://placehold.co/600x400?text=Destination",
 
-          capital: item.capital || "",
-          climate: item.climate || "",
-        }));
+            capital: item.capital || "",
+            climate: item.climate || "",
+          }))
+          // ✅ SORT ALPHABETICALLY BY TITLE
+          .sort((a, b) =>
+            String(a.title || "")
+              .toLowerCase()
+              .localeCompare(String(b.title || "").toLowerCase())
+          );
 
         setDestinations(fetchedDestinations);
       } catch (err) {

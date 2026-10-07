@@ -35,8 +35,6 @@
   text-decoration: none;
 }
 
-
-
 /* =========================================================
    HEADER — compact, like the reference design
    ========================================================= */
@@ -254,15 +252,25 @@
    QUICK INFO CARD
    ========================================================= */
 .destination-quick-card {
-  min-height: 355px;
-  height: auto;
+  height: 500px;
+  min-height: 500px;
+  max-height: 500px;
+
+  display: flex;
+  flex-direction: column;
+
   padding: 15px 16px 13px;
+
   border: 1px solid #e7e9ed;
   border-radius: 4px;
+
   background: #fbfbfb;
+
+  overflow: hidden;
 }
 
 .quick-card-brand {
+  flex: 0 0 auto;
   padding-bottom: 11px;
   margin-bottom: 4px;
   border-bottom: 1px solid #e2e4e8;
@@ -272,6 +280,7 @@
 }
 
 .quick-info-grid {
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -299,42 +308,105 @@
   font-size: 0.58rem;
 }
 
+/* =========================================================
+   QUICK TIPS — Fixed card with scrollable tip area
+   ========================================================= */
 .quick-tips {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
   padding-top: 10px;
 }
 
 .quick-tips h3 {
+  flex: 0 0 auto;
   color: var(--trip-navy);
   font-size: 0.88rem;
   font-weight: 600;
   margin: 0 0 8px;
 }
 
-.quick-tip {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  margin: 6px 0;
+/* ONLY THIS AREA SCROLLS */
+.quick-tips-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding-right: 6px;
+
+  overscroll-behavior: contain;
 }
 
+/* ---- QUICK TIP ROW ---- */
+.quick-tip {
+  display: flex;
+  align-items: center;       /* ✅ Center icon + text vertically */
+  gap: 8px;
+  margin: 7px 0;
+}
+
+/* Check icon */
 .quick-tip span {
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   border-radius: 50%;
+
   background: var(--trip-gold);
   color: #fff;
-  font-size: 15px !important;
+
+  font-size: 0.90rem;
+  line-height: 1;            /* ✅ Remove extra line space */
 }
 
+/* Tip text */
 .quick-tip p {
+  flex: 1;
   margin: 0;
+  padding: 0;
+
   color: #69727f;
   font-size: 0.66rem;
   line-height: 1.45;
+
+  word-break: break-word;
+}
+
+/* =========================================================
+   QUICK TIPS SCROLLBAR
+   ========================================================= */
+.quick-tips-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.quick-tips-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quick-tips-scroll::-webkit-scrollbar-thumb {
+  background: var(--trip-gold);
+  border-radius: 10px;
+}
+
+.quick-tips-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--trip-gold-dark);
+}
+
+/* Firefox */
+.quick-tips-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--trip-gold) transparent;
 }
 
 /* =========================================================
@@ -893,6 +965,70 @@
 }
 
 /* =========================================================
+   SLIDER BUTTONS
+   ========================================================= */
+.destination-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.25s ease;
+}
+
+.destination-slider-arrow:hover {
+  background: var(--trip-gold);
+  color: #fff;
+}
+
+.destination-slider-prev {
+  left: 15px;
+}
+
+.destination-slider-next {
+  right: 15px;
+}
+
+/* =========================================================
+   SLIDER DOTS
+   ========================================================= */
+.destination-slider-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 45px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+}
+
+.destination-slider-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.destination-slider-dots button.active {
+  width: 24px;
+  background: var(--trip-gold);
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1100px) {
@@ -916,7 +1052,9 @@
   }
 
   .destination-quick-card {
-    min-height: auto;
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;
   }
 
   .destination-facts-grid {
@@ -973,6 +1111,12 @@
     margin-bottom: 5px;
   }
 
+  .destination-quick-card {
+    height: 480px;
+    min-height: 480px;
+    max-height: 480px;
+  }
+
   .destination-facts-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1010,6 +1154,19 @@
   .final-cta-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .destination-slider-arrow {
+    width: 35px;
+    height: 35px;
+  }
+
+  .destination-slider-prev {
+    left: 10px;
+  }
+
+  .destination-slider-next {
+    right: 10px;
   }
 }
 
@@ -1061,264 +1218,5 @@
   .final-cta-btn {
     width: 100%;
     justify-content: center;
-  }
-}
-/* =========================================================
-   QUICK TIPS - FIXED CARD + SCROLLABLE TIPS
-   ========================================================= */
-
-.destination-quick-card {
-  height: 500px;
-  min-height: 500px;
-  max-height: 500px;
-
-  display: flex;
-  flex-direction: column;
-
-  padding: 15px 16px 13px;
-
-  border: 1px solid #e7e9ed;
-  border-radius: 4px;
-
-  background: #fbfbfb;
-
-  overflow: hidden;
-}
-
-/* Keep the brand from shrinking */
-.destination-quick-card .quick-card-brand {
-  flex: 0 0 auto;
-}
-
-/* Quick information stays fixed */
-.destination-quick-card .quick-info-grid {
-  flex: 0 0 auto;
-}
-
-/* Quick tips takes remaining space */
-.destination-quick-card .quick-tips {
-  flex: 1 1 auto;
-
-  min-height: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  overflow: hidden;
-
-  padding-top: 10px;
-}
-
-/* Heading stays visible */
-.destination-quick-card .quick-tips h3 {
-  flex: 0 0 auto;
-
-  margin: 0 0 8px;
-}
-
-/* ONLY THIS AREA SCROLLS */
-.destination-quick-card .quick-tips-scroll {
-  flex: 1 1 auto;
-
-  min-height: 0;
-
-  overflow-y: auto;
-
-  padding-right: 6px;
-
-  overscroll-behavior: contain;
-}
-
-/* Quick tip */
-.destination-quick-card .quick-tip {
-  display: flex;
-  align-items: flex-start;
-
-  gap: 8px;
-
-  margin: 7px 0;
-}
-
-/* Check icon */
-.destination-quick-card .quick-tip span {
-  flex: 0 0 18px;
-
-  width: 18px;
-  height: 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--trip-gold);
-  color: #fff;
-
-  font-size: 0.58rem;
-}
-
-/* Tip text */
-.destination-quick-card .quick-tip p {
-  flex: 1;
-
-  margin: 0;
-
-  color: #69727f;
-
-  font-size: 0.66rem;
-  line-height: 1.45;
-
-  word-break: break-word;
-}
-
-/* =========================================================
-   QUICK TIPS SCROLLBAR
-   ========================================================= */
-
-.destination-quick-card
-  .quick-tips-scroll::-webkit-scrollbar {
-  width: 5px;
-}
-
-.destination-quick-card
-  .quick-tips-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.destination-quick-card
-  .quick-tips-scroll::-webkit-scrollbar-thumb {
-  background: var(--trip-gold);
-  border-radius: 10px;
-}
-
-.destination-quick-card
-  .quick-tips-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--trip-gold-dark);
-}
-
-/* Firefox */
-.destination-quick-card .quick-tips-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: var(--trip-gold) transparent;
-}
-
-/* =========================================================
-   SLIDER BUTTONS
-   ========================================================= */
-
-.destination-slider-arrow {
-  position: absolute;
-
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  width: 40px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: none;
-  border-radius: 50%;
-
-  background: rgba(0, 0, 0, 0.5);
-
-  color: #fff;
-
-  cursor: pointer;
-
-  z-index: 5;
-
-  transition: all 0.25s ease;
-}
-
-.destination-slider-arrow:hover {
-  background: var(--trip-gold);
-  color: #fff;
-}
-
-.destination-slider-prev {
-  left: 15px;
-}
-
-.destination-slider-next {
-  right: 15px;
-}
-
-/* =========================================================
-   SLIDER DOTS
-   ========================================================= */
-
-.destination-slider-dots {
-  position: absolute;
-
-  left: 50%;
-  bottom: 45px;
-
-  transform: translateX(-50%);
-
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
-
-  z-index: 5;
-}
-
-.destination-slider-dots button {
-  width: 8px;
-  height: 8px;
-
-  padding: 0;
-
-  border: none;
-  border-radius: 10px;
-
-  background: rgba(255, 255, 255, 0.6);
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.destination-slider-dots button.active {
-  width: 24px;
-
-  background: var(--trip-gold);
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 991px) {
-  .destination-quick-card {
-    height: 500px;
-    min-height: 500px;
-    max-height: 500px;
-  }
-}
-
-@media (max-width: 767px) {
-  .destination-quick-card {
-    height: 480px;
-    min-height: 480px;
-    max-height: 480px;
-  }
-
-  .destination-slider-arrow {
-    width: 35px;
-    height: 35px;
-  }
-
-  .destination-slider-prev {
-    left: 10px;
-  }
-
-  .destination-slider-next {
-    right: 10px;
   }
 }
