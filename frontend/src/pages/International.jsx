@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { api } from "../Admin/api";
+import { api, toSlug } from "../Admin/api";
 import "./International.css";
 
 const International = () => {
@@ -128,7 +128,7 @@ const International = () => {
                         <hr className="my-2 text-muted opacity-25" />
                         <div className="  mb-2">
                           <a
-                            href={`/destination-details?id=${item.id}`}
+                            href={`/destination/${toSlug(item.name || item.destination_name || "")}`}
                             className="explore-link justify-content-between d-flex text-decoration-none "
                           >
                             <span>Explore Destination</span>

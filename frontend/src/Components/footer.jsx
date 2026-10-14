@@ -210,7 +210,7 @@ const Footer = () => {
             <ul className="list-unstyled mb-0">
               <li className="mb-2">
                 <Link
-                  to="/PrivacyPolicy"
+                  to="/privacypolicy"
                   className="footer-link text-white-50 text-decoration-none small d-inline-block py-1 py-md-0"
                 >
                   Privacy Policy
@@ -293,7 +293,7 @@ const Footer = () => {
 
           <div className="d-flex justify-content-center gap-3 gap-md-4">
             <Link
-              to="/PrivacyPolicy"
+              to="/privacypolicy"
               className="footer-link text-white-50 text-decoration-none"
             >
               Privacy Policy

@@ -5,7 +5,7 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 
-import { api } from "../Admin/api";
+import { api, toSlug } from "../Admin/api";
 import "./Desti.css";
 import heroImage from "../assets/desti.jpg"
 
@@ -18,8 +18,6 @@ const Destinations = () => {
 
   const [error, setError] = useState("");
 
-  // State to handle showing more cards
-  const [showAll, setShowAll] = useState(false);
 
   // ============================================================
   // HELPER - PARSE ARRAY
@@ -201,15 +199,8 @@ const Destinations = () => {
       );
     });
 
-  // Limit visible destinations to 8 unless showAll is true
-  const displayedDestinations = showAll
-    ? filteredDestinations
-    : filteredDestinations.slice(0, 8);
-
-  // Reset showAll when switching tabs
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    setShowAll(false);
   };
 
   // ============================================================
@@ -465,7 +456,7 @@ const Destinations = () => {
               <>
                 <div className="row g-4">
 
-                  {displayedDestinations.map(
+                  {filteredDestinations.map(
                     (item) => {
 
                       const imageArray =
@@ -535,7 +526,13 @@ const Destinations = () => {
                                   TYPE BADGE
                               ================================= */}
 
-                              <span className="badge tag-badge-gold">
+                              <span
+                                className={`badge ${
+                                  destinationType === "domestic"
+                                    ? "tag-badge-blue"
+                                    : "tag-badge-gold"
+                                }`}
+                              >
                                 {displayType}
                               </span>
 
@@ -601,7 +598,7 @@ const Destinations = () => {
                                 <hr className="my-3 text-muted opacity-25" />
 
                                 <Link
-                                  to={`/destination-details?id=${item.id}`}
+                                  to={`/destination/${toSlug(item.name || item.destination_name || "")}`}
                                   className="explore-link text-decoration-none d-flex align-items-center justify-content-between"
                                 >
 
@@ -627,21 +624,6 @@ const Destinations = () => {
 
                 </div>
 
-                {/* ==================================================
-                    VIEW MORE / VIEW LESS BUTTON
-                ================================================== */}
-
-                {filteredDestinations.length > 8 && (
-                  <div className="text-center mt-5">
-                    <button
-                      type="button"
-                      className="custom-pill-btn px-5 py-2 rounded-pill fw-bold"
-                      onClick={() => setShowAll(!showAll)}
-                    >
-                      {showAll ? "View Less" : "View More Destinations"}
-                    </button>
-                  </div>
-                )}
               </>
 
             )}

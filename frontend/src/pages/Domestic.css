@@ -90,17 +90,25 @@
   color: #ffffff;
 }
 
-.tag-badge-gold {
+.tag-badge-gold,
+.tag-badge-blue {
   position: absolute;
   top: 14px;
   left: 14px;
-  background-color: #cca037;
   color: #ffffff;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   padding: 5px 12px;
   border-radius: 50px;
+}
+
+.tag-badge-gold {
+  background-color: #cca037;
+}
+
+.tag-badge-blue {
+  background-color: #0f2d52;
 }
 
 .location-pin {
@@ -151,7 +159,7 @@
 }
 
 .explore-link:hover {
-  color: #a37024;
+  color: #0f2d52!important;
   gap: 8px;
 }
 

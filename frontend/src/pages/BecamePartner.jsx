@@ -508,7 +508,7 @@ const BecomePartner = () => {
         </div>
       </section>
 
-      <section className="partner-final-cta">
+      {/* <section className="partner-final-cta">
         <div className="container text-center">
           <h2>Let's Build Extraordinary Travel Experiences Together</h2>
           <p>
@@ -520,7 +520,7 @@ const BecomePartner = () => {
             Get Started <ArrowRight size={18} />
           </a>
         </div>
-      </section>
+      </section> */}
     </>
   );
 };

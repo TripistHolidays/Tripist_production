@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   FaMapMarkerAlt,
   FaCalendarAlt,
@@ -13,14 +13,13 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-import { api } from "../Admin/api";
+import { api, toSlug } from "../Admin/api";
 import "./DestinationDetails.css";
 
 const DestinationDetails = () => {
-  const [searchParams] = useSearchParams();
+  const { destinationSlug } = useParams();
 
-  const rawId = searchParams.get("id");
-  const destinationId = rawId ? parseInt(rawId, 10) : null;
+  const [destinationId, setDestinationId] = useState(null);
 
   const [destination, setDestination] = useState(null);
   const [attractions, setAttractions] = useState([]);
@@ -34,6 +33,7 @@ const DestinationDetails = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const attractionTrackRef = useRef(null);
+  const packageTrackRef = useRef(null);
 
   // =========================================================
   // HELPER
@@ -72,10 +72,8 @@ const DestinationDetails = () => {
 
   useEffect(() => {
     const fetchDestinationData = async () => {
-      if (!destinationId || isNaN(destinationId)) {
-        setError(
-          "Invalid or missing Destination ID in URL query parameters."
-        );
+      if (!destinationSlug) {
+        setError("Invalid or missing destination in URL.");
         setLoading(false);
         return;
       }
@@ -84,7 +82,20 @@ const DestinationDetails = () => {
         setLoading(true);
         setError("");
 
-        const res = await api.getDestinationById(destinationId);
+        // Resolve slug → ID by fetching all destinations
+        const allDestinations = await api.listDestinations();
+        const match = allDestinations.find(
+          (d) => toSlug(d.name || d.destination_name || "") === destinationSlug
+        );
+
+        if (!match) {
+          throw new Error(`Destination "${destinationSlug}" was not found.`);
+        }
+
+        const resolvedId = match.id;
+        setDestinationId(resolvedId);
+
+        const res = await api.getDestinationById(resolvedId);
 
         const destData =
           res?.destination ||
@@ -165,7 +176,7 @@ const DestinationDetails = () => {
     };
 
     fetchDestinationData();
-  }, [destinationId]);
+  }, [destinationSlug]);
 
   // =========================================================
   // FETCH PACKAGES
@@ -173,7 +184,7 @@ const DestinationDetails = () => {
 
   useEffect(() => {
     const loadPackages = async () => {
-      if (!destinationId || isNaN(destinationId)) {
+      if (!destinationId) {
         setPackagesLoading(false);
         return;
       }
@@ -512,7 +523,7 @@ const DestinationDetails = () => {
 
             <aside className="destination-quick-card">
               <div className="quick-card-brand">
-                South India's No.1 Travel Brand
+                India's No.1 Travel Brand
               </div>
 
               {/* QUICK INFORMATION */}
@@ -692,9 +703,33 @@ const DestinationDetails = () => {
             </div>
 
             {packages.length > 4 && (
-              <Link to="/destinations" className="view-more-link">
-                View All <FaArrowRight />
-              </Link>
+              <div className="package-controls">
+                <button
+                  type="button"
+                  onClick={() =>
+                    packageTrackRef.current?.scrollBy({
+                      left: -320,
+                      behavior: "smooth",
+                    })
+                  }
+                  aria-label="Previous packages"
+                >
+                  <FaChevronLeft />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    packageTrackRef.current?.scrollBy({
+                      left: 320,
+                      behavior: "smooth",
+                    })
+                  }
+                  aria-label="Next packages"
+                >
+                  <FaChevronRight />
+                </button>
+              </div>
             )}
           </div>
 
@@ -713,8 +748,15 @@ const DestinationDetails = () => {
               </p>
             </div>
           ) : (
-            <div className="destination-package-grid">
-              {packages.slice(0, 4).map((pkg) => {
+            <div
+              className={
+                packages.length > 4
+                  ? "package-track"
+                  : "destination-package-grid"
+              }
+              ref={packageTrackRef}
+            >
+              {packages.map((pkg) => {
                 const pkgId = pkg.id || pkg._id;
 
                 const pkgTitle =
@@ -799,13 +841,7 @@ const DestinationDetails = () => {
             </div>
           )}
 
-          {packages.length > 4 && (
-            <div className="center-action">
-              <Link to="/destinations" className="gold-outline-btn">
-                VIEW MORE
-              </Link>
-            </div>
-          )}
+
         </div>
       </section>
 

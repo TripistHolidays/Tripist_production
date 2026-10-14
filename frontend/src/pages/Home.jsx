@@ -12,7 +12,6 @@ import AccreditationPartners from "../Components/AccreditationPartners";
 import NotificationCenter from "../Components/NotificationCenter";
 import { api } from "../Admin/api";
 import ContactModal from "../Components/ContactModal";
-
 import "./Home.css";
 
 const Home = () => {
@@ -56,7 +55,7 @@ const Home = () => {
         isOpen={isContactModalOpen} 
         onClose={() => setIsContactModalOpen(false)} 
       />
-      <NotificationCenter />
+      {/* <NotificationCenter /> */}
 
       {/* Hero Section */}
       <section className="w-100 overflow-hidden">

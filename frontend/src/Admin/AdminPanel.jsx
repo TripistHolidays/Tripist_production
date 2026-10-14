@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./Admin.css";
+//import "./Admin.css";
 import './adminseperate.css'
 import { api, auth } from "./api";
 

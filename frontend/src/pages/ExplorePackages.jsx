@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   FaCalendarAlt,
@@ -35,13 +35,65 @@ import {
   FaMapMarkedAlt,
   FaUserTie,
   FaHeadset,
-  FaCheck
+  FaCheck,
+  FaMountain,
+  FaTree,
+  FaShoppingBag,
+  FaFirstAid,
+  FaHeartbeat,
 } from "react-icons/fa";
 
-import { api } from "../Admin/api";
+import { api, toPackageSlug } from "../Admin/api";
 import ContactModal from "../Components/ContactModal";
 import "./ExplorePackages.css";
 
+/* =========================================================
+   AMENITY ICONS MAPPING & HELPER
+========================================================= */
+const AMENITY_ICONS = {
+  hotel: <FaHotel />,
+  wifi: <FaWifi />,
+  pool: <FaSwimmingPool />,
+  car: <FaCar />,
+  bus: <FaBus />,
+  utensils: <FaUtensils />,
+  food: <FaUtensils />,
+  camera: <FaCamera />,
+  guide: <FaUserTie />,
+  support: <FaHeadset />,
+  shield: <FaShieldAlt />,
+  flight: <FaPlane />,
+  plane: <FaPlane />,
+  train: <FaTrain />,
+  ship: <FaShip />,
+  passport: <FaPassport />,
+  spa: <FaSpa />,
+  gym: <FaDumbbell />,
+  fitness: <FaDumbbell />,
+  drinks: <FaGlassCheers />,
+  beach: <FaUmbrellaBeach />,
+  mountain: <FaMountain />,
+  tree: <FaTree />,
+  shopping: <FaShoppingBag />,
+  medical: <FaFirstAid />,
+  health: <FaHeartbeat />,
+  luggage: <FaSuitcaseRolling />,
+  bed: <FaBed />,
+  bell: <FaBell />,
+  laundry: <FaTshirt />,
+  parking: <FaParking />,
+  child: <FaChild />,
+  map: <FaMapMarkedAlt />,
+  check: <FaCheckCircle />,
+};
+
+const getAmenityIcon = (iconName) => {
+  if (!iconName) {
+    return <FaCheckCircle />;
+  }
+  const key = String(iconName).toLowerCase().trim();
+  return AMENITY_ICONS[key] || <FaCheckCircle />;
+};
 
 /* =========================================================
    TRAVEL TIPS
@@ -60,58 +112,6 @@ const travelTips = [
   }
 ];
 
-
-/* =========================================================
-   AMENITY ICONS
-   These keys match the icons saved from the Admin Panel.
-========================================================= */
-
-const amenityIcons = {
-  hotel: <FaHotel />,
-  wifi: <FaWifi />,
-  pool: <FaSwimmingPool />,
-  car: <FaCar />,
-  bus: <FaBus />,
-  utensils: <FaUtensils />,
-  camera: <FaCamera />,
-  guide: <FaUserTie />,
-  support: <FaHeadset />,
-  shield: <FaShieldAlt />,
-  plane: <FaPlane />,
-  train: <FaTrain />,
-  ship: <FaShip />,
-  passport: <FaPassport />,
-  spa: <FaSpa />,
-  gym: <FaDumbbell />,
-  drinks: <FaGlassCheers />,
-  beach: <FaUmbrellaBeach />,
-  luggage: <FaSuitcaseRolling />,
-  bed: <FaBed />,
-  bell: <FaBell />,
-  laundry: <FaTshirt />,
-  parking: <FaParking />,
-  child: <FaChild />,
-  map: <FaMapMarkedAlt />,
-  check: <FaCheckCircle />
-};
-
-
-/* =========================================================
-   GET AMENITY ICON
-========================================================= */
-
-const getAmenityIcon = (iconName) => {
-  if (!iconName) {
-    return <FaCheckCircle />;
-  }
-
-  return (
-    amenityIcons[String(iconName).toLowerCase()] || (
-      <FaCheckCircle />
-    )
-  );
-};
-
 /* =========================================================
    FORMAT DATE TO dd/mm/yyyy
    Accepts: "2026-12-31", "2026-12-31T00:00:00Z", Date object
@@ -119,7 +119,6 @@ const getAmenityIcon = (iconName) => {
 const formatDateToDMY = (value) => {
   if (!value) return "";
 
-  // If it's a Date object
   if (value instanceof Date && !isNaN(value)) {
     const d = String(value.getDate()).padStart(2, "0");
     const m = String(value.getMonth() + 1).padStart(2, "0");
@@ -130,19 +129,16 @@ const formatDateToDMY = (value) => {
   const str = String(value).trim();
   if (!str) return "";
 
-  // Already in dd/mm/yyyy — return as is
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+  if (/^\d{2}\/\d{2}\/\d{4}\$/.test(str)) {
     return str;
   }
 
-  // ISO format: YYYY-MM-DD or YYYY-MM-DDTHH:mm:ss
   const isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (isoMatch) {
     const [, y, m, d] = isoMatch;
     return `${d}/${m}/${y}`;
   }
 
-  // Fallback — try native Date parsing
   const parsed = new Date(str);
   if (!isNaN(parsed)) {
     const d = String(parsed.getDate()).padStart(2, "0");
@@ -151,25 +147,11 @@ const formatDateToDMY = (value) => {
     return `${d}/${m}/${y}`;
   }
 
-  // Give up — return original
   return str;
 };
+
 /* =========================================================
    NORMALIZE AMENITIES
-   Handles:
-
-   1. JSON string
-   2. Array of strings
-   3. Array of objects
-
-   Example:
-
-   [
-     {
-       name: "Free Wi-Fi",
-       icon: "wifi"
-     }
-   ]
 ========================================================= */
 
 const normalizeAmenities = (value) => {
@@ -179,7 +161,6 @@ const normalizeAmenities = (value) => {
 
   let parsed = value;
 
-  /* JSON string from PostgreSQL */
   if (typeof parsed === "string") {
     try {
       parsed = JSON.parse(parsed);
@@ -195,9 +176,6 @@ const normalizeAmenities = (value) => {
 
   return parsed
     .map((amenity) => {
-      /* Old format:
-         ["Free Wi-Fi", "Breakfast"]
-      */
       if (typeof amenity === "string") {
         return {
           name: amenity,
@@ -205,12 +183,6 @@ const normalizeAmenities = (value) => {
         };
       }
 
-      /* New format:
-         {
-           name: "Free Wi-Fi",
-           icon: "wifi"
-         }
-      */
       if (amenity && typeof amenity === "object") {
         return {
           name:
@@ -241,148 +213,129 @@ const normalizeAmenities = (value) => {
 ========================================================= */
 
 export default function ExplorePackages() {
+  const { packageSlug } = useParams();
   const [searchParams] = useSearchParams();
+  const queryId = searchParams.get("id");
   const navigate = useNavigate();
 
-  const packageId = searchParams.get("id");
+  // Grab preloaded package synchronously in 0ms if available!
+  const initialCached = api.getCachedPackageSync
+    ? api.getCachedPackageSync(queryId || packageSlug)
+    : null;
 
-  const [packageData, setPackageData] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-
+  const [packageId, setPackageId] = useState(
+    initialCached ? initialCached.id || initialCached._id : null
+  );
+  const [packageData, setPackageData] = useState(initialCached);
+  const [loading, setLoading] = useState(!initialCached);
   const [error, setError] = useState(null);
-
   const [activeFaq, setActiveFaq] = useState(null);
-
   const [activeDay, setActiveDay] = useState(0);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   /* =========================================================
      FETCH PACKAGE
   ========================================================= */
 
   useEffect(() => {
-    if (!packageId) {
+    if (!packageSlug && !queryId) {
       setError(
         "No package selected. Please select a package from our listings."
       );
-
       setLoading(false);
-
       return;
     }
 
+    let isMounted = true;
+
+    // Immediately show cached data if available so there is 0ms delay
+    const syncHit = api.getCachedPackageSync
+      ? api.getCachedPackageSync(queryId || packageSlug)
+      : null;
+
+    if (syncHit) {
+      setPackageData(syncHit);
+      setPackageId(syncHit.id || syncHit._id);
+      setLoading(false);
+
+      if (queryId) {
+        const slug = toPackageSlug(syncHit.name || syncHit.package_name || "");
+        if (slug) {
+          window.history.replaceState(null, "", `/package/${slug}`);
+        }
+      }
+    } else {
+      setLoading(true);
+    }
 
     const fetchPackage = async () => {
+      setError(null);
+
       try {
         let data;
 
-
-        /* Use existing API */
-        if (api.getPackageById) {
-          data = await api.getPackageById(packageId);
-        }
-
-        /* Fallback API */
-        else {
-          const res = await fetch(
-            `/api/packages/${packageId}`
-          );
-
-          if (!res.ok) {
-            throw new Error(
-              "Package not found"
-            );
+        if (queryId) {
+          data = await api.getPackageById(queryId);
+          const slug = toPackageSlug(data.name || data.package_name || "");
+          if (slug) {
+            window.history.replaceState(null, "", `/package/${slug}`);
           }
-
-          data = await res.json();
+        } else {
+          data = await api.getPackageBySlug(packageSlug);
         }
 
+        if (!isMounted) return;
+
+        const normalized = { ...data };
 
         /* =====================================================
            NORMALIZE JSON DATABASE COLUMNS
         ===================================================== */
 
-        if (
-          typeof data.itinerary === "string"
-        ) {
+        if (typeof normalized.itinerary === "string") {
           try {
-            data.itinerary =
-              JSON.parse(data.itinerary);
+            normalized.itinerary = JSON.parse(normalized.itinerary);
           } catch (e) {
-            console.error(
-              "Failed to parse itinerary:",
-              e
-            );
-
-            data.itinerary = [];
+            console.error("Failed to parse itinerary:", e);
+            normalized.itinerary = [];
           }
         }
 
-
-        if (
-          typeof data.faqs === "string"
-        ) {
+        if (typeof normalized.faqs === "string") {
           try {
-            data.faqs =
-              JSON.parse(data.faqs);
+            normalized.faqs = JSON.parse(normalized.faqs);
           } catch (e) {
-            console.error(
-              "Failed to parse FAQs:",
-              e
-            );
-
-            data.faqs = [];
+            console.error("Failed to parse FAQs:", e);
+            normalized.faqs = [];
           }
         }
-
 
         /* =====================================================
            NORMALIZE AMENITIES
         ===================================================== */
 
-        data.amenities =
-          normalizeAmenities(
-            data.amenities
-          );
+        normalized.amenities = normalizeAmenities(normalized.amenities);
 
-
-        console.log(
-          "PACKAGE DATA:",
-          data
-        );
-
-        console.log(
-          "PACKAGE AMENITIES:",
-          data.amenities
-        );
-
-
-        setPackageData(data);
-      }
-
-      catch (err) {
-        console.error(
-          "Failed to load package details:",
-          err
-        );
-
-        setError(
-          "Failed to load package details."
-        );
-      }
-
-      finally {
-        setLoading(false);
+        setPackageId(normalized.id || normalized._id);
+        setPackageData(normalized);
+      } catch (err) {
+        console.error("Failed to load package details:", err);
+        if (isMounted && !syncHit) {
+          setError("Failed to load package details.");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-
     fetchPackage();
 
-  }, [packageId]);
+    return () => {
+      isMounted = false;
+    };
+  }, [packageSlug, queryId]);
 
 
   /* =========================================================
@@ -871,8 +824,8 @@ export default function ExplorePackages() {
                           <div
                             key={idx}
                             className={`itinerary-day ${isOpen
-                                ? "is-open"
-                                : ""
+                              ? "is-open"
+                              : ""
                               }`}
                           >
 
@@ -941,8 +894,8 @@ export default function ExplorePackages() {
 
                             <div
                               className={`itinerary-day-content ${isOpen
-                                  ? "show"
-                                  : ""
+                                ? "show"
+                                : ""
                                 }`}
                             >
 
@@ -1035,7 +988,7 @@ export default function ExplorePackages() {
 
                           <div className="d-flex align-items-center gap-3 p-3 rounded-3 shadow-sm border bg-white amenity-card h-100">
 
-                            <span className="fs-5 text-warning amenity-icon">
+                            <span className="fs-5 text-warning amenity-icon d-inline-flex align-items-center justify-content-center">
 
                               {getAmenityIcon(
                                 amenity.icon
@@ -1191,7 +1144,7 @@ export default function ExplorePackages() {
                       ).startsWith("₹") ||
                       String(
                         packageData.price
-                      ).startsWith("$")
+                      ).startsWith("\$")
                     )
                       ? packageData.price
                       : `₹ ${packageData.price}`
@@ -1359,7 +1312,7 @@ export default function ExplorePackages() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         initialPackageName={packageData?.name || ""}
-        initialPackageId={packageData?.id || ""}
+        initialPackageId={packageData?.id || packageId || ""}
         initialPackagePrice={packageData?.price || ""}
         initialDurationDays={packageData?.durationDays || packageData?.duration_days || ""}
         initialDurationNights={packageData?.durationNights || packageData?.duration_nights || ""}

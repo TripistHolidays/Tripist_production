@@ -88,10 +88,10 @@ body {
   width: 44px;
   height: 44px;
   object-fit: contain;
-  background: #fff;
+  /* background: #fff; */
   padding: 7px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+  /* border-radius: 14px; */
+  /* box-shadow: 0 8px 24px rgba(0, 0, 0, .2); */
   transition: .3s ease;
 }
 
@@ -676,11 +676,36 @@ textarea.form-control {
 /* ---------- Collapsed Sidebar Text Hiding ---------- */
 .sidebar-container .sidebar-text,
 .sidebar-container .admin-badge {
+   display: inline-block;
   opacity: 0;
-  visibility: hidden;
   white-space: nowrap;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.12s ease;
 }
+.sidebar-container.collapsed .sidebar-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition: opacity 0.08s ease, width 0.08s ease;
+}
+
+.sidebar-container {
+  transition: width 0.25s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  will-change: width;
+}
+.sidebar-container.collapsed .nav-link-custom,
+.sidebar-container.collapsed .btn-logout-sidebar {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar-container.collapsed .nav-link-custom i,
+.sidebar-container.collapsed .btn-logout-sidebar i {
+  margin-right: 0;
+}
+
 
 /* ---------- Expanded Sidebar Text Reveal on Hover ---------- */
 .sidebar-container:hover .sidebar-text,
@@ -712,5 +737,4 @@ textarea.form-control {
   animation: toastIn .3s ease-out;
   z-index: 2000;
 }
-
 

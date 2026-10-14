@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { api } from "../Admin/api";
+import { api, toSlug } from "../Admin/api";
 import "./Domestic.css";
 
 const Domestic = () => {
@@ -109,7 +109,7 @@ const Domestic = () => {
                           alt={item.name || "Destination"}
                           referrerPolicy="no-referrer"
                         />
-                        <span className="badge tag-badge-gold">
+                        <span className="badge tag-badge-blue">
                           {(item.destination_type || "DOMESTIC").toUpperCase()}
                         </span>
 
@@ -148,7 +148,7 @@ const Domestic = () => {
                         <div className="mt-auto">
                           <hr className="my-3 text-muted opacity-25" />
                           <a
-                            href={`/destination-details?id=${item.id}`}
+                            href={`/destination/${toSlug(item.name || item.destination_name || "")}`}
                             className="explore-link text-decoration-none d-flex align-items-center justify-content-between"
                           >
                             <span>Explore Destination</span>

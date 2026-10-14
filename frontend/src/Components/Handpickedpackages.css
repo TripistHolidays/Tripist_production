@@ -40,8 +40,8 @@
 }
 
 .tab-btn:hover {
-  border-color: var(--tripist-teal);
-  color: var(--tripist-teal);
+  border-color: var(--tripist-navy);
+  color: var(--tripist-navy);
 }
 
 .tab-btn.active {

@@ -23,7 +23,7 @@
   
   .partner-hero {
     position: relative;
-    min-height: 440px;
+    min-height: 60vh;
     height: 52vh;
     background-size: cover;
     background-position: center;

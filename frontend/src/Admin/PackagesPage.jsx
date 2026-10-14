@@ -10,33 +10,138 @@ import {
 } from "./Constants";
 import { api } from "./api";
 import "./PackagesPage.css";
+import {
+  FaHotel,
+  FaWifi,
+  FaSwimmingPool,
+  FaCar,
+  FaBus,
+  FaUtensils,
+  FaCamera,
+  FaUserTie,
+  FaHeadset,
+  FaShieldAlt,
+  FaPlane,
+  FaTrain,
+  FaShip,
+  FaPassport,
+  FaSpa,
+  FaDumbbell,
+  FaGlassCheers,
+  FaUmbrellaBeach,
+  FaSuitcaseRolling,
+  FaBed,
+  FaBell,
+  FaTshirt,
+  FaParking,
+  FaChild,
+  FaMapMarkedAlt,
+  FaMountain,
+  FaShoppingBag,
+  FaFirstAid,
+  FaTree,
+  FaHeartbeat,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 /* =========================================================
-   AMENITY ICON MAP — maps amenity key to a Bootstrap icon
+   LOCAL AMENITY ICONS MAP & HELPERS
 ========================================================= */
-const AMENITY_ICON_MAP = {
-  hotel: "bi-building",
-  utensils: "bi-cup-hot",
-  car: "bi-car-front",
-  camera: "bi-camera",
-  support: "bi-headset",
-  check: "bi-check-circle",
-  wifi: "bi-wifi",
-  pool: "bi-water",
-  spa: "bi-flower1",
-  gym: "bi-bicycle",
-  flight: "bi-airplane",
-  bus: "bi-bus-front",
-  train: "bi-train-front",
-  beach: "bi-sun",
-  mountain: "bi-tree",
-  shopping: "bi-bag",
-  food: "bi-egg-fried",
-  medical: "bi-heart-pulse",
+const AMENITY_ICONS = {
+  hotel: <FaHotel />,
+  wifi: <FaWifi />,
+  pool: <FaSwimmingPool />,
+  car: <FaCar />,
+  bus: <FaBus />,
+  utensils: <FaUtensils />,
+  food: <FaUtensils />,
+  camera: <FaCamera />,
+  guide: <FaUserTie />,
+  support: <FaHeadset />,
+  shield: <FaShieldAlt />,
+  flight: <FaPlane />,
+  plane: <FaPlane />,
+  train: <FaTrain />,
+  ship: <FaShip />,
+  passport: <FaPassport />,
+  spa: <FaSpa />,
+  gym: <FaDumbbell />,
+  fitness: <FaDumbbell />,
+  drinks: <FaGlassCheers />,
+  beach: <FaUmbrellaBeach />,
+  mountain: <FaMountain />,
+  tree: <FaTree />,
+  shopping: <FaShoppingBag />,
+  medical: <FaFirstAid />,
+  health: <FaHeartbeat />,
+  luggage: <FaSuitcaseRolling />,
+  bed: <FaBed />,
+  bell: <FaBell />,
+  laundry: <FaTshirt />,
+  parking: <FaParking />,
+  child: <FaChild />,
+  map: <FaMapMarkedAlt />,
+  check: <FaCheckCircle />,
 };
 
-const getAmenityIcon = (iconKey) =>
-  AMENITY_ICON_MAP[iconKey] || AMENITY_ICON_MAP.check;
+const getAmenityIcon = (iconName) => {
+  if (!iconName) {
+    return <FaCheckCircle />;
+  }
+  const key = String(iconName).toLowerCase().trim();
+  return AMENITY_ICONS[key] || <FaCheckCircle />;
+};
+
+const ALL_AMENITY_OPTIONS = [
+  { value: "check", label: "Checkmark (Default)" },
+  { value: "hotel", label: "Hotel / Accommodation" },
+  { value: "utensils", label: "Breakfast / Utensils" },
+  { value: "food", label: "Food / Meals" },
+  { value: "car", label: "Car / Airport Transfer" },
+  { value: "camera", label: "Camera / Sightseeing" },
+  { value: "support", label: "24/7 Support" },
+  { value: "wifi", label: "Free WiFi" },
+  { value: "pool", label: "Swimming Pool" },
+  { value: "spa", label: "Spa Access" },
+  { value: "gym", label: "Gym / Fitness" },
+  { value: "flight", label: "Flight / Plane" },
+  { value: "bus", label: "Bus Transfer" },
+  { value: "train", label: "Train Tickets" },
+  { value: "beach", label: "Beach Access" },
+  { value: "mountain", label: "Mountain / Hills" },
+  { value: "shopping", label: "Shopping Tour" },
+  { value: "medical", label: "Medical / First Aid" },
+  { value: "guide", label: "Tour Guide" },
+  { value: "drinks", label: "Welcome Drinks" },
+  { value: "luggage", label: "Luggage Service" },
+  { value: "bed", label: "Bed / Room Stay" },
+  { value: "laundry", label: "Laundry Service" },
+  { value: "parking", label: "Parking Space" },
+  { value: "shield", label: "Insurance / Shield" },
+  { value: "passport", label: "Visa / Passport" },
+];
+
+const DEFAULT_AMENITIES = [
+  { name: "Hotel Accommodation", icon: "hotel" },
+  { name: "Daily Breakfast", icon: "utensils" },
+  { name: "Airport Transfers", icon: "car" },
+  { name: "Guided Sightseeing", icon: "camera" },
+  { name: "24/7 Travel Support", icon: "support" },
+  { name: "Free WiFi", icon: "wifi" },
+  { name: "Swimming Pool", icon: "pool" },
+  { name: "Spa Access", icon: "spa" },
+  { name: "Fitness Center", icon: "gym" },
+  { name: "Flight Tickets", icon: "flight" },
+  { name: "Bus Transfer", icon: "bus" },
+  { name: "Train Tickets", icon: "train" },
+  { name: "Beach Access", icon: "beach" },
+  { name: "Mountain View", icon: "mountain" },
+  { name: "Shopping Tour", icon: "shopping" },
+  { name: "Meals Included", icon: "food" },
+  { name: "Medical Assistance", icon: "medical" },
+];
+
+
 
 /* =========================================================
    IMAGE PREVIEW HELPERS
@@ -289,25 +394,7 @@ export default function PackagesPage({ packages, setPackages, notify }) {
   const [incInput, setIncInput] = useState("");
   const [excInput, setExcInput] = useState("");
 
-  const DEFAULT_AMENITIES = [
-    { name: "Hotel Accommodation", icon: "hotel" },
-    { name: "Daily Breakfast", icon: "utensils" },
-    { name: "Airport Transfers", icon: "car" },
-    { name: "Guided Sightseeing", icon: "camera" },
-    { name: "24/7 Travel Support", icon: "support" },
-    { name: "Free WiFi", icon: "wifi" },
-    { name: "Swimming Pool", icon: "pool" },
-    { name: "Spa Access", icon: "spa" },
-    { name: "Fitness Center", icon: "gym" },
-    { name: "Flight Tickets", icon: "flight" },
-    { name: "Bus Transfer", icon: "bus" },
-    { name: "Train Tickets", icon: "train" },
-    { name: "Beach Access", icon: "beach" },
-    { name: "Mountain View", icon: "mountain" },
-    { name: "Shopping Tour", icon: "shopping" },
-    { name: "Meals Included", icon: "food" },
-    { name: "Medical Assistance", icon: "medical" },
-  ];
+
 
   const [amenityOptions, setAmenityOptions] = useState(DEFAULT_AMENITIES);
   const [newAmenityName, setNewAmenityName] = useState("");
@@ -960,13 +1047,11 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                           return (
                             <span
                               key={i}
-                              className="badge bg-primary-subtle text-primary border px-2 py-2 d-inline-flex align-items-center"
+                              className="badge bg-primary-subtle text-primary border px-2 py-2 d-inline-flex align-items-center gap-1"
                             >
-                              <i
-                                className={`bi ${getAmenityIcon(
-                                  icon
-                                )} me-1`}
-                              ></i>
+                              <span className="fs-6 me-1 text-primary d-inline-flex align-items-center justify-content-center">
+                                {getAmenityIcon(icon)}
+                              </span>
                               {name}
                             </span>
                           );
@@ -1598,24 +1683,11 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                                   setNewAmenityIcon(e.target.value)
                                 }
                               >
-                                <option value="check">✓ Check</option>
-                                <option value="hotel">🏨 Hotel</option>
-                                <option value="utensils">🍽 Utensils</option>
-                                <option value="car">🚗 Car</option>
-                                <option value="camera">📷 Camera</option>
-                                <option value="support">🎧 Support</option>
-                                <option value="wifi">📶 WiFi</option>
-                                <option value="pool">🏊 Pool</option>
-                                <option value="spa">💆 Spa</option>
-                                <option value="gym">🏋 Gym</option>
-                                <option value="flight">✈ Flight</option>
-                                <option value="bus">🚌 Bus</option>
-                                <option value="train">🚆 Train</option>
-                                <option value="beach">🏖 Beach</option>
-                                <option value="mountain">🏔 Mountain</option>
-                                <option value="shopping">🛍 Shopping</option>
-                                <option value="food">🍳 Food</option>
-                                <option value="medical">🩺 Medical</option>
+                                {ALL_AMENITY_OPTIONS.map((opt) => (
+                                  <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </option>
+                                ))}
                               </select>
                             </div>
                             <div className="col-md-3">
@@ -1697,11 +1769,9 @@ export default function PackagesPage({ packages, setPackages, notify }) {
                                     key={idx}
                                     className="badge bg-primary-subtle text-primary border px-2 py-2 d-inline-flex align-items-center"
                                   >
-                                    <i
-                                      className={`bi ${getAmenityIcon(
-                                        icon
-                                      )} me-1`}
-                                    ></i>
+                                    <span className="fs-6 me-1 text-primary d-inline-flex align-items-center justify-content-center">
+                                      {getAmenityIcon(icon)}
+                                    </span>
                                     {name}
                                     <button
                                       type="button"

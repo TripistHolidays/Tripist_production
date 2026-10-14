@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 
-import { api } from "../Admin/api";
+import { api, toSlug } from "../Admin/api";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./Destination.css";
@@ -258,7 +258,7 @@ export default function DestinationSlider() {
               >
 
                 <Link
-                  to={`/destination-details?id=${item.id}`}
+                  to={`/destination/${toSlug(item.title || item.name || item.destination_name || "")}`}
                   className="text-decoration-none"
                 >
 

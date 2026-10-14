@@ -1,34 +1,44 @@
 import React from "react";
-import logo from "../assets/tripist.png";
+import logo from "../assets/logoo.png";
 
-export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout }) {
+export default function Sidebar({
+  activeTab,
+  setActiveTab,
+  currentUser,
+  onLogout,
+  isCollapsed = false, // default false so nothing breaks if not passed
+}) {
   return (
-    <aside className="sidebar-container">
+    <aside className={`sidebar-container ${isCollapsed ? "collapsed" : ""}`}>
       <div>
         <div className="sidebar-logo">
           <img src={logo} alt="Tripist" />
-         
         </div>
 
         {currentUser && (
           <div className="sidebar-user text-white">
-            <div className="fw-semibold sidebar-text">{currentUser.username}</div>
+            <div className="fw-semibold sidebar-text">
+              {isCollapsed ? "" : currentUser.username}
+            </div>
           </div>
         )}
 
         <nav className="mt-3">
-
-        <button
-            className={`nav-link-custom ${activeTab === "destinations" ? "active" : ""}`}
+          <button
+            className={`nav-link-custom ${
+              activeTab === "destinations" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("destinations")}
             title="Destinations"
           >
             <i className="bi bi-geo-alt"></i>
             <span className="sidebar-text">Destinations</span>
           </button>
-          
+
           <button
-            className={`nav-link-custom ${activeTab === "package" ? "active" : ""}`}
+            className={`nav-link-custom ${
+              activeTab === "package" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("package")}
             title="Packages"
           >
@@ -36,10 +46,10 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
             <span className="sidebar-text">Packages</span>
           </button>
 
-          
-
           <button
-            className={`nav-link-custom ${activeTab === "contact" ? "active" : ""}`}
+            className={`nav-link-custom ${
+              activeTab === "contact" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("contact")}
             title="Contact Info"
           >
@@ -48,7 +58,9 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
           </button>
 
           <button
-            className={`nav-link-custom ${activeTab === "notice" ? "active" : ""}`}
+            className={`nav-link-custom ${
+              activeTab === "notice" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("notice")}
             title="Notice"
           >
@@ -57,7 +69,9 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
           </button>
 
           <button
-            className={`nav-link-custom ${activeTab === "users" ? "active" : ""}`}
+            className={`nav-link-custom ${
+              activeTab === "users" ? "active" : ""
+            }`}
             onClick={() => setActiveTab("users")}
             title="Users & Security"
           >
@@ -67,7 +81,11 @@ export default function Sidebar({ activeTab, setActiveTab, currentUser, onLogout
         </nav>
       </div>
 
-      <button className="btn-logout-sidebar" onClick={onLogout} title="Logout">
+      <button
+        className="btn-logout-sidebar"
+        onClick={onLogout}
+        title="Logout"
+      >
         <i className="bi bi-box-arrow-right"></i>
         <span className="sidebar-text">Logout</span>
       </button>
