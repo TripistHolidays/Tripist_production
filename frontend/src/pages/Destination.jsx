@@ -7,7 +7,7 @@ import {
 
 import { api, toSlug } from "../Admin/api";
 import "./Desti.css";
-import heroImage from "../assets/desti.jpg"
+import heroImage from "../assets/desti.webp";
 
 const Destinations = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -511,6 +511,10 @@ const Destinations = () => {
                                   "Destination"
                                 }
                                 referrerPolicy="no-referrer"
+                                loading="lazy"
+                                decoding="async"
+                                width="600"
+                                height="400"
                                 onError={(e) => {
 
                                   e.currentTarget.onerror =

@@ -702,7 +702,7 @@ const DestinationDetails = () => {
               <h2>View All {destName} Tour Packages</h2>
             </div>
 
-            {packages.length > 4 && (
+            {packages.length > 0 && (
               <div className="package-controls">
                 <button
                   type="button"

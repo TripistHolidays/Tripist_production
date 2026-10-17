@@ -35,13 +35,13 @@ import {
   FaMapMarkedAlt,
   FaUserTie,
   FaHeadset,
-  FaCheck,
   FaMountain,
   FaTree,
   FaShoppingBag,
   FaFirstAid,
   FaHeartbeat,
 } from "react-icons/fa";
+import { GoDot } from "react-icons/go";
 
 import { api, toPackageSlug } from "../Admin/api";
 import ContactModal from "../Components/ContactModal";
@@ -474,7 +474,7 @@ export default function ExplorePackages() {
       ===================================================== */}
 
       <section
-        className="explore-hero-banner"
+        className="explore-hero-banner m-0 "
         style={{
           backgroundImage:
             packageData.image
@@ -511,8 +511,9 @@ export default function ExplorePackages() {
       ===================================================== */}
 
       <section
-        className="py-5"
+        className="py-5 m-0"
         id="packages"
+         
       >
 
         <div className="container">
@@ -524,7 +525,7 @@ export default function ExplorePackages() {
                 LEFT CONTENT
             ================================================= */}
 
-            <div className="col-12 col-lg-8">
+            <div className="col-12 col-lg-8 m-0">
 
 
               {/* HERO IMAGE */}
@@ -674,7 +675,7 @@ export default function ExplorePackages() {
 
                       {inclusions.length > 0 && (
 
-                        <div className="col-12 col-md-6">
+                        <div className="col-12 col-md-6 m-0">
 
                           <div className="p-3 rounded-3  include shadow-sm h-100">
 
@@ -697,8 +698,8 @@ export default function ExplorePackages() {
                                     className="d-flex align-items-start gap-2 text-secondary"
                                   >
 
-                                    <span className="text-success p-auto ">
-                                      •
+                                    <span className="text-success  p-auto ">
+                                      <GoDot />
                                     </span>
 
                                     {inc}
@@ -721,7 +722,7 @@ export default function ExplorePackages() {
 
                       {exclusions.length > 0 && (
 
-                        <div className="col-12 col-md-6">
+                        <div className="col-12 col-md-6 m-0">
 
                           <div className="p-3 rounded-3 border exclude shadow-sm h-100">
 
@@ -745,7 +746,7 @@ export default function ExplorePackages() {
                                   >
 
                                     <span className="text-danger p-auto ">
-                                      •
+                                      <GoDot />
                                     </span>
 
                                     {exc}
@@ -776,7 +777,7 @@ export default function ExplorePackages() {
 
               {itinerary.length > 0 && (
 
-                <div className="mb-5 itinerary-section">
+                <div className="mb-5 itinerary-section m-0 ">
 
                   <div className="itinerary-heading">
 
@@ -983,7 +984,7 @@ export default function ExplorePackages() {
 
                         <div
                           key={`${amenity.name}-${index}`}
-                          className="col-12 col-sm-4"
+                          className="col-12 col-sm-4 m-0"
                         >
 
                           <div className="d-flex align-items-center gap-3 p-3 rounded-3 shadow-sm border bg-white amenity-card h-100">
@@ -1114,7 +1115,7 @@ export default function ExplorePackages() {
                 RIGHT SIDEBAR
             ================================================= */}
 
-            <div className="col-12 col-lg-4">
+            <div className="col-12 col-lg-4 m-0">
 
               <div
                 className="card shadow-sm border-0 p-4 sticky-top rounded-4 bg-white"
@@ -1224,14 +1225,14 @@ export default function ExplorePackages() {
           TRAVEL WISDOM
       ===================================================== */}
 
-      <section className="py-5 bg-soft-beige">
+      <section className="py-5 bg-soft-beige m-0">
 
         <div className="container">
 
           <div className="row align-items-center g-5">
 
 
-            <div className="col-lg-6">
+            <div className="col-lg-6 m-0 ">
 
               <span className="explore-label-gold">
                 TRAVEL YOUR WAY
@@ -1259,7 +1260,7 @@ export default function ExplorePackages() {
             </div>
 
 
-            <div className="col-lg-6">
+            <div className="col-lg-6 m-0">
 
               <div className="d-flex flex-column gap-3">
 

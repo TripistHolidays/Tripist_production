@@ -91,7 +91,10 @@ const Domestic = () => {
                 const imageArray = item.hero_slider_images;
                 const imageUrl = Array.isArray(imageArray)
                   ? imageArray[0]
-                  : imageArray || item.image || item.imageUrl || "https://via.placeholder.com/600";
+                  : imageArray ||
+                    item.image ||
+                    item.imageUrl ||
+                    "https://placehold.co/600x400?text=Destination";
 
                 const description =
                   item.about_text ||
@@ -100,7 +103,7 @@ const Domestic = () => {
                   "Explore this beautiful destination and discover unforgettable travel experiences.";
 
                 return (
-                  <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3  dest-card-col">
                     <div className="card custom-dest-card border-0 h-100 shadow-sm">
                       <div className="card-img-container">
                         <img
@@ -108,6 +111,15 @@ const Domestic = () => {
                           className="card-img"
                           alt={item.name || "Destination"}
                           referrerPolicy="no-referrer"
+                          loading="lazy"
+                          decoding="async"
+                          width="600"
+                          height="400"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src =
+                              "https://placehold.co/600x400?text=Destination";
+                          }}
                         />
                         <span className="badge tag-badge-blue">
                           {(item.destination_type || "DOMESTIC").toUpperCase()}

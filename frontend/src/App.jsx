@@ -38,10 +38,16 @@ function App() {
       }
     };
 
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+    };
+
     document.addEventListener("dragstart", handleDragStart);
+    document.addEventListener("contextmenu", handleContextMenu);
 
     return () => {
       document.removeEventListener("dragstart", handleDragStart);
+      document.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
 

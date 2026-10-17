@@ -6,15 +6,38 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+
+.destinations-gallery .row > [class*="col-"] {
+  content-visibility: auto;
+  /* Estimate: 4 cards per row → each ~380px tall on desktop */
+  contain-intrinsic-size: auto 380px;
+}
+
 /* --- HERO SECTION (Matching About & Contact pages) --- */
 .desti-hero {
-  min-height: 380px;
-  height: 60vh !important;
-  background-size: cover;
-  background-position: center;
   position: relative;
   display: flex;
   align-items: center;
+  overflow: hidden;
+
+  /* size: use ONE sizing model */
+  min-height: 380px;
+  height: 60vh;
+
+  /* image */
+  background-image: url("../assets/desti.webp");   /* 👈 move it here from JSX */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;                    /* never 'fixed' */
+
+  /* 🔑 never paint white while image decodes */
+  background-color: #1a1a1a;
+
+  /* 🔑 promote to GPU layer → no repaint / white flash on scroll */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 .card-desc {
   display: -webkit-box;

@@ -214,3 +214,18 @@
   }
   
 }
+
+.dest-card-col {
+  content-visibility: auto;
+  /* Reserve space so scrollbar doesn't jump */
+  contain-intrinsic-size: auto 420px;
+}
+
+/* Tune estimated height per breakpoint */
+@media (min-width: 576px) {
+  .dest-card-col { contain-intrinsic-size: auto 400px; }
+}
+
+@media (min-width: 992px) {
+  .dest-card-col { contain-intrinsic-size: auto 380px; }
+}

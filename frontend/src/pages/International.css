@@ -190,3 +190,17 @@
   }
 
 }
+
+
+.dest-card-col {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
+
+@media (min-width: 576px) {
+  .dest-card-col { contain-intrinsic-size: auto 400px; }
+}
+
+@media (min-width: 992px) {
+  .dest-card-col { contain-intrinsic-size: auto 380px; }
+}

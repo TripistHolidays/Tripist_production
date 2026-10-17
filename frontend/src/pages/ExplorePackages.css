@@ -22,6 +22,8 @@
 .include, .exclude{
   background: rgba(255, 255, 255, 0.34);
 }
+
+
 .explore-page-wrapper {
   background-color: var(--bg-main);
   min-height: 100vh;
@@ -491,3 +493,74 @@
   }
 }
 
+.explore-page-wrapper {
+  width: 100%;
+  overflow-x: clip;
+}
+
+.explore-page-wrapper .container {
+  /* prevent negative-margin bleed from Bootstrap rows */
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.explore-page-wrapper .row {
+  /* contain negative margins so they don't push past the container */
+  --bs-gutter-x: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .explore-page-wrapper .row.g-5 {
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
+  }
+}
+
+/* =========================================================
+   FAQ — icon must be fixed-size, non-shrinking, centered
+   ========================================================= */
+
+/* The question button — flex layout */
+.explore-page-wrapper .border.rounded-3.bg-white.shadow-sm > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* The left group (icon + question text) */
+.explore-page-wrapper .border.rounded-3.bg-white.shadow-sm > button > span {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ✅ The question icon — fixed size, no shrink, no stretch */
+.explore-page-wrapper .border.rounded-3.bg-white.shadow-sm > button > span > svg {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  color: #c09129;
+  margin-top: 3px;
+  display: block;
+}
+
+/* The chevron on the right — also fixed */
+.explore-page-wrapper .border.rounded-3.bg-white.shadow-sm > button > svg {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  color: var(--navy-primary, #0f2d52);
+  transition: transform 0.25s ease;
+}
+
+/* Rotate when open */
+.explore-page-wrapper .border.rounded-3.bg-white.shadow-sm > button > svg.rotate-180 {
+  transform: rotate(180deg);
+}

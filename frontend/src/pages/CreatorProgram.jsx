@@ -17,7 +17,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from "lucide-react";
-import heroImage from "../assets/desti.jpg";
+import heroImage from "../assets/desti.webp";
 
 const creatorTypes = [
   ["Travel Influencers", "Create engaging travel content across Instagram, Facebook, TikTok, Threads, and other social platforms.", <Camera size={24} />],

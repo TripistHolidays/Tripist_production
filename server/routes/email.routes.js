@@ -10,14 +10,29 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
-// Zoho Mail Transporter Configuration
-const transporter = nodemailer.createTransport({
+// ------------------------------------
+// Transporter 1: Contact / Holiday Enquiry  →  info@tripistholidays.com
+// ------------------------------------
+const contactTransporter = nodemailer.createTransport({
   host: "smtp.zoho.in",
   port: 465,
   secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
+  },
+});
+
+// ------------------------------------
+// Transporter 2: Partner + Creator  →  partners@tripistholidays.com
+// ------------------------------------
+const partnerTransporter = nodemailer.createTransport({
+  host: "smtp.zoho.in",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.PARTNER_USER,
+    pass: process.env.PARTNER_PASS,
   },
 });
 
@@ -177,7 +192,7 @@ const renderAdminTemplate = ({ alertHeadline, summaryMessage, detailsRows }) => 
 };
 
 // ------------------------------------
-// 1. Contact / Holiday Enquiry Form
+// 1. Contact / Holiday Enquiry Form  →  uses contactTransporter
 // ------------------------------------
 router.post("/contact", async (req, res) => {
   const {
@@ -303,7 +318,10 @@ router.post("/contact", async (req, res) => {
       }),
     };
 
-    await Promise.all([transporter.sendMail(customerMail), transporter.sendMail(adminMail)]);
+    await Promise.all([
+      contactTransporter.sendMail(customerMail),
+      contactTransporter.sendMail(adminMail),
+    ]);
     return res.status(200).json({
       success: true,
       message: "Enquiry submitted successfully.",
@@ -316,7 +334,7 @@ router.post("/contact", async (req, res) => {
 });
 
 // ------------------------------------
-// 2. Become a Partner Form
+// 2. Become a Partner Form  →  uses partnerTransporter
 // ------------------------------------
 router.post("/partner", async (req, res) => {
   const {
@@ -370,7 +388,7 @@ router.post("/partner", async (req, res) => {
 
     await db.query(queryText, values);
 
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.PARTNER_USER;
     const locationText = [city, state, country].filter(Boolean).join(", ");
 
     const detailsRows = [
@@ -389,7 +407,7 @@ router.post("/partner", async (req, res) => {
     ];
 
     const partnerMail = {
-      from: `"Tripist B2B Team" <${process.env.EMAIL_USER}>`,
+      from: `"Tripist B2B Team" <${process.env.PARTNER_USER}>`,
       to: email,
       subject: `Partnership Application: ${companyName} - Tripist Holidays`,
       html: renderCustomerTemplate({
@@ -402,7 +420,7 @@ router.post("/partner", async (req, res) => {
     };
 
     const adminMail = {
-      from: `"Tripist B2B Alert" <${process.env.EMAIL_USER}>`,
+      from: `"Tripist B2B Alert" <${process.env.PARTNER_USER}>`,
       to: adminEmail,
       subject: `[New Partner Application] ${contactPerson} (${companyName})`,
       html: renderAdminTemplate({
@@ -412,7 +430,10 @@ router.post("/partner", async (req, res) => {
       }),
     };
 
-    await Promise.all([transporter.sendMail(partnerMail), transporter.sendMail(adminMail)]);
+    await Promise.all([
+      partnerTransporter.sendMail(partnerMail),
+      partnerTransporter.sendMail(adminMail),
+    ]);
     return res.status(200).json({ success: true, message: "Partnership application sent." });
   } catch (error) {
     console.error("Partner Email/DB Error:", error);
@@ -421,7 +442,7 @@ router.post("/partner", async (req, res) => {
 });
 
 // ------------------------------------
-// 3. Creator Program Form
+// 3. Creator Program Form  →  uses partnerTransporter
 // ------------------------------------
 router.post("/creator", upload.single("mediaKit"), async (req, res) => {
   try {
@@ -512,7 +533,7 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
       }
     };
 
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.PARTNER_USER;
 
     const detailsRows = [
       { label: "Creator Name / Brand", value: `${fullName} ${creatorName ? `(@${creatorName})` : ""}` },
@@ -536,14 +557,14 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
     ];
 
     const creatorMail = {
-      from: `"Tripist Creator Network" <${process.env.EMAIL_USER}>`,
+      from: `"Tripist Creator Network" <${process.env.PARTNER_USER}>`,
       to: email,
       subject: `Creator Application Received - Welcome ${fullName}!`,
       html: renderCustomerTemplate({
         title: "Welcome to the Tripist Creator Program Application",
         greetingName: fullName,
         heroMessage:
-          "Thank you for applying to the <strong>Tripist Creator Network</strong>! We love working with storytellers, photographers, and travel creators. Our influencer marketing team will review your portfolio and reach out regarding upcoming campaigns and FAM trips.",
+          "Thank you for applying to the <strong>Tripist Creator Network</strong>! We love working with storytellers, photographers, and travel creators. Our influencer marketing team will review your portfolio and reach out regarding upcoming campaigns and Family trips.",
         detailsHeader: "Your Application Overview",
         detailsRows,
       }),
@@ -560,7 +581,7 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
       : [];
 
     const adminMail = {
-      from: `"Tripist Creator Alert" <${process.env.EMAIL_USER}>`,
+      from: `"Tripist Creator Alert" <${process.env.PARTNER_USER}>`,
       to: adminEmail,
       subject: `[New Creator Application] ${fullName} (${primaryCategory || "Travel Creator"})`,
       html: renderAdminTemplate({
@@ -571,7 +592,10 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
       attachments,
     };
 
-    await Promise.all([transporter.sendMail(creatorMail), transporter.sendMail(adminMail)]);
+    await Promise.all([
+      partnerTransporter.sendMail(creatorMail),
+      partnerTransporter.sendMail(adminMail),
+    ]);
     return res.status(200).json({ success: true, message: "Application submitted successfully." });
   } catch (error) {
     console.error("Creator Email/DB Error:", error);

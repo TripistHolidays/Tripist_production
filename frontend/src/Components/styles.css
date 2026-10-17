@@ -687,7 +687,7 @@
 
 @media (max-width: 576px) {
   .hero-container {
-    height: 50vh;
+    height: 60vh;
 
     min-height: 450px;
   }

@@ -18,7 +18,7 @@
 
 .destination-details-page {
   width: 100%;
-  overflow: hidden;
+  overflow-x: clip;
   background: var(--trip-bg);
   color: var(--trip-text);
   font-family: "DM Sans", sans-serif;
@@ -36,7 +36,7 @@
 }
 
 /* =========================================================
-   HEADER — compact, like the reference design
+   HEADER
    ========================================================= */
 .destination-header {
   padding: 34px 0 24px;
@@ -309,7 +309,7 @@
 }
 
 /* =========================================================
-   QUICK TIPS — Fixed card with scrollable tip area
+   QUICK TIPS
    ========================================================= */
 .quick-tips {
   flex: 1 1 auto;
@@ -331,7 +331,6 @@
   margin: 0 0 8px;
 }
 
-/* ONLY THIS AREA SCROLLS */
 .quick-tips-scroll {
   flex: 1 1 auto;
   min-height: 0;
@@ -343,15 +342,13 @@
   overscroll-behavior: contain;
 }
 
-/* ---- QUICK TIP ROW ---- */
 .quick-tip {
   display: flex;
-  align-items: center;       /* ✅ Center icon + text vertically */
+  align-items: center;
   gap: 8px;
   margin: 7px 0;
 }
 
-/* Check icon */
 .quick-tip span {
   flex: 0 0 18px;
   width: 18px;
@@ -367,10 +364,9 @@
   color: #fff;
 
   font-size: 0.90rem;
-  line-height: 1;            /* ✅ Remove extra line space */
+  line-height: 1;
 }
 
-/* Tip text */
 .quick-tip p {
   flex: 1;
   margin: 0;
@@ -383,9 +379,6 @@
   word-break: break-word;
 }
 
-/* =========================================================
-   QUICK TIPS SCROLLBAR
-   ========================================================= */
 .quick-tips-scroll::-webkit-scrollbar {
   width: 5px;
 }
@@ -403,7 +396,6 @@
   background: var(--trip-gold-dark);
 }
 
-/* Firefox */
 .quick-tips-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--trip-gold) transparent;
@@ -572,6 +564,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .package-track::-webkit-scrollbar {
@@ -836,6 +829,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .attraction-track::-webkit-scrollbar {
@@ -1054,16 +1048,8 @@
 /* =========================================================
    RESPONSIVE
    ========================================================= */
-@media (max-width: 1100px) {
-  .destination-package-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
-  .attraction-card {
-    flex-basis: calc((100% - 30px) / 4);
-  }
-}
-
+/* ---------- Tablet / small desktop: 992px and below ---------- */
 @media (max-width: 991px) {
   .destination-header-grid {
     grid-template-columns: 75px minmax(0, 1fr) 150px;
@@ -1084,11 +1070,43 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* ✅ FIXED: make both grid and track into swipeable carousels on tablet */
+  .destination-package-grid,
+  .package-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 4px 2px 14px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .destination-package-grid::-webkit-scrollbar,
+  .package-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .destination-package-grid .destination-package-card,
+  .package-track .destination-package-card {
+    flex: 0 0 45%;
+    min-width: 0;
+    max-width: 280px;
+    scroll-snap-align: start;
+  }
+
+  .package-image-wrap {
+    height: 155px;
+  }
+
+  /* ✅ Attraction cards: 3 across on tablet */
   .attraction-card {
     flex-basis: calc((100% - 20px) / 3);
   }
 }
 
+/* ---------- Large phone / phablet: 768px and below ---------- */
 @media (max-width: 767px) {
   .destination-header {
     padding: 22px 0 18px;
@@ -1144,13 +1162,30 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .destination-package-grid {
-    grid-template-columns: 1fr 1fr;
+  /* ✅ Kept your flex carousel for both grid and track */
+  .destination-package-grid,
+  .package-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 4px 2px 14px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
+  .destination-package-grid::-webkit-scrollbar,
+  .package-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .destination-package-grid .destination-package-card,
   .package-track .destination-package-card {
-    flex: 0 0 calc((100% - 14px) / 2);
-    min-width: 240px;
+    flex: 0 0 48%;
+    min-width: 0;
+    max-width: 280px;
+    scroll-snap-align: start;
   }
 
   .package-image-wrap {
@@ -1198,9 +1233,10 @@
   }
 }
 
+/* ---------- Small phone: 480px and below ---------- */
 @media (max-width: 480px) {
   .destination-header-actions {
-    flex-direction: column;
+    flex-direction: row;   /* ✅ keep side-by-side as you set it */
   }
 
   .destination-main-image {
@@ -1215,13 +1251,30 @@
     grid-template-columns: 1fr;
   }
 
-  .destination-package-grid {
-    grid-template-columns: 1fr;
+  /* ✅ One card per view with peek of next on small phones */
+  .destination-package-grid,
+  .package-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 2px 14px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
+  .destination-package-grid::-webkit-scrollbar,
+  .package-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .destination-package-grid .destination-package-card,
   .package-track .destination-package-card {
-    flex: 0 0 85%;
-    min-width: 240px;
+    flex: 0 0 100%;
+    min-width: 0;
+    max-width: none;
+    scroll-snap-align: start;
   }
 
   .package-image-wrap {
@@ -1233,7 +1286,7 @@
   }
 
   .attraction-card {
-    flex-basis: 78%;
+    flex-basis: 50%;
   }
 
   .attraction-image {

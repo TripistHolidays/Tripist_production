@@ -387,7 +387,7 @@ export default function HandpickedPackages() {
 
                             <strong className="text-navy fw-semibold fs-6">
 
-                              {item.price
+                              &#x20B9; {item.price
                                 ? item.price
                                 : "N/A"}
 

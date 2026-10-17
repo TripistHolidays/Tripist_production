@@ -87,14 +87,28 @@ const International = () => {
           ) : (
             <div className="row g-4">
               {internationalData.map((item) => (
-                <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3 dest-card-col">
                   <div className="card custom-dest-card border-0 h-100 shadow-sm">
                     <div className="card-img-container">
                       <img
-                        src={item.hero_slider_images?.[0] || item.image || item.imageUrl || "https://via.placeholder.com/600"}
+                        src={
+                          item.hero_slider_images?.[0] ||
+                          item.image ||
+                          item.imageUrl ||
+                          "https://placehold.co/600x400?text=Destination"
+                        }
                         className="card-img"
                         alt={item.name}
                         referrerPolicy="no-referrer"
+                        loading="lazy"
+                        decoding="async"
+                        width="600"
+                        height="400"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src =
+                            "https://placehold.co/600x400?text=Destination";
+                        }}
                       />
                       <span className="badge tag-badge-gold">
                         {(item.destination_type || "INTERNATIONAL").toUpperCase()}
@@ -126,10 +140,10 @@ const International = () => {
 
                       <div>
                         <hr className="my-2 text-muted opacity-25" />
-                        <div className="  mb-2">
+                        <div className="mb-2">
                           <a
                             href={`/destination/${toSlug(item.name || item.destination_name || "")}`}
-                            className="explore-link justify-content-between d-flex text-decoration-none "
+                            className="explore-link justify-content-between d-flex text-decoration-none"
                           >
                             <span>Explore Destination</span>
                             <svg
@@ -143,7 +157,6 @@ const International = () => {
                               <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                           </a>
-                          
                         </div>
                       </div>
                     </div>
