@@ -6,14 +6,7 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-
-.destinations-gallery .row > [class*="col-"] {
-  content-visibility: auto;
-  /* Estimate: 4 cards per row → each ~380px tall on desktop */
-  contain-intrinsic-size: auto 380px;
-}
-
-/* --- HERO SECTION (Matching About & Contact pages) --- */
+/* --- HERO SECTION --- */
 .desti-hero {
   position: relative;
   display: flex;
@@ -25,11 +18,11 @@
   height: 60vh;
 
   /* image */
-  background-image: url("../assets/desti.webp");   /* 👈 move it here from JSX */
+  background-image: url("../assets/desti.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: scroll;                    /* never 'fixed' */
+  background-attachment: scroll;
 
   /* 🔑 never paint white while image decodes */
   background-color: #1a1a1a;
@@ -39,19 +32,7 @@
   backface-visibility: hidden;
   will-change: transform;
 }
-.card-desc {
-  display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 
-  line-height: 1.5;
-  min-height: 4.5em;
-  max-height: 4.5em;
-
-  margin-bottom: 0.75rem;
-}
 .desti-overlay {
   position: absolute;
   top: 0;
@@ -124,17 +105,34 @@
   color: #ffffff;
 }
 
-/* --- DESTINATION CARDS --- */
+/* =========================================================
+   DESTINATION CARDS (OPTIMIZED FOR PERFORMANCE)
+   ========================================================= */
+
+/* 1. Apply containment to the outer columns so the browser skips off-screen cards */
+.destinations-gallery .row > [class*="col-"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 380px;
+}
+
 .custom-dest-card {
   border-radius: 14px;
   overflow: hidden;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  
+  /* 🔑 THE MAGIC BULLET FOR LAG */
+  content-visibility: auto;
+  contain-intrinsic-size: 380px 320px; 
+
+  /* 🔑 Promote the hover transform to the GPU to stop layout thrashing */
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .custom-dest-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) translateZ(0);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.07) !important;
 }
 
@@ -143,12 +141,20 @@
   position: relative;
   height: 180px;
   overflow: hidden;
+  
+  /* 🔑 Force GPU acceleration for the image container */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .card-img-container .card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  
+  /* 🔑 Prevent sub-pixel image repaints */
+  transform: translateZ(0);
 }
 
 .card-img-overlay-bottom {
@@ -201,11 +207,20 @@
 }
 
 .card-desc {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
   font-size: 0.8rem;
   line-height: 1.45;
   color: #64748b !important;
-  margin-bottom: 8px;
-  min-height: 36px;
+  
+  /* Ensure consistent height */
+  min-height: 4.35em; 
+  max-height: 4.35em;
+  margin-bottom: 0.75rem;
 }
 
 .price-text {
@@ -225,7 +240,7 @@
 }
 
 .explore-link:hover {
-  color: #0f2d52!important;
+  color: #0f2d52 !important;
   gap: 6px;
 }
 
@@ -295,6 +310,7 @@
     font-size: 1.2rem;
   }
 }
+
 @media (max-width: 480px){
   .desti-hero{
     min-height: 450px;

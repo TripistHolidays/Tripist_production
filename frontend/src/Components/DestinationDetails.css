@@ -344,15 +344,15 @@
 
 .quick-tip {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 7px 0;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0;
 }
 
 .quick-tip span {
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
 
   display: flex;
   align-items: center;
@@ -363,8 +363,10 @@
   background: var(--trip-gold);
   color: #fff;
 
-  font-size: 0.90rem;
+  font-size: 0.8rem;
   line-height: 1;
+  margin-top: 1px;
+  margin-bottom: -2px;
 }
 
 .quick-tip p {
