@@ -21,7 +21,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import "./AboutTripist.css";
-import heroImage from "../assets/about_hero.jpg";
+import heroImage from "../assets/about_hero.webp";
 
 const services = [
   { icon: <Compass size={22} />, title: "Travel Consultation", text: "Travel consultation and itinerary planning designed around every traveler's needs." },

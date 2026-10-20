@@ -1,6 +1,6 @@
 import React from "react";
 import "./About.css";
-import heroImage from "../assets/about_hero.jpg";
+import heroImage from "../assets/about_hero.webp";
 
 import {
   Heart,

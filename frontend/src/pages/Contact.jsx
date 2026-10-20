@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { api } from "../Admin/api";
 
-import banner from "../assets/hero2.jpg";
+import banner from "../assets/hero2.webp";
 
 const Contact = () => {
   const [searchParams] = useSearchParams();

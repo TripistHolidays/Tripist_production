@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { api } from "../Admin/api";
 
-import banner from "../assets/hero4.jpg";
+import banner from "../assets/hero4.webp";
 
 const BecomePartner = () => {
   const [formData, setFormData] = useState({

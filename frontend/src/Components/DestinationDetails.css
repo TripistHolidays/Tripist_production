@@ -350,23 +350,11 @@
 }
 
 .quick-tip span {
-  flex: 0 0 16px;
   width: 16px;
   height: 16px;
-
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--trip-gold);
-  color: #fff;
-
-  font-size: 0.8rem;
-  line-height: 1;
-  margin-top: 1px;
-  margin-bottom: -2px;
+color: var(--trip-gold);
 }
 
 .quick-tip p {
