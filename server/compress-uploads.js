@@ -1,27 +1,31 @@
-const mysql = require('mysql2/promise'); // Use 'pg' if you are using PostgreSQL
+require('dotenv').config();
+const { Client } = require('pg'); // 👈 Using PostgreSQL client
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-// ⚠️ 1. UPDATE YOUR DATABASE DETAILS HERE
+// ✅ Automatically reads from your .env file
 const dbConfig = {
-  host: 'localhost',
-  user: 'your_db_user',
-  password: 'your_db_password',
-  database: 'your_db_name'
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 5432, // 👈 Default Postgres port
 };
 
-// ⚠️ 2. YOUR UPLOAD FOLDER PATH
-const UPLOAD_DIR = "/var/www/tripist-admin/uploads";
+// ✅ Automatically reads from your .env file
+const UPLOAD_DIR = process.env.UPLOAD_DIR || "/var/www/tripist-admin/uploads";
 
 async function processImages() {
   console.log("🚀 Starting image compression...");
+  console.log(`📁 Looking in: ${UPLOAD_DIR}`);
   
-  try {
-    const db = await mysql.createConnection(dbConfig);
-    console.log("✅ Connected to Database.");
+  const client = new Client(dbConfig);
 
-    // Get all files in the uploads folder
+  try {
+    await client.connect();
+    console.log("✅ Connected to PostgreSQL Database.");
+
     const files = fs.readdirSync(UPLOAD_DIR);
 
     for (const file of files) {
@@ -31,7 +35,7 @@ async function processImages() {
       const oldFilePath = path.join(UPLOAD_DIR, file);
       const stats = fs.statSync(oldFilePath);
       
-      // Only process if file is larger than 300KB (to save time)
+      // Only process if file is larger than 300KB
       if (stats.size > 300 * 1024) {
         const newFilename = file.replace(/\.(jpg|jpeg|png)$/i, '.webp');
         const newFilePath = path.join(UPLOAD_DIR, newFilename);
@@ -45,21 +49,20 @@ async function processImages() {
             .webp({ quality: 75 })
             .toFile(newFilePath);
 
-          // 2. Fix permissions so Nginx can read it
+          // 2. Fix permissions
           fs.chmodSync(newFilePath, 0o644);
 
-          const oldUrlPattern = `%${file}`;
-          const newUrl = `/uploads/${newFilename}`; // Adjust if your URLs look different
+          const oldUrlPattern = `%${file}%`;
 
-          // 3. Update Database (Packages)
-          await db.execute(
-            "UPDATE packages SET image = REPLACE(image, ?, ?) WHERE image LIKE ?", 
+          // 3. Update Database (Packages) - Postgres uses $1, $2 syntax
+          await client.query(
+            "UPDATE packages SET image = REPLACE(image, $1, $2) WHERE image LIKE $3", 
             [file, newFilename, oldUrlPattern]
           );
 
           // 4. Update Database (Destinations)
-          await db.execute(
-            "UPDATE destinations SET hero_image = REPLACE(hero_image, ?, ?) WHERE hero_image LIKE ?", 
+          await client.query(
+            "UPDATE destinations SET hero_image = REPLACE(hero_image, $1, $2) WHERE hero_image LIKE $3", 
             [file, newFilename, oldUrlPattern]
           );
 
@@ -75,10 +78,11 @@ async function processImages() {
     }
 
     console.log("\n🎉 All images processed successfully!");
-    await db.end();
     
   } catch (error) {
-    console.error("❌ Script Error:", error);
+    console.error("❌ Database Connection Error:", error.message);
+  } finally {
+    await client.end(); // Close Postgres connection
   }
 }
 
