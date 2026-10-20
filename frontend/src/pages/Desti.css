@@ -12,22 +12,17 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-
-  /* size: use ONE sizing model */
   min-height: 380px;
   height: 60vh;
 
-  /* image */
   background-image: url("../assets/desti.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
-
-  /* 🔑 never paint white while image decodes */
   background-color: #1a1a1a;
 
-  /* 🔑 promote to GPU layer → no repaint / white flash on scroll */
+  /* Promote to GPU layer to prevent white flash on scroll */
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
@@ -121,14 +116,10 @@
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
   
-  /* 🔑 THE MAGIC BULLET FOR LAG */
-  content-visibility: auto;
-  contain-intrinsic-size: 380px 320px; 
-
-  /* 🔑 Promote the hover transform to the GPU to stop layout thrashing */
+  /* Promote to GPU to stop layout thrashing on hover */
   transform: translateZ(0);
-  will-change: transform, box-shadow;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform; 
+  transition: transform 0.25s ease;
 }
 
 .custom-dest-card:hover {
@@ -142,7 +133,7 @@
   height: 180px;
   overflow: hidden;
   
-  /* 🔑 Force GPU acceleration for the image container */
+  /* Force GPU acceleration for the image container */
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -153,7 +144,7 @@
   object-fit: cover;
   display: block;
   
-  /* 🔑 Prevent sub-pixel image repaints */
+  /* Prevent sub-pixel image repaints */
   transform: translateZ(0);
 }
 
@@ -217,7 +208,6 @@
   line-height: 1.45;
   color: #64748b !important;
   
-  /* Ensure consistent height */
   min-height: 4.35em; 
   max-height: 4.35em;
   margin-bottom: 0.75rem;
