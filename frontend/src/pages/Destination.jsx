@@ -103,10 +103,8 @@ const Destinations = () => {
   // FILTER DESTINATIONS (Using useMemo for performance)
   // ============================================================
   const filteredDestinations = useMemo(() => {
-    return destinations.filter((item) => {
-      if (activeTab === "all") return true;
-      return getDestinationType(item) === activeTab;
-    });
+    if (activeTab === "all") return destinations;
+    return destinations.filter((item) => getDestinationType(item) === activeTab);
   }, [destinations, activeTab]);
 
   const handleTabChange = (tab) => {
@@ -218,7 +216,12 @@ const Destinations = () => {
             <div className="row g-4">
               {filteredDestinations.map((item) => {
                 const imageArray = parseArrayData(item.hero_slider_images);
-                const image = imageArray[0] || item.hero_image || item.image_url || item.image || "https://placehold.co/600x400?text=Destination";
+                let rawImage = imageArray[0] || item.hero_image || item.image_url || item.image;
+                
+                // Ensure we have a valid string URL before applying it
+                const image = (rawImage && rawImage !== "null") ? rawImage : "https://placehold.co/600x400?text=Destination";
+
+                
                 const destinationType = getDestinationType(item);
                 const displayType = destinationType === "domestic" ? "DOMESTIC" : "INTERNATIONAL";
                 const description = item.about_text || item.about || item.description || "Explore this beautiful destination and discover unforgettable travel experiences.";

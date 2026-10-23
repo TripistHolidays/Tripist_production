@@ -87,7 +87,7 @@ const International = () => {
           ) : (
             <div className="row g-4">
               {internationalData.map((item) => (
-                <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3 dest-card-col">
+                <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
                   <div className="card custom-dest-card border-0 h-100 shadow-sm">
                     <div className="card-img-container">
                       <img
@@ -102,8 +102,8 @@ const International = () => {
                         referrerPolicy="no-referrer"
                         loading="lazy"
                         decoding="async"
-                        width="600"
-                        height="400"
+                        width="400"
+                        height="260"
                         onError={(e) => {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src =

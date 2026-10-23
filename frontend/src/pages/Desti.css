@@ -104,26 +104,22 @@
    DESTINATION CARDS (OPTIMIZED FOR PERFORMANCE)
    ========================================================= */
 
-/* 1. Apply containment to the outer columns so the browser skips off-screen cards */
-.destinations-gallery .row > [class*="col-"] {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 380px;
-}
-
 .custom-dest-card {
   border-radius: 14px;
   overflow: hidden;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
   
-  /* Promote to GPU to stop layout thrashing on hover */
-  transform: translateZ(0);
-  will-change: transform; 
+  /* THE MAGIC FIX: Tells browser to skip rendering off-screen cards */
+  content-visibility: auto;
+  contain-intrinsic-size: 380px;
+
+  /* Removed will-change and translateZ to stop GPU memory leaks */
   transition: transform 0.25s ease;
 }
 
 .custom-dest-card:hover {
-  transform: translateY(-4px) translateZ(0);
+  transform: translateY(-4px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.07) !important;
 }
 
@@ -132,10 +128,6 @@
   position: relative;
   height: 180px;
   overflow: hidden;
-  
-  /* Force GPU acceleration for the image container */
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .card-img-container .card-img {
@@ -143,9 +135,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  
-  /* Prevent sub-pixel image repaints */
-  transform: translateZ(0);
 }
 
 .card-img-overlay-bottom {
