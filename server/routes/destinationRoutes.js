@@ -4,6 +4,31 @@ const router = express.Router();
 const db = require("../db");
 const pool = db.pool || db;
 
+
+const fs = require("fs");
+const path = require("path");
+
+// Helper to delete physical images
+const deletePhysicalImages = (images) => {
+  if (!images) return;
+  const uploadDir = process.env.UPLOADS_DIR;
+  let imageList = Array.isArray(images) ? images : [images];
+
+  imageList.forEach((url) => {
+    if (!url || typeof url !== "string") return;
+    const fileName = url.split("/").pop();
+    const filePath = path.join(uploadDir, fileName);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.error("Failed to delete image:", err);
+      }
+    }
+  });
+};
+
+
 // ============================================================
 // HELPER - PostgreSQL text arrays
 // ============================================================
@@ -768,6 +793,14 @@ router.put("/:id", async (req, res) => {
     // ========================================================
     // UPDATE (country column removed)
     // ========================================================
+    // Find images that were in the old DB record but are NOT in the new request
+    const oldImages = [...(existing.rows[0].hero_slider_images || []), ...(existing.rows[0].attraction_images || [])];
+    const newImages = [...(body.hero_slider_images || []), ...(body.attraction_images || [])];
+    const imagesToDelete = oldImages.filter(img => !newImages.includes(img));
+    
+    if (imagesToDelete.length > 0) {
+      deletePhysicalImages(imagesToDelete);
+    }
 
     const result =
       await pool.query(
@@ -859,6 +892,15 @@ router.delete("/:id", async (req, res) => {
         error:
           "Destination not found",
       });
+    }
+    // ADD THIS BEFORE res.status(200).json(...)
+    const deletedDest = result.rows[0];
+    
+    if (deletedDest.hero_slider_images) {
+      deletePhysicalImages(deletedDest.hero_slider_images);
+    }
+    if (deletedDest.attraction_images) {
+      deletePhysicalImages(deletedDest.attraction_images);
     }
 
     return res.status(200).json({

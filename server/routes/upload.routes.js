@@ -6,9 +6,10 @@ const sharp = require("sharp");
 const upload = require("../middleware/upload");
 const { requireAuth } = require("../middleware/auth");
 
+
 const router = express.Router();
 
-const uploadDir = "/var/www/tripist-admin/uploads";
+const uploadDir = process.env.UPLOADS_DIR;
 
 // Ensure directory exists
 if (!fs.existsSync(uploadDir)) {

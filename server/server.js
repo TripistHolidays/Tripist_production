@@ -19,7 +19,7 @@ const statesroutes = require("./routes/States.routes");
 const app = express();
 app.set("trust proxy", 1); // add this
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR || "/var/www/tripist-admin/uploads";
+const UPLOAD_DIR = process.env.UPLOADS_DIR;
 
 const cleanOrigin = (url) => url ? url.replace(/\/$/, "") : "";
 

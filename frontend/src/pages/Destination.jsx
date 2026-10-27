@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
-import {
-  FaMapMarkerAlt,
-  FaArrowRight,
-} from "react-icons/fa";
+import { FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
 
 import { api, toSlug } from "../Admin/api";
 import "./Desti.css";
@@ -15,9 +12,16 @@ const Destinations = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ============================================================
-  // HELPER - PARSE ARRAY
-  // ============================================================
+  // 1. Chunked Rendering State
+  const [visibleCount, setVisibleCount] = useState(24);
+  const loaderRef = useRef(null);
+
+  // 2. SEO Title
+  useEffect(() => {
+    document.title = "Tour Destinations & Packages | Tripist Holidays";
+  }, []);
+
+  // 3. Helper - Parse Array
   const parseArrayData = (value) => {
     if (!value) return [];
     if (Array.isArray(value)) return value;
@@ -34,9 +38,7 @@ const Destinations = () => {
     return [];
   };
 
-  // ============================================================
-  // FETCH DESTINATIONS FROM BACKEND
-  // ============================================================
+  // 4. Fetch Destinations
   useEffect(() => {
     const loadDestinations = async () => {
       try {
@@ -57,7 +59,7 @@ const Destinations = () => {
           destinationList = response.data;
         }
 
-        // Sort destinations alphabetically by name
+        // Sort alphabetically
         destinationList.sort((a, b) => {
           const nameA = (a.name || "").toLowerCase();
           const nameB = (b.name || "").toLowerCase();
@@ -65,10 +67,6 @@ const Destinations = () => {
         });
 
         setDestinations(destinationList);
-
-        if (destinationList.length === 0) {
-          console.warn("No destinations returned from backend.");
-        }
       } catch (err) {
         console.error("❌ ERROR FETCHING DESTINATIONS:", err);
         setDestinations([]);
@@ -81,9 +79,7 @@ const Destinations = () => {
     loadDestinations();
   }, []);
 
-  // ============================================================
-  // GET DESTINATION TYPE
-  // ============================================================
+  // 5. Get Destination Type
   const getDestinationType = (item) => {
     if (!item) return "international";
     if (item.destination_type) return String(item.destination_type).toLowerCase();
@@ -99,21 +95,44 @@ const Destinations = () => {
     return "international";
   };
 
-  // ============================================================
-  // FILTER DESTINATIONS (Using useMemo for performance)
-  // ============================================================
+  // 6. Filter Destinations
   const filteredDestinations = useMemo(() => {
     if (activeTab === "all") return destinations;
     return destinations.filter((item) => getDestinationType(item) === activeTab);
   }, [destinations, activeTab]);
 
+  // 7. Get only the visible chunk of destinations
+  const visibleDestinations = useMemo(() => {
+    return filteredDestinations.slice(0, visibleCount);
+  }, [filteredDestinations, visibleCount]);
+
+  // 8. Reset visible count when tab changes
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+    setVisibleCount(24); // Reset back to 24 when switching tabs
   };
 
-  // ============================================================
-  // RENDER
-  // ============================================================
+  // 9. Infinite Scroll Observer (Loads next chunk when scrolling down)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleCount < filteredDestinations.length) {
+          // Load 24 more items
+          setVisibleCount((prev) => prev + 24);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [visibleCount, filteredDestinations.length]);
+
   return (
     <div className="destinations-wrapper">
       {/* HERO */}
@@ -211,81 +230,94 @@ const Destinations = () => {
             </div>
           )}
 
-          {/* DESTINATION CARDS (All Cards Rendered) */}
+          {/* DESTINATION CARDS */}
           {!loading && !error && filteredDestinations.length > 0 && (
-            <div className="row g-4">
-              {filteredDestinations.map((item) => {
-                const imageArray = parseArrayData(item.hero_slider_images);
-                let rawImage = imageArray[0] || item.hero_image || item.image_url || item.image;
-                
-                // Ensure we have a valid string URL before applying it
-                const image = (rawImage && rawImage !== "null") ? rawImage : "https://placehold.co/600x400?text=Destination";
+            <>
+              <div className="row g-4">
+                {visibleDestinations.map((item) => {
+                  const imageArray = parseArrayData(item.hero_slider_images);
+                  const rawImage = imageArray[0] || item.hero_image || item.image_url || item.image;
+                  
+                  // STRICT IMAGE VALIDATION
+                  const image = (typeof rawImage === 'string' && rawImage.trim() !== "" && rawImage !== "null") 
+                    ? rawImage 
+                    : "https://placehold.co/600x400?text=Destination";
 
-                
-                const destinationType = getDestinationType(item);
-                const displayType = destinationType === "domestic" ? "DOMESTIC" : "INTERNATIONAL";
-                const description = item.about_text || item.about || item.description || "Explore this beautiful destination and discover unforgettable travel experiences.";
+                  const destinationType = getDestinationType(item);
+                  const displayType = destinationType === "domestic" ? "DOMESTIC" : "INTERNATIONAL";
+                  const description = item.about_text || item.about || item.description || "Explore this beautiful destination and discover unforgettable travel experiences.";
 
-                return (
-                  <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div className="card custom-dest-card border-0 h-100 shadow-sm">
-                      {/* IMAGE */}
-                      <div className="card-img-container">
-                        <img
-                          src={image}
-                          className="card-img"
-                          alt={item.name || "Destination"}
-                          referrerPolicy="no-referrer"
-                          loading="lazy"
-                          decoding="async"
-                          width="600"
-                          height="400"
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = "https://placehold.co/600x400?text=Destination";
-                          }}
-                        />
-                        
-                        {/* TYPE BADGE */}
-                        <span className={`badge ${destinationType === "domestic" ? "tag-badge-blue" : "tag-badge-gold"}`}>
-                          {displayType}
-                        </span>
+                  return (
+                    <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+                      <div className="card custom-dest-card border-0 h-100 shadow-sm">
+                        {/* IMAGE */}
+                        <div className="card-img-container">
+                          <img
+                            src={image}
+                            className="card-img"
+                            alt={item.name || "Destination"}
+                            referrerPolicy="no-referrer"
+                            loading="lazy"
+                            decoding="async"
+                            fetchpriority="low"
+                            width="600"
+                            height="400"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "https://placehold.co/600x400?text=Destination";
+                            }}
+                          />
+                          
+                          {/* TYPE BADGE */}
+                          <span className={`badge ${destinationType === "domestic" ? "tag-badge-blue" : "tag-badge-gold"}`}>
+                            {displayType}
+                          </span>
 
-                        {/* IMAGE OVERLAY */}
-                        <div className="card-img-overlay-bottom">
-                          <div className="location-pin">
-                            <FaMapMarkerAlt />
-                            <span>{item.capital || item.name || "Location"}</span>
+                          {/* IMAGE OVERLAY */}
+                          <div className="card-img-overlay-bottom">
+                            <div className="location-pin">
+                              <FaMapMarkerAlt />
+                              <span>{item.capital || item.name || "Location"}</span>
+                            </div>
+                            <h3 className="overlay-card-title">{item.name || "Destination"}</h3>
                           </div>
-                          <h3 className="overlay-card-title">{item.name || "Destination"}</h3>
                         </div>
-                      </div>
 
-                      {/* CARD BODY */}
-                      <div className="card-body d-flex flex-column p-3">
-                        <p
-                          className="card-desc text-secondary"
-                          style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                        >
-                          {description}
-                        </p>
-
-                        <div className="mt-auto">
-                          <hr className="my-3 text-muted opacity-25" />
-                          <Link
-                            to={`/destination/${toSlug(item.name || item.destination_name || "")}`}
-                            className="explore-link text-decoration-none d-flex align-items-center justify-content-between"
+                        {/* CARD BODY */}
+                        <div className="card-body d-flex flex-column p-3">
+                          <p
+                            className="card-desc text-secondary"
+                            style={{ display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}
                           >
-                            <span>Explore Destination</span>
-                            <FaArrowRight />
-                          </Link>
+                            {description}
+                          </p>
+
+                          <div className="mt-auto">
+                            <hr className="my-3 text-muted opacity-25" />
+                            <Link
+                              to={`/destination/${toSlug(item.name || item.destination_name || "")}`}
+                              className="explore-link text-decoration-none d-flex align-items-center justify-content-between"
+                            >
+                              <span>Explore Destination</span>
+                              <FaArrowRight />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  );
+                })}
+              </div>
+
+              {/* INVISIBLE LOADER FOR INFINITE SCROLL */}
+              {visibleCount < filteredDestinations.length && (
+                <div ref={loaderRef} className="text-center py-4">
+                  <div className="spinner-border text-warning" role="status">
+                    <span className="visually-hidden">Loading more...</span>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

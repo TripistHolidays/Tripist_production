@@ -4,6 +4,32 @@ const { requireAuth } = require("../middleware/auth");
 
 const router = express.Router();
 
+
+const fs = require("fs");
+const path = require("path");
+
+// Helper to delete physical images
+const deletePhysicalImages = (images) => {
+  if (!images) return;
+  const uploadDir = process.env.UPLOADS_DIR;
+  let imageList = Array.isArray(images) ? images : [images];
+
+  imageList.forEach((url) => {
+    if (!url || typeof url !== "string") return;
+    const fileName = url.split("/").pop();
+    const filePath = path.join(uploadDir, fileName);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.error("Failed to delete image:", err);
+      }
+    }
+  });
+};
+
+
+
 /* =========================================================
    MAP DATABASE ROW
 ========================================================= */
@@ -402,7 +428,11 @@ router.put("/:id", requireAuth, async (req, res) => {
     /* =====================================================
        UPDATE
     ===================================================== */
-
+    // Find the old image in the DB and delete it if it changed
+    const oldPkg = await db.query("SELECT image FROM packages WHERE id = $1", [req.params.id]);
+    if (oldPkg.rows[0] && oldPkg.rows[0].image && oldPkg.rows[0].image !== p.image) {
+      deletePhysicalImages([oldPkg.rows[0].image]);
+    }
     const result = await db.query(
       `UPDATE packages SET
         name = $1,
@@ -511,10 +541,10 @@ router.delete(
   requireAuth,
   async (req, res) => {
     try {
-      const result = await db.query(
+       const result = await db.query(
         `DELETE FROM packages
          WHERE id = $1
-         RETURNING id`,
+         RETURNING *`, 
         [req.params.id]
       );
 
@@ -523,6 +553,12 @@ router.delete(
           error: "Package not found",
         });
       }
+    // ADD THIS BEFORE res.json(...)
+    const deletedPkg = result.rows[0];
+    
+    if (deletedPkg.image) {
+      deletePhysicalImages([deletedPkg.image]);
+    }
 
       res.json({
         message: "Package deleted",
