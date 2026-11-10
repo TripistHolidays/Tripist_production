@@ -103,40 +103,45 @@ router.get("/", async (req, res) => {
       createdAt: "created_at",
     };
 
-    const sortField =
-      sortableFields[req.query.sort] || "created_at";
-
-    const order =
-      req.query.order === "asc" ? "ASC" : "DESC";
+    const sortField = sortableFields[req.query.sort] || "created_at";
+    const order = req.query.order === "asc" ? "ASC" : "DESC";
 
     let query = `SELECT * FROM packages`;
     const values = [];
+    const conditions = [];
 
-    /* Destination filter */
-    const rawDestId =
-      req.query.destination_id ||
-      req.query.destinationId;
+    // 1. Check if the request is from the Admin Panel
+    // If not, hide inactive and expired packages.
+    const isAdmin = req.query.admin === "true";
 
+    if (!isAdmin) {
+      conditions.push(`status = 'active'`);
+      conditions.push(`(valid_until IS NULL OR valid_until >= CURRENT_DATE)`);
+    }
+
+    // 2. Destination filter (if passed)
+    const rawDestId = req.query.destination_id || req.query.destinationId;
     if (rawDestId) {
       const parsedDestId = parseInt(rawDestId, 10);
-
       if (!isNaN(parsedDestId)) {
-        query += ` WHERE destination_id = $1`;
+        conditions.push(`destination_id = $${values.length + 1}`);
         values.push(parsedDestId);
       }
+    }
+
+    // 3. Combine conditions
+    if (conditions.length > 0) {
+      query += ` WHERE ` + conditions.join(" AND ");
     }
 
     query += ` ORDER BY ${sortField} ${order}`;
 
     const result = await db.query(query, values);
-
     res.json(result.rows.map(mapRow));
+    
   } catch (err) {
     console.error("Get packages error:", err);
-
-    res.status(500).json({
-      error: "Failed to fetch packages",
-    });
+    res.status(500).json({ error: "Failed to fetch packages" });
   }
 });
 

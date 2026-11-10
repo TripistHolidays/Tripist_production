@@ -648,9 +648,9 @@ export default function DestinationsPage({ notify }) {
             <div className="d-flex align-items-center gap-3 flex-wrap">
               
               <div className="d-flex align-items-center gap-2">
-                <span className="text-muted small fw-semibold">Type:</span>
+                <span className="text-muted small fw-semibold">Category</span>
                 <select className="form-select form-select-sm rounded shadow-sm" style={{ width: "130px" }} value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
-                  <option value="all">All Types</option>
+                  <option value="all">All</option>
                   <option value="domestic">Domestic</option>
                   <option value="international">International</option>
                 </select>
