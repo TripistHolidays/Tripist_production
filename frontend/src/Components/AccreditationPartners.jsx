@@ -93,7 +93,12 @@ export const otherLogos = [
 ];
 
 export const topRowLogos = [...governmentLogos, ...destinationLogos];
-export const bottomRowLogos = [...hotelLogos, ...airlineLogos, ...otherLogos];
+export const bottomRowLogos = [
+  ...hotelLogos,
+  ...airlineLogos,
+  ...otherLogos,
+  { name: "The Hosteller (Black)", category: "Hospitality" },
+];
 
 const filenameMapping = {
   "Incredible India": "incredible-india.png",
@@ -167,6 +172,7 @@ const filenameMapping = {
   MakeMyTrip: "makemytrip.png",
   RedBus: "redbus.png",
   Wonderla: "wonderla.png",
+  "The Hosteller (Black)": "newlogo-black.png",
 };
 
 const logoModules = import.meta.glob(

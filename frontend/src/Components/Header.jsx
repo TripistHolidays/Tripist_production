@@ -57,17 +57,14 @@ const Header = () => {
         zIndex: 1030,
       }}
     >
-      <nav
-        className="container d-flex align-items-center justify-content-between py-2"
-        style={{ height: "76px" }}
-      >
+      <nav className="container header-nav d-flex align-items-center justify-content-between py-2">
         {/* Logo */}
         <Link to="/" className="navlogo" style={{ flexShrink: 0 }}>
           <img src={navlogo} className="logo-img" alt="Tripist Logo" />
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="d-none d-lg-flex align-items-center gap-4 mb-0 list-unstyled">
+        <ul className="d-none d-lg-flex align-items-center header-nav-list mb-0 list-unstyled">
           {NAV_LINKS.map((link) => (
             <li key={link.label}>
               <Link
@@ -81,23 +78,23 @@ const Header = () => {
         </ul>
 
         {/* Desktop Right Side */}
-        <div className="d-none d-lg-flex align-items-center gap-4">
+        <div className="d-none d-lg-flex align-items-center header-right">
           <a
             href={`tel:${phone}`}
-            className="d-flex align-items-center gap-2 text-white-50 text-decoration-none fw-medium"
+            className="header-phone d-flex align-items-center gap-2 text-white-50 text-decoration-none fw-medium"
           >
-            <Phone size={16} className="text-gold" />
-            {phone}
+            <Phone size={16} className="text-gold flex-shrink-0" />
+            <span>{phone}</span>
           </a>
 
-          <Link to="/contact-us" className="btn-trip">
+          <Link to="/contact-us" className="btn-trip header-cta text-decoration-none">
             Enquire Now
           </Link>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className="d-lg-none btn p-0 text-white border-0"
+          className="d-lg-none btn p-0 text-white border-0 flex-shrink-0"
           onClick={() => setOpen((prev) => !prev)}
           aria-label="Toggle menu"
         >
@@ -108,7 +105,7 @@ const Header = () => {
       {/* Mobile Menu */}
       {open && (
         <div
-          className="d-lg-none px-3 pb-4"
+          className="d-lg-none header-mobile-menu px-3 pb-4"
           style={{
             backgroundColor: "var(--trip-navy)",
             borderTop: "1px solid rgba(212,175,55,0.25)",
@@ -136,7 +133,7 @@ const Header = () => {
           <Link
             to="/contact-us"
             onClick={() => setOpen(false)}
-            className="btn-trip d-block text-center"
+            className="btn-trip header-cta d-block text-center text-decoration-none"
           >
             Enquire Now
           </Link>
@@ -147,6 +144,7 @@ const Header = () => {
         .nav-link-trip {
           position: relative;
           padding-bottom: 4px;
+          white-space: nowrap;
           transition: color 0.3s ease;
         }
 

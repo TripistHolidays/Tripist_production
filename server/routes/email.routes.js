@@ -74,7 +74,7 @@ const safeFloat = (val, fallback = null) => {
 // ------------------------------------
 // Helper 1: Customer Facing Template
 // ------------------------------------
-const renderCustomerTemplate = ({ title, greetingName, heroMessage, detailsHeader, detailsRows }) => {
+const renderCustomerTemplate = ({ title, greetingName, heroMessage, detailsHeader, detailsRows, footerNote }) => {
   const currentYear = new Date().getFullYear();
   const rowsHtml = detailsRows
     .map(
@@ -84,7 +84,7 @@ const renderCustomerTemplate = ({ title, greetingName, heroMessage, detailsHeade
           ${row.label}:
         </td>
         <td style="padding: 10px 0; color: #333333; border-bottom: 1px solid #edf2f7; line-height: 1.4;">
-          ${row.value || "Not specified"}
+          ${row.value || "Not Provided"}
         </td>
       </tr>
     `
@@ -124,6 +124,13 @@ const renderCustomerTemplate = ({ title, greetingName, heroMessage, detailsHeade
                       </td>
                     </tr>
                   </table>
+                  ${footerNote ? `
+                  <div style="margin-top: 20px; text-align: center;">
+                    <p style="color: #dc2626; font-size: 13px; font-weight: bold; margin: 0;">
+                      ${footerNote}
+                    </p>
+                  </div>
+                  ` : ""}
                 </td>
               </tr>
               <tr>
@@ -154,7 +161,7 @@ const renderAdminTemplate = ({ alertHeadline, summaryMessage, detailsRows }) => 
           ${row.label}
         </td>
         <td style="padding: 10px; color: #333333; border-bottom: 1px solid #edf2f7; line-height: 1.4;">
-          ${row.value || "N/A"}
+          ${row.value || "Not Provided"}
         </td>
       </tr>
     `
@@ -274,7 +281,7 @@ router.post("/contact", async (req, res) => {
         ]
           .filter(Boolean)
           .join(" / ")
-        : "Not specified";
+        : "Not Provided";
 
     const detailsRows = [
       { label: "Enquiry ID", value: generatedEnquiryId },
@@ -285,7 +292,7 @@ router.post("/contact", async (req, res) => {
       { label: "Destination", value: safeDestination },
       { label: "Travel Type", value: travelType },
       { label: "Duration", value: durationText },
-      { label: "Tentative Date", value: travelDate || "Not specified" },
+      { label: "Tentative Date", value: travelDate || "Not Provided" },
       { label: "Travellers", value: travellersText },
       { label: "Budget", value: budget },
       { label: "Services Requested", value: formattedServices },
@@ -500,8 +507,8 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
       fullName,
       email,
       mobile,
-      country || "N/A",
-      city || "N/A",
+      country || "Not Provided",
+      city || "Not Provided",
       creatorName || null,
       primaryCategory || null,
       instagram || null,
@@ -543,30 +550,63 @@ router.post("/creator", upload.single("mediaKit"), async (req, res) => {
       { label: "Primary Category", value: primaryCategory },
       {
         label: "Socials",
-        value:
-          [instagram, youtube, facebook, blog, linkedin, portfolio].filter(Boolean).join(" | ") || "None",
+        value: (() => {
+          // Normalise: trim, strip leading @, strip trailing slashes for handle inputs
+          const cleanHandle = (v) => (v ? String(v).trim().replace(/^@+/, "").replace(/\/+$/, "") : "");
+
+          // If user already pasted a full URL (http/https/www), keep it; else build from handle
+          const buildUrl = (v, baseUrl, prefix = "") => {
+            if (!v) return null;
+            const trimmed = String(v).trim();
+            if (/^https?:\/\//i.test(trimmed) || /^www\./i.test(trimmed)) {
+              return trimmed.startsWith("http") ? trimmed : `https://${trimmed}`;
+            }
+            const handle = cleanHandle(trimmed);
+            return handle ? `${baseUrl}${prefix}${handle}/` : null;
+          };
+
+          const links = [
+            { name: "Instagram", url: buildUrl(instagram, "https://www.instagram.com/") },
+            { name: "YouTube", url: buildUrl(youtube, "https://www.youtube.com/@") },
+            { name: "Facebook", url: buildUrl(facebook, "https://www.facebook.com/") },
+            { name: "Blog", url: buildUrl(blog, "https://") },
+            { name: "LinkedIn", url: buildUrl(linkedin, "https://www.linkedin.com/in/") },
+            { name: "Portfolio", url: buildUrl(portfolio, "https://") },
+          ].filter((l) => l.url);
+
+          if (links.length === 0) return "Not Provided";
+
+          return links
+            .map(
+              (l) =>
+                `<a href="${l.url}" target="_blank" style="color: #16406f; text-decoration: underline;">${l.name}</a>`
+            )
+            .join(" | ");
+        })(),
       },
       {
         label: "Audience Stats",
-        value: `${followers || "0"} followers | ${monthlyReach || "0"} reach | ${engagementRate || "N/A"} engagement (${audienceCountry || "N/A"})`,
+        value: `${followers || "0"} followers | ${monthlyReach || "0"} reach | ${engagementRate || "Not Provided"} engagement (${audienceCountry || "Not Provided"})`,
       },
       { label: "Expertise", value: parseList(expertise) },
       { label: "Collaboration Interests", value: parseList(interests) },
       { label: "Pitch / About", value: about },
-      { label: "Media Kit Attached", value: mediaKitBufferName || "No file attached" },
+      { label: "Media Kit Attached", value: mediaKitBufferName || "Not Provided" },
     ];
 
     const creatorMail = {
       from: `"Tripist Creator Network" <${process.env.PARTNER_USER}>`,
       to: email,
-      subject: `Creator Application Received - Welcome ${fullName}!`,
+      subject: `Creator Application Received -Hi ${fullName}!`,
       html: renderCustomerTemplate({
-        title: "Welcome to the Tripist Creator Program Application",
+        title: "Thank You for Applying – Tripist Holidays Creator Program",
         greetingName: fullName,
         heroMessage:
-          "Thank you for applying to the <strong>Tripist Creator Network</strong>! We love working with storytellers, photographers, and travel creators. Our influencer marketing team will review your portfolio and reach out regarding upcoming campaigns and Family trips.",
+          "Thank you for applying to the <strong>Tripist Creator Network</strong>! We love working with storytellers, photographers, and travel creators. Our influencer marketing team will Review your application and social profiles and reach out regarding Potential creator collaborations, campaigns and hosted travel opportunities.",
         detailsHeader: "Your Application Overview",
         detailsRows,
+        // 👇 Added the footer note here
+        footerNote: "Note : That Application Submission Does Not Guarantee Acceptance Into The Creator Network"
       }),
     };
 

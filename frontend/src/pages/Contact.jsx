@@ -29,12 +29,12 @@ const Contact = () => {
   // Data passed from DestinationDetails via React Router state
   const destinationData = location.state?.destinationData;
 
-  const officeLatitude = 13.094364494112748;
-  const officeLongitude = 80.20596646854486;
+  const officeLatitude = 13.0943647;
+  const officeLongitude = 80.2060783;
   const locationName = "Tripist Holidays Private Limited";
   const mapZoom = 17;
 
-  const googleDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${officeLatitude},${officeLongitude}`;
+  const googleDirectionsUrl = 'https://maps.app.goo.gl/oHdfZDnCwzsuYDsU6';
 
   const formRef = useRef(null);
   const dateInputRef = useRef(null);
@@ -430,11 +430,10 @@ const Contact = () => {
                               {item.day}
                             </td>
                             <td
-                              className={`day-hours py-2 text-end ${
-                                item.isSpecial
-                                  ? "text-gold font-bold"
-                                  : "text-muted"
-                              }`}
+                              className={`day-hours py-2 text-end ${item.isSpecial
+                                ? "text-gold font-bold"
+                                : "text-muted"
+                                }`}
                             >
                               {item.hours}
                             </td>
@@ -551,9 +550,8 @@ const Contact = () => {
                               name="fullName"
                               value={formData.fullName}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${
-                                errors.fullName ? "is-invalid" : ""
-                              }`}
+                              className={`form-control-custom ${errors.fullName ? "is-invalid" : ""
+                                }`}
                               placeholder="e.g. Nithesh Kumar"
                               autoComplete="name"
                               required
@@ -577,9 +575,8 @@ const Contact = () => {
                               name="email"
                               value={formData.email}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${
-                                errors.email ? "is-invalid" : ""
-                              }`}
+                              className={`form-control-custom ${errors.email ? "is-invalid" : ""
+                                }`}
                               placeholder="name@example.com"
                               autoComplete="email"
                               required
@@ -605,9 +602,8 @@ const Contact = () => {
                               name="mobile"
                               value={formData.mobile}
                               onChange={handleInputChange}
-                              className={`form-control-custom ${
-                                errors.mobile ? "is-invalid" : ""
-                              }`}
+                              className={`form-control-custom ${errors.mobile ? "is-invalid" : ""
+                                }`}
                               placeholder="10-digit mobile number"
                               autoComplete="tel"
                               required
@@ -689,9 +685,8 @@ const Contact = () => {
                               name="travelType"
                               value={formData.travelType}
                               onChange={handleInputChange}
-                              className={`form-select-custom ${
-                                errors.travelType ? "is-invalid" : ""
-                              }`}
+                              className={`form-select-custom ${errors.travelType ? "is-invalid" : ""
+                                }`}
                             >
                               <option value="" disabled>
                                 Select Type
@@ -773,11 +768,11 @@ const Contact = () => {
                                 placeholder="dd/mm/yyyy"
                                 value={
                                   typeof formData?.travelDate === "string" &&
-                                  formData.travelDate.includes("-")
+                                    formData.travelDate.includes("-")
                                     ? formData.travelDate
-                                        .split("-")
-                                        .reverse()
-                                        .join("/")
+                                      .split("-")
+                                      .reverse()
+                                      .join("/")
                                     : ""
                                 }
                                 className="form-control-custom date-display-input"
@@ -905,9 +900,8 @@ const Contact = () => {
                                   <button
                                     type="button"
                                     key={index}
-                                    className={`service-chip-btn ${
-                                      isSelected ? "active" : ""
-                                    }`}
+                                    className={`service-chip-btn ${isSelected ? "active" : ""
+                                      }`}
                                     onClick={() =>
                                       handleServiceChange(service)
                                     }
@@ -1110,13 +1104,13 @@ const Contact = () => {
             </div>
 
             <iframe
-              src={`https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3886.0822606013686!2d${officeLongitude}!3d${officeLatitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA1JzM5LjciTiA4MMKwMTInMjEuNSJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin`}
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.076080795831!2d80.2060783!3d13.0943647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52657718d99e97%3A0x8241efb86077c529!2sTripist%20Holidays!5e0!3m2!1sen!2sin!4v1794660911130!5m2!1sen!2sin"
               width="100%"
               height="480"
               style={{ border: 0, display: "block" }}
               allowFullScreen=""
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+              referrerPolicy="strict-origin-when-cross-origin"
               title={`${locationName} Google Maps Location`}
             ></iframe>
           </div>

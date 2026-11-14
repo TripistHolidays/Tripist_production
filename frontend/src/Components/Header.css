@@ -26,21 +26,25 @@
 /* LOGO */
 
 .navlogo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-decoration: none;
-  flex-shrink: 0;
-  margin-right: 20px; /* Reduced from 40px to free up navigation space */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-right: 20px;
+    /* Reduced from 40px to free up navigation space */
 }
 
 /* LOGO IMAGE CONSTRAINTS */
 .logo-img {
-  width: auto;             /* Changed from fixed 170px to auto */
-  max-width: 150px;        /* Prevents horizontal overflow */
-  height: 48px;            /* Locks height relative to 76px header */
-  object-fit: contain;
-  display: block;
+    width: auto;
+    /* Changed from fixed 170px to auto */
+    max-width: 150px;
+    /* Prevents horizontal overflow */
+    height: 48px;
+    /* Locks height relative to 76px header */
+    object-fit: contain;
+    display: block;
 }
 
 
@@ -52,6 +56,7 @@
     list-style: none;
     margin-bottom: 0;
 }
+
 .desktop-menu a {
     color: white;
     text-decoration: none;
@@ -175,10 +180,147 @@
 
 /* RESPONSIVE */
 
-@media(max-width:991px) {
+.header-nav {
+    min-height: 76px;
+    gap: 20px;
+}
 
+.header-nav-list {
+    gap: 24px;
+    flex-shrink: 0;
+}
+
+.header-nav .header-nav-list .nav-link-trip {
+    white-space: nowrap;
+    font-size: 0.96rem;
+    display: inline-block;
+}
+
+.header-right {
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.header-nav .header-phone {
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.94rem;
+}
+
+.header-nav .header-cta,
+.header-mobile-menu .header-cta {
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-decoration: none;
+    line-height: 1.25;
+}
+
+.header-mobile-menu {
+    max-height: calc(100vh - 76px);
+    overflow-y: auto;
+}
+
+@media (max-width: 1399.98px) {
+    .header-nav {
+        gap: 14px;
+    }
+
+    .navlogo {
+        margin-right: 8px;
+    }
+
+    .logo-img {
+        height: 44px;
+    }
+
+    .header-nav-list {
+        gap: 16px;
+    }
+
+    .header-nav .header-nav-list .nav-link-trip {
+        font-size: 0.9rem;
+    }
+
+    .header-right {
+        gap: 14px;
+    }
+
+    .header-nav .header-phone {
+        font-size: 0.88rem;
+    }
+
+    .header-nav .header-cta {
+        padding: 9px 18px;
+        font-size: 0.86rem;
+    }
+}
+
+@media (max-width: 1199.98px) {
+    .header-nav {
+        gap: 10px;
+    }
+
+    .navlogo {
+        margin-right: 0;
+    }
+
+    .logo-img {
+        height: 38px;
+    }
+
+    .header-nav-list {
+        gap: 12px;
+    }
+
+    .header-nav .header-nav-list .nav-link-trip {
+        font-size: 0.8125rem;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .header-nav .header-phone {
+        font-size: 0.8125rem;
+    }
+
+    .header-nav .header-cta {
+        padding: 7px 14px;
+        font-size: 0.8125rem;
+    }
+}
+
+@media (max-width: 991.98px) {
     .logo {
         height: 50px;
     }
 
+    .header-nav {
+        min-height: 68px;
+        gap: 12px;
+    }
+
+    .logo-img {
+        height: 42px;
+    }
+
+    .header-mobile-menu {
+        max-height: calc(100vh - 68px);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .header-nav {
+        min-height: 64px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .logo-img {
+        height: 38px;
+    }
+
+    .header-mobile-menu {
+        max-height: calc(100vh - 64px);
+    }
 }
