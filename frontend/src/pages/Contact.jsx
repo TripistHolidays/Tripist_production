@@ -34,7 +34,7 @@ const Contact = () => {
   const locationName = "Tripist Holidays Private Limited";
   const mapZoom = 17;
 
-  const googleDirectionsUrl = 'https://maps.app.goo.gl/oHdfZDnCwzsuYDsU6';
+  const googleDirectionsUrl = 'https://www.google.com/maps/place/Tripist+Holidays/@13.094294,80.2058878,110m/data=!3m1!1e3!4m14!1m7!3m6!1s0x3a52657718d99e97:0x8241efb86077c529!2sTripist+Holidays!8m2!3d13.0943647!4d80.2060783!16s%2Fg%2F11_08vw6h5!3m5!1s0x3a52657718d99e97:0x8241efb86077c529!8m2!3d13.0943647!4d80.2060783!16s%2Fg%2F11_08vw6h5!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D';
 
   const formRef = useRef(null);
   const dateInputRef = useRef(null);
