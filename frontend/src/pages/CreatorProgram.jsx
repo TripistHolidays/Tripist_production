@@ -398,7 +398,7 @@ export default function CreatorProgram() {
               Complete the application form below, and our Creator Partnerships
               Team will review your profile.
             </p>
-            
+            <p className="text-danger">Note : That Application Submission Does Not Guarantee Acceptance Into The Creator Network</p>
             {/* Multi-Step Form Progress Bar */}
             <div className="creator-form-steps">
               <div className={`creator-form-step ${step === 1 ? "active" : step > 1 ? "completed" : ""}`}>
